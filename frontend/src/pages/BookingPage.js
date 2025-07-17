@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '../components/ui/card';
 import { Button } from '../components/ui/button';
 import { Input } from '../components/ui/input';
@@ -10,35 +10,45 @@ import { ArrowLeft, Calendar as CalendarIcon, Clock, Users, GamepadIcon } from '
 import { format } from 'date-fns';
 import { useNavigate } from 'react-router-dom';
 import { useToast } from '../hooks/use-toast';
-import { mockBookings } from '../data/mockData';
+import { bookingService, availabilityService, gameTypeService, settingsService } from '../services/api';
+import { useApi, useApiMutation } from '../hooks/useApi';
 
 const BookingPage = () => {
   const navigate = useNavigate();
   const { toast } = useToast();
   const [selectedDate, setSelectedDate] = useState(null);
+  const [availableSlots, setAvailableSlots] = useState([]);
   const [formData, setFormData] = useState({
     name: '',
     phone: '',
     email: '',
-    gameType: '',
-    duration: '1',
-    timeSlot: '',
-    groupSize: '1',
-    specialRequests: ''
+    game_type: '',
+    duration: 1,
+    time_slot: '',
+    group_size: 1,
+    special_requests: ''
   });
 
-  const gameTypes = [
-    { value: 'playstation', label: 'PlayStation', icon: '🎮' },
-    { value: 'xbox', label: 'Xbox', icon: '🎮' },
-    { value: 'nintendo', label: 'Nintendo Switch', icon: '🎮' },
-    { value: 'vr', label: 'VR Gaming', icon: '🥽' },
-    { value: 'board', label: 'Board Games', icon: '🎲' }
-  ];
+  // API hooks
+  const { data: gameTypes, loading: gameTypesLoading } = useApi(gameTypeService.getAll, []);
+  const { data: settings, loading: settingsLoading } = useApi(settingsService.get, []);
+  const { mutate: createBooking, loading: bookingLoading } = useApiMutation(bookingService.create);
 
-  const timeSlots = [
-    '10:00 AM', '11:00 AM', '12:00 PM', '1:00 PM', '2:00 PM', '3:00 PM',
-    '4:00 PM', '5:00 PM', '6:00 PM', '7:00 PM', '8:00 PM', '9:00 PM'
-  ];
+  // Load availability when date changes
+  useEffect(() => {
+    if (selectedDate) {
+      loadAvailability();
+    }
+  }, [selectedDate]);
+
+  const loadAvailability = async () => {
+    try {
+      const availability = await availabilityService.getByDate(selectedDate);
+      setAvailableSlots(availability.time_slots);
+    } catch (error) {
+      console.error('Error loading availability:', error);
+    }
+  };
 
   const handleInputChange = (name, value) => {
     setFormData(prev => ({
@@ -48,19 +58,21 @@ const BookingPage = () => {
   };
 
   const calculateTotal = () => {
-    const baseRate = 120;
-    const duration = parseInt(formData.duration);
-    const groupSize = parseInt(formData.groupSize);
+    if (!settings) return 0;
     
-    // Group discount: 3+ people get ₹20 off per person
-    const discountedRate = groupSize >= 3 ? 100 : baseRate;
-    return discountedRate * duration * groupSize;
+    const duration = parseInt(formData.duration);
+    const groupSize = parseInt(formData.group_size);
+    const pricing = settings.pricing;
+    
+    // Group discount: 3+ people get group rate
+    const rate = groupSize >= pricing.group_min_size ? pricing.group : pricing.individual;
+    return rate * duration * groupSize;
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     
-    if (!selectedDate || !formData.name || !formData.phone || !formData.gameType || !formData.timeSlot) {
+    if (!selectedDate || !formData.name || !formData.phone || !formData.game_type || !formData.time_slot) {
       toast({
         title: "Missing Information",
         description: "Please fill in all required fields",
@@ -69,36 +81,58 @@ const BookingPage = () => {
       return;
     }
 
-    // Mock booking creation
-    const newBooking = {
-      id: Date.now(),
-      ...formData,
-      date: selectedDate,
-      total: calculateTotal(),
-      status: 'confirmed',
-      createdAt: new Date()
-    };
+    try {
+      const bookingData = {
+        ...formData,
+        date: selectedDate.toISOString(),
+        duration: parseInt(formData.duration),
+        group_size: parseInt(formData.group_size)
+      };
 
-    mockBookings.push(newBooking);
+      await createBooking(bookingData);
 
-    toast({
-      title: "Booking Confirmed!",
-      description: `Your gaming session has been booked for ${format(selectedDate, 'PPP')} at ${formData.timeSlot}`,
-    });
+      toast({
+        title: "Booking Confirmed!",
+        description: `Your gaming session has been booked for ${format(selectedDate, 'PPP')} at ${formData.time_slot}`,
+      });
 
-    // Reset form
-    setFormData({
-      name: '',
-      phone: '',
-      email: '',
-      gameType: '',
-      duration: '1',
-      timeSlot: '',
-      groupSize: '1',
-      specialRequests: ''
-    });
-    setSelectedDate(null);
+      // Reset form
+      setFormData({
+        name: '',
+        phone: '',
+        email: '',
+        game_type: '',
+        duration: 1,
+        time_slot: '',
+        group_size: 1,
+        special_requests: ''
+      });
+      setSelectedDate(null);
+      setAvailableSlots([]);
+    } catch (error) {
+      // Error is already handled by useApiMutation
+      console.error('Booking error:', error);
+    }
   };
+
+  const getGameTypeDisplay = (gameType) => {
+    const icons = {
+      'playstation': '🎮',
+      'xbox': '🎮',
+      'nintendo': '🎮',
+      'vr': '🥽',
+      'board': '🎲'
+    };
+    return `${icons[gameType.id] || '🎮'} ${gameType.name}`;
+  };
+
+  if (gameTypesLoading || settingsLoading) {
+    return (
+      <div className="min-h-screen bg-bg-primary flex items-center justify-center">
+        <div className="text-text-primary">Loading...</div>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen bg-bg-primary">
@@ -175,14 +209,14 @@ const BookingPage = () => {
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                       <div>
                         <Label className="text-text-secondary">Game Type *</Label>
-                        <Select onValueChange={(value) => handleInputChange('gameType', value)}>
+                        <Select onValueChange={(value) => handleInputChange('game_type', value)}>
                           <SelectTrigger className="bg-bg-tertiary border-border-subtle text-text-primary">
                             <SelectValue placeholder="Select game type" />
                           </SelectTrigger>
                           <SelectContent>
-                            {gameTypes.map((game) => (
-                              <SelectItem key={game.value} value={game.value}>
-                                {game.icon} {game.label}
+                            {gameTypes?.map((game) => (
+                              <SelectItem key={game.id} value={game.id}>
+                                {getGameTypeDisplay(game)}
                               </SelectItem>
                             ))}
                           </SelectContent>
@@ -190,7 +224,7 @@ const BookingPage = () => {
                       </div>
                       <div>
                         <Label className="text-text-secondary">Group Size</Label>
-                        <Select onValueChange={(value) => handleInputChange('groupSize', value)}>
+                        <Select onValueChange={(value) => handleInputChange('group_size', parseInt(value))}>
                           <SelectTrigger className="bg-bg-tertiary border-border-subtle text-text-primary">
                             <SelectValue placeholder="1 person" />
                           </SelectTrigger>
@@ -235,14 +269,18 @@ const BookingPage = () => {
                       </div>
                       <div>
                         <Label className="text-text-secondary">Time Slot *</Label>
-                        <Select onValueChange={(value) => handleInputChange('timeSlot', value)}>
+                        <Select onValueChange={(value) => handleInputChange('time_slot', value)}>
                           <SelectTrigger className="bg-bg-tertiary border-border-subtle text-text-primary">
                             <SelectValue placeholder="Select time" />
                           </SelectTrigger>
                           <SelectContent>
-                            {timeSlots.map((time) => (
-                              <SelectItem key={time} value={time}>
-                                {time}
+                            {availableSlots.map((slot) => (
+                              <SelectItem 
+                                key={slot.time} 
+                                value={slot.time}
+                                disabled={!slot.available}
+                              >
+                                {slot.time} {!slot.available && '(Booked)'}
                               </SelectItem>
                             ))}
                           </SelectContent>
@@ -250,7 +288,7 @@ const BookingPage = () => {
                       </div>
                       <div>
                         <Label className="text-text-secondary">Duration (hours)</Label>
-                        <Select onValueChange={(value) => handleInputChange('duration', value)}>
+                        <Select onValueChange={(value) => handleInputChange('duration', parseInt(value))}>
                           <SelectTrigger className="bg-bg-tertiary border-border-subtle text-text-primary">
                             <SelectValue placeholder="1 hour" />
                           </SelectTrigger>
@@ -268,11 +306,11 @@ const BookingPage = () => {
 
                   {/* Special Requests */}
                   <div>
-                    <Label htmlFor="specialRequests" className="text-text-secondary">Special Requests (Optional)</Label>
+                    <Label htmlFor="special_requests" className="text-text-secondary">Special Requests (Optional)</Label>
                     <textarea
-                      id="specialRequests"
-                      value={formData.specialRequests}
-                      onChange={(e) => handleInputChange('specialRequests', e.target.value)}
+                      id="special_requests"
+                      value={formData.special_requests}
+                      onChange={(e) => handleInputChange('special_requests', e.target.value)}
                       rows={3}
                       className="w-full mt-1 px-3 py-2 bg-bg-tertiary border border-border-subtle rounded-md text-text-primary resize-none"
                       placeholder="Any special requirements or requests..."
@@ -284,8 +322,9 @@ const BookingPage = () => {
                     type="submit"
                     className="w-full bg-accent-primary text-bg-primary hover:bg-accent-hover"
                     size="lg"
+                    disabled={bookingLoading}
                   >
-                    Confirm Booking
+                    {bookingLoading ? 'Booking...' : 'Confirm Booking'}
                   </Button>
                 </form>
               </CardContent>
@@ -302,7 +341,7 @@ const BookingPage = () => {
                 <div className="space-y-2">
                   <div className="flex justify-between text-text-secondary">
                     <span>Rate per hour:</span>
-                    <span>₹{parseInt(formData.groupSize) >= 3 ? '100' : '120'}</span>
+                    <span>₹{settings && formData.group_size >= settings.pricing.group_min_size ? settings.pricing.group : settings?.pricing.individual || 120}</span>
                   </div>
                   <div className="flex justify-between text-text-secondary">
                     <span>Duration:</span>
@@ -310,12 +349,12 @@ const BookingPage = () => {
                   </div>
                   <div className="flex justify-between text-text-secondary">
                     <span>Group size:</span>
-                    <span>{formData.groupSize} person(s)</span>
+                    <span>{formData.group_size} person(s)</span>
                   </div>
-                  {parseInt(formData.groupSize) >= 3 && (
+                  {settings && formData.group_size >= settings.pricing.group_min_size && (
                     <div className="flex justify-between text-accent-primary">
                       <span>Group discount:</span>
-                      <span>-₹20/person</span>
+                      <span>-₹{settings.pricing.individual - settings.pricing.group}/person</span>
                     </div>
                   )}
                   <div className="border-t border-border-subtle pt-2">
@@ -329,7 +368,7 @@ const BookingPage = () => {
                 <div className="space-y-3 pt-4 border-t border-border-subtle">
                   <div className="flex items-center space-x-2 text-text-secondary">
                     <Clock className="w-4 h-4" />
-                    <span className="text-sm">Open: 10:00 AM - 10:00 PM</span>
+                    <span className="text-sm">{settings?.contact.hours || 'Open: 10:00 AM - 10:00 PM'}</span>
                   </div>
                   <div className="flex items-center space-x-2 text-text-secondary">
                     <Users className="w-4 h-4" />
@@ -344,8 +383,8 @@ const BookingPage = () => {
                 <div className="pt-4 border-t border-border-subtle">
                   <p className="text-sm text-text-secondary">
                     Need help? Call us at{' '}
-                    <a href="tel:+919876543210" className="text-accent-primary hover:underline">
-                      +91 98765 43210
+                    <a href={`tel:${settings?.contact.phone || '+919876543210'}`} className="text-accent-primary hover:underline">
+                      {settings?.contact.phone || '+91 98765 43210'}
                     </a>
                   </p>
                 </div>
