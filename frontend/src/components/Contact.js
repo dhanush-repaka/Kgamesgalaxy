@@ -8,13 +8,13 @@ const Contact = () => {
     {
       icon: <MapPin className="w-6 h-6 text-accent-primary" />,
       title: "Location",
-      details: "123 Gaming Street, Tech City, TC 12345",
-      description: "Easy to find location in the heart of the city"
+      details: "537, BAIRAGIPATTEDA RD, TIRUPATI-517501",
+      description: "Located in Tirupati, Andhra Pradesh"
     },
     {
       icon: <Phone className="w-6 h-6 text-accent-primary" />,
       title: "Phone",
-      details: "+91 98765 43210",
+      details: "+91 77025 28817",
       description: "Call us for bookings or any queries"
     },
     {
