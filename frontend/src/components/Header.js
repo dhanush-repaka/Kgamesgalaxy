@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
-import { Menu, X, Gamepad2, Phone } from 'lucide-react';
+import { Menu, X, Phone } from 'lucide-react';
 import { Button } from './ui/button';
 import { useNavigate } from 'react-router-dom';
+import Logo from './Logo';
 
 const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -20,11 +21,8 @@ const Header = () => {
       <div className="container mx-auto px-4 py-4">
         <div className="flex items-center justify-between">
           {/* Logo */}
-          <div className="flex items-center space-x-2">
-            <Gamepad2 className="w-8 h-8 text-accent-primary" />
-            <h1 className="text-2xl font-bold text-accent-primary">
-              Karthikeya Games Galaxy
-            </h1>
+          <div className="cursor-pointer" onClick={() => navigate('/')}>
+            <Logo />
           </div>
 
           {/* Desktop Navigation */}
