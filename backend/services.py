@@ -201,43 +201,55 @@ class GalleryService:
         return image
     
     async def seed_gallery_images(self):
-        """Seed initial gallery images (with placeholder data)"""
+        """Seed initial gallery images with real images"""
         gallery_data = [
             {
-                "title": "PlayStation Gaming Zone",
+                "title": "Modern Gaming Setup",
+                "category": "Setup",
+                "description": "State-of-the-art gaming setup with RGB lighting and modern equipment",
+                "image_data": "https://images.unsplash.com/photo-1614179924047-e1ab49a0a0cf?crop=entropy&cs=srgb&fm=jpg&ixid=M3w3NTY2NzF8MHwxfHNlYXJjaHwxfHxnYW1pbmclMjBzZXR1cHxlbnwwfHx8fDE3NTI4Mjc5ODF8MA&ixlib=rb-4.1.0&q=85"
+            },
+            {
+                "title": "Gaming Lounge Atmosphere",
+                "category": "Lounge",
+                "description": "Atmospheric gaming room with mood lighting and comfortable seating",
+                "image_data": "https://images.unsplash.com/photo-1616588589676-62b3bd4ff6d2?crop=entropy&cs=srgb&fm=jpg&ixid=M3w3NTY2NzF8MHwxfHNlYXJjaHwyfHxnYW1pbmclMjBzZXR1cHxlbnwwfHx8fDE3NTI4Mjc5ODF8MA&ixlib=rb-4.1.0&q=85"
+            },
+            {
+                "title": "Professional Gaming Station",
                 "category": "PlayStation",
-                "description": "State-of-the-art PlayStation consoles with comfortable gaming chairs",
-                "image_data": "data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDAwIiBoZWlnaHQ9IjMwMCIgdmlld0JveD0iMCAwIDQwMCAzMDAiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PHJlY3Qgd2lkdGg9IjQwMCIgaGVpZ2h0PSIzMDAiIGZpbGw9IiMxMTEzMTMiLz48dGV4dCB4PSIyMDAiIHk9IjE1MCIgZmlsbD0iI0RBRkYwMSIgZm9udC1mYW1pbHk9IkFyaWFsIiBmb250LXNpemU9IjIwIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIj5QbGF5U3RhdGlvbiBab25lPC90ZXh0Pjwvc3ZnPg=="
+                "description": "Professional dual-monitor gaming setup with premium accessories",
+                "image_data": "https://images.unsplash.com/photo-1675049626914-b2e051e92f23?crop=entropy&cs=srgb&fm=jpg&ixid=M3w3NTY2NzF8MHwxfHNlYXJjaHwzfHxnYW1pbmclMjBzZXR1cHxlbnwwfHx8fDE3NTI4Mjc5ODF8MA&ixlib=rb-4.1.0&q=85"
             },
             {
-                "title": "Xbox Gaming Area",
-                "category": "Xbox",
-                "description": "Xbox Series X/S setups with high-definition displays",
-                "image_data": "data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDAwIiBoZWlnaHQ9IjMwMCIgdmlld0JveD0iMCAwIDQwMCAzMDAiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PHJlY3Qgd2lkdGg9IjQwMCIgaGVpZ2h0PSIzMDAiIGZpbGw9IiMxQTFDMUUiLz48dGV4dCB4PSIyMDAiIHk9IjE1MCIgZmlsbD0iI0RBRkYwMSIgZm9udC1mYW1pbHk9IkFyaWFsIiBmb250LXNpemU9IjIwIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIj5YYm94IEFyZWE8L3RleHQ+PC9zdmc+"
+                "title": "Social Gaming Area",
+                "category": "Group",
+                "description": "Gaming lounge where friends and families enjoy gaming together",
+                "image_data": "https://images.unsplash.com/photo-1580617971627-cffa74e39d1d?crop=entropy&cs=srgb&fm=jpg&ixid=M3w3NTY2Nzh8MHwxfHNlYXJjaHwxfHxnYW1pbmclMjBsb3VuZ2V8ZW58MHx8fHwxNzUyODI3OTkwfDA&ixlib=rb-4.1.0&q=85"
             },
             {
-                "title": "Nintendo Switch Station",
-                "category": "Nintendo",
-                "description": "Portable and docked Nintendo Switch gaming experience",
-                "image_data": "data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDAwIiBoZWlnaHQ9IjMwMCIgdmlld0JveD0iMCAwIDQwMCAzMDAiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PHJlY3Qgd2lkdGg9IjQwMCIgaGVpZ2h0PSIzMDAiIGZpbGw9IiMyNjI4MkEiLz48dGV4dCB4PSIyMDAiIHk9IjE1MCIgZmlsbD0iI0RBRkYwMSIgZm9udC1mYW1pbHk9IkFyaWFsIiBmb250LXNpemU9IjIwIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIj5OaW50ZW5kbyBTdGF0aW9uPC90ZXh0Pjwvc3ZnPg=="
+                "title": "Arcade Gaming Zone",
+                "category": "Arcade",
+                "description": "Colorful arcade machines with LED lighting and retro gaming",
+                "image_data": "https://images.unsplash.com/photo-1558324190-c940eb141401?crop=entropy&cs=srgb&fm=jpg&ixid=M3w3NTY2Nzh8MHwxfHNlYXJjaHwyfHxnYW1pbmclMjBsb3VuZ2V8ZW58MHx8fHwxNzUyODI3OTkwfDA&ixlib=rb-4.1.0&q=85"
+            },
+            {
+                "title": "Esports Tournament Setup",
+                "category": "Esports",
+                "description": "Professional esports and competitive gaming environment",
+                "image_data": "https://images.pexels.com/photos/7915214/pexels-photo-7915214.jpeg"
             },
             {
                 "title": "VR Gaming Experience",
                 "category": "VR",
-                "description": "Immersive virtual reality gaming with latest VR headsets",
-                "image_data": "data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDAwIiBoZWlnaHQ9IjMwMCIgdmlld0JveD0iMCAwIDQwMCAzMDAiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PHJlY3Qgd2lkdGg9IjQwMCIgaGVpZ2h0PSIzMDAiIGZpbGw9IiMxMTEzMTMiLz48dGV4dCB4PSIyMDAiIHk9IjE1MCIgZmlsbD0iI0RBRkYwMSIgZm9udC1mYW1pbHk9IkFyaWFsIiBmb250LXNpemU9IjIwIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIj5WUiBFeHBlcmllbmNlPC90ZXh0Pjwvc3ZnPg=="
+                "description": "Immersive virtual reality gaming setup with latest VR technology",
+                "image_data": "https://images.pexels.com/photos/7915449/pexels-photo-7915449.jpeg"
             },
             {
-                "title": "Board Games Collection",
-                "category": "Board Games",
-                "description": "Extensive collection of board games for all ages",
-                "image_data": "data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDAwIiBoZWlnaHQ9IjMwMCIgdmlld0JveD0iMCAwIDQwMCAzMDAiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PHJlY3Qgd2lkdGg9IjQwMCIgaGVpZ2h0PSIzMDAiIGZpbGw9IiMxQTFDMUUiLz48dGV4dCB4PSIyMDAiIHk9IjE1MCIgZmlsbD0iI0RBRkYwMSIgZm9udC1mYW1pbHk9IkFyaWFsIiBmb250LXNpemU9IjIwIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIj5Cb2FyZCBHYW1lczwvdGV4dD48L3N2Zz4="
-            },
-            {
-                "title": "Gaming Lounge",
-                "category": "Lounge",
-                "description": "Comfortable lounge area for relaxation between gaming sessions",
-                "image_data": "data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDAwIiBoZWlnaHQ9IjMwMCIgdmlld0JveD0iMCAwIDQwMCAzMDAiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PHJlY3Qgd2lkdGg9IjQwMCIgaGVpZ2h0PSIzMDAiIGZpbGw9IiMyNjI4MkEiLz48dGV4dCB4PSIyMDAiIHk9IjE1MCIgZmlsbD0iI0RBRkYwMSIgZm9udC1mYW1pbHk9IkFyaWFsIiBmb250LXNpemU9IjIwIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIj5HYW1pbmcgTG91bmdlPC90ZXh0Pjwvc3ZnPg=="
+                "title": "Group Gaming Sessions",
+                "category": "Events",
+                "description": "Birthday parties and group gaming events in our spacious lounge",
+                "image_data": "https://images.pexels.com/photos/7915255/pexels-photo-7915255.jpeg"
             }
         ]
         
