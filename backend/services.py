@@ -137,7 +137,11 @@ class GameTypeService:
                 "description": "Latest PlayStation 5 console with exclusive games and 4K gaming",
                 "icon": "🎮",
                 "available": True,
-                "popular_games": ["Spider-Man 2", "God of War Ragnarök", "Horizon Forbidden West", "The Last of Us Part I"]
+                "popular_games": [
+                    "Spider-Man 2", "God of War Ragnarök", "Horizon Forbidden West", 
+                    "The Last of Us Part I", "Demon's Souls", "Ratchet & Clank: Rift Apart",
+                    "Gran Turismo 7", "Ghost of Tsushima Director's Cut", "Final Fantasy VII Rebirth"
+                ]
             },
             {
                 "id": "xbox",
@@ -145,7 +149,11 @@ class GameTypeService:
                 "description": "Xbox Series X with Game Pass library and 4K gaming",
                 "icon": "🎮",
                 "available": True,
-                "popular_games": ["Halo Infinite", "Forza Horizon 5", "Gears 5", "Minecraft"]
+                "popular_games": [
+                    "Halo Infinite", "Forza Horizon 5", "Starfield", "Hi-Fi Rush",
+                    "Gears 5", "Microsoft Flight Simulator", "Minecraft",
+                    "Sea of Thieves", "Ori and the Will of the Wisps", "Cyberpunk 2077"
+                ]
             },
             {
                 "id": "switch",
@@ -153,7 +161,12 @@ class GameTypeService:
                 "description": "Nintendo Switch with exclusive games and portable gaming",
                 "icon": "🎮",
                 "available": True,
-                "popular_games": ["Super Mario Odyssey", "The Legend of Zelda", "Mario Kart 8", "Super Smash Bros"]
+                "popular_games": [
+                    "The Legend of Zelda: Tears of the Kingdom", "Super Mario Bros. Wonder",
+                    "Super Mario Odyssey", "Mario Kart 8 Deluxe", "Super Smash Bros. Ultimate",
+                    "Animal Crossing: New Horizons", "Pokémon Scarlet/Violet", 
+                    "Splatoon 3", "Metroid Dread", "Fire Emblem Engage"
+                ]
             },
             {
                 "id": "vr",
@@ -161,7 +174,11 @@ class GameTypeService:
                 "description": "Immersive virtual reality gaming with latest VR headsets",
                 "icon": "🥽",
                 "available": True,
-                "popular_games": ["Beat Saber", "Half-Life: Alyx", "Superhot VR", "Job Simulator"]
+                "popular_games": [
+                    "Beat Saber", "Half-Life: Alyx", "Superhot VR", "Resident Evil 4 VR",
+                    "Pavlov VR", "The Walking Dead: Saints & Sinners", "Pistol Whip",
+                    "Blade & Sorcery", "Boneworks", "Arizona Sunshine"
+                ]
             },
             {
                 "id": "board",
@@ -169,7 +186,12 @@ class GameTypeService:
                 "description": "Classic and modern board games for all ages and groups",
                 "icon": "🎲",
                 "available": True,
-                "popular_games": ["Monopoly", "Scrabble", "Settlers of Catan", "Pandemic"]
+                "popular_games": [
+                    "Monopoly", "Scrabble", "Settlers of Catan", "Ticket to Ride",
+                    "Azul", "Splendor", "7 Wonders", "Pandemic", "Codenames",
+                    "King of Tokyo", "Dixit", "Sequence", "UNO", "Jenga", "Chess",
+                    "Backgammon", "Ludo", "Snakes & Ladders", "Carrom"
+                ]
             }
         ]
         
