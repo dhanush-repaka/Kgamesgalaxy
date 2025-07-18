@@ -1,5 +1,6 @@
 import React from 'react';
-import { Gamepad2, Phone, Mail, MapPin, Clock, Facebook, Twitter, Instagram, Youtube } from 'lucide-react';
+import { Phone, Mail, MapPin, Clock, Facebook, Twitter, Instagram, Youtube } from 'lucide-react';
+import Logo from './Logo';
 
 const Footer = () => {
   const quickLinks = [
@@ -11,8 +12,8 @@ const Footer = () => {
   ];
 
   const gamingServices = [
-    { name: 'PlayStation Gaming', href: '#' },
-    { name: 'Xbox Gaming', href: '#' },
+    { name: 'PlayStation 5', href: '#' },
+    { name: 'Xbox Series X', href: '#' },
     { name: 'Nintendo Switch', href: '#' },
     { name: 'VR Gaming', href: '#' },
     { name: 'Board Games', href: '#' }
@@ -38,12 +39,7 @@ const Footer = () => {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
           {/* Brand Section */}
           <div className="space-y-4">
-            <div className="flex items-center space-x-2">
-              <Gamepad2 className="w-8 h-8 text-accent-primary" />
-              <h3 className="text-xl font-bold text-text-primary">
-                Karthikeya Games Galaxy
-              </h3>
-            </div>
+            <Logo />
             <p className="text-text-secondary text-sm">
               Your ultimate gaming destination. Experience the best in console gaming, VR, and board games all under one roof.
             </p>
