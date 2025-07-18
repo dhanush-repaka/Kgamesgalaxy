@@ -140,7 +140,9 @@ class GameTypeService:
                 "popular_games": [
                     "Spider-Man 2", "God of War Ragnarök", "Horizon Forbidden West", 
                     "The Last of Us Part I", "Demon's Souls", "Ratchet & Clank: Rift Apart",
-                    "Gran Turismo 7", "Ghost of Tsushima Director's Cut", "Final Fantasy VII Rebirth"
+                    "Gran Turismo 7", "Ghost of Tsushima Director's Cut", "Final Fantasy VII Rebirth",
+                    "Returnal", "Astro's Playroom", "Resident Evil 4 Remake",
+                    "Call of Duty: Modern Warfare II", "FIFA 24", "Marvel's Spider-Man: Miles Morales"
                 ]
             },
             {
@@ -152,7 +154,9 @@ class GameTypeService:
                 "popular_games": [
                     "Halo Infinite", "Forza Horizon 5", "Starfield", "Hi-Fi Rush",
                     "Gears 5", "Microsoft Flight Simulator", "Minecraft",
-                    "Sea of Thieves", "Ori and the Will of the Wisps", "Cyberpunk 2077"
+                    "Sea of Thieves", "Ori and the Will of the Wisps", "Cyberpunk 2077",
+                    "Assassin's Creed Valhalla", "Call of Duty: Modern Warfare II", "FIFA 24",
+                    "Age of Empires IV", "Destiny 2"
                 ]
             },
             {
@@ -165,7 +169,9 @@ class GameTypeService:
                     "The Legend of Zelda: Tears of the Kingdom", "Super Mario Bros. Wonder",
                     "Super Mario Odyssey", "Mario Kart 8 Deluxe", "Super Smash Bros. Ultimate",
                     "Animal Crossing: New Horizons", "Pokémon Scarlet/Violet", 
-                    "Splatoon 3", "Metroid Dread", "Fire Emblem Engage"
+                    "Splatoon 3", "Metroid Dread", "Fire Emblem Engage",
+                    "Pikmin 4", "Xenoblade Chronicles 3", "Kirby and the Forgotten Land",
+                    "Mario Party Superstars", "Luigi's Mansion 3"
                 ]
             },
             {
@@ -177,7 +183,9 @@ class GameTypeService:
                 "popular_games": [
                     "Beat Saber", "Half-Life: Alyx", "Superhot VR", "Resident Evil 4 VR",
                     "Pavlov VR", "The Walking Dead: Saints & Sinners", "Pistol Whip",
-                    "Blade & Sorcery", "Boneworks", "Arizona Sunshine"
+                    "Blade & Sorcery", "Boneworks", "Arizona Sunshine",
+                    "Moss", "Vader Immortal", "Job Simulator", "Rec Room",
+                    "Echo VR", "Onward", "Skyrim VR", "No Man's Sky VR"
                 ]
             },
             {
@@ -190,7 +198,10 @@ class GameTypeService:
                     "Monopoly", "Scrabble", "Settlers of Catan", "Ticket to Ride",
                     "Azul", "Splendor", "7 Wonders", "Pandemic", "Codenames",
                     "King of Tokyo", "Dixit", "Sequence", "UNO", "Jenga", "Chess",
-                    "Backgammon", "Ludo", "Snakes & Ladders", "Carrom"
+                    "Backgammon", "Ludo", "Snakes & Ladders", "Carrom", "Pictionary",
+                    "Taboo", "Scythe", "Wingspan", "Exploding Kittens", "Cards Against Humanity",
+                    "Monopoly Deal", "Skip-Bo", "Phase 10", "Rummikub", "Blokus",
+                    "Trivial Pursuit", "Risk", "Clue", "Yahtzee", "Boggle"
                 ]
             }
         ]
