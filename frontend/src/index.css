@@ -140,6 +140,34 @@ code {
     background-color: rgb(var(--accent-hover));
     transform: translateY(-2px);
     box-shadow: 0 15px 35px rgba(var(--accent-primary), 0.4);
+    color: rgb(var(--bg-primary));
+  }
+  
+  /* Fix text visibility on accent backgrounds */
+  .bg-accent-primary {
+    background-color: rgb(var(--accent-primary));
+    color: rgb(var(--bg-primary)) !important;
+  }
+  
+  .bg-accent-primary * {
+    color: rgb(var(--bg-primary)) !important;
+  }
+  
+  .text-on-accent {
+    color: rgb(var(--bg-primary)) !important;
+  }
+  
+  .border-accent-primary {
+    border-color: rgb(var(--accent-primary));
+  }
+  
+  .hover-bg-accent-primary:hover {
+    background-color: rgb(var(--accent-primary));
+    color: rgb(var(--bg-primary)) !important;
+  }
+  
+  .hover-bg-accent-primary:hover * {
+    color: rgb(var(--bg-primary)) !important;
   }
   
   .btn-primary::before {
