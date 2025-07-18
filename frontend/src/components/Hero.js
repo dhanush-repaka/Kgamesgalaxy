@@ -88,12 +88,12 @@ const Hero = () => {
           <div className="flex flex-col sm:flex-row gap-4 justify-center mb-16">
             <Button 
               size="lg"
-              className="bg-accent-primary text-bg-primary hover:bg-accent-hover transform hover:scale-105 transition-all duration-300 hover:shadow-lg hover:shadow-accent-primary/25 group relative overflow-hidden"
+              className="bg-accent-primary text-bg-primary hover:bg-accent-hover transform hover:scale-105 transition-all duration-300 hover:shadow-lg hover:shadow-accent-primary/25 group relative overflow-hidden bg-accent-primary hover-bg-accent-primary"
               onClick={() => navigate('/booking')}
             >
               <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-1000"></div>
               <Play className="w-5 h-5 mr-2 group-hover:scale-110 transition-transform duration-300" />
-              Book Your Gaming Session
+              <span className="text-bg-primary">Book Your Gaming Session</span>
             </Button>
             <Button 
               variant="outline" 
