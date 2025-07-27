@@ -174,24 +174,24 @@ const Hero = () => {
       </div>
 
       {/* Slide Indicators */}
-      <div className="absolute bottom-12 left-1/2 transform -translate-x-1/2 flex space-x-3">
+      <div className="absolute bottom-6 lg:bottom-12 left-1/2 transform -translate-x-1/2 flex space-x-2 lg:space-x-3">
         {heroSlides.map((_, index) => (
           <button
             key={index}
             onClick={() => setCurrentSlide(index)}
-            className={`h-2 rounded-full transition-all duration-300 ${
+            className={`h-1.5 lg:h-2 rounded-full transition-all duration-300 ${
               index === currentSlide 
-                ? 'bg-gaming-accent w-8 shadow-gaming-glow' 
-                : 'bg-gaming-border hover:bg-gaming-accent/50 w-6'
+                ? 'bg-gaming-accent w-6 lg:w-8 shadow-gaming-glow' 
+                : 'bg-gaming-border hover:bg-gaming-accent/50 w-4 lg:w-6'
             }`}
           />
         ))}
       </div>
 
       {/* Scroll Indicator */}
-      <div className="absolute bottom-8 right-8 animate-bounce">
-        <div className="w-6 h-10 border-2 border-gaming-accent rounded-full flex justify-center shadow-gaming">
-          <div className="w-1 h-3 bg-gaming-accent rounded-full mt-2 animate-pulse"></div>
+      <div className="absolute bottom-4 lg:bottom-8 right-4 lg:right-8 animate-bounce">
+        <div className="w-5 h-8 lg:w-6 lg:h-10 border-2 border-gaming-accent rounded-full flex justify-center shadow-gaming">
+          <div className="w-0.5 lg:w-1 h-2 lg:h-3 bg-gaming-accent rounded-full mt-1 lg:mt-2 animate-pulse"></div>
         </div>
       </div>
     </section>
