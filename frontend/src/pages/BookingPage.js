@@ -110,27 +110,27 @@ const BookingPage = () => {
 
   if (gameTypesLoading || settingsLoading) {
     return (
-      <div className="min-h-screen bg-bg-primary flex items-center justify-center">
-        <div className="text-text-primary">Loading...</div>
+      <div className="min-h-screen bg-gaming-lighter flex items-center justify-center">
+        <div className="text-gaming-text">Loading...</div>
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-bg-primary">
+    <div className="min-h-screen bg-gaming-lighter">
       {/* Header */}
-      <div className="bg-bg-secondary border-b border-border-subtle">
+      <div className="bg-gaming-light border-b border-gaming-border shadow-gaming">
         <div className="container mx-auto px-4 py-4">
           <div className="flex items-center space-x-4">
             <Button
               variant="ghost"
               onClick={() => navigate('/')}
-              className="text-text-secondary hover:text-accent-primary"
+              className="text-gaming-text-secondary hover:text-gaming-accent"
             >
               <ArrowLeft className="w-4 h-4 mr-2" />
               Back to Home
             </Button>
-            <h1 className="text-2xl font-bold text-text-primary">Book Your Gaming Session</h1>
+            <h1 className="text-2xl font-bold text-gaming-text">Book Your Gaming Session</h1>
           </div>
         </div>
       </div>
@@ -139,100 +139,83 @@ const BookingPage = () => {
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
           {/* Booking Form */}
           <div className="lg:col-span-2">
-            <Card className="bg-bg-secondary border-border-subtle">
+            <Card className="bg-gaming-card border-gaming-border shadow-gaming-lg">
               <CardHeader>
-                <CardTitle className="text-text-primary">Booking Details</CardTitle>
-                <CardDescription className="text-text-secondary">
-                  Fill in your details to reserve your gaming session
+                <CardTitle className="text-gaming-text">Booking Details</CardTitle>
+                <CardDescription className="text-gaming-text-secondary">
+                  Fill in your details to reserve your gaming session. Pricing will be shared during confirmation.
                 </CardDescription>
               </CardHeader>
               <CardContent>
                 <form onSubmit={handleSubmit} className="space-y-6">
                   {/* Personal Information */}
                   <div className="space-y-4">
-                    <h3 className="text-lg font-semibold text-text-primary">Personal Information</h3>
+                    <h3 className="text-lg font-semibold text-gaming-text">Personal Information</h3>
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                       <div>
-                        <Label htmlFor="name" className="text-text-secondary">Full Name *</Label>
+                        <Label htmlFor="name" className="text-gaming-text-secondary">Full Name *</Label>
                         <Input
                           id="name"
                           value={formData.name}
                           onChange={(e) => handleInputChange('name', e.target.value)}
-                          className="bg-bg-tertiary border-border-subtle text-text-primary"
+                          className="bg-gaming-light border-gaming-border text-gaming-text focus:border-gaming-accent"
                           required
                         />
                       </div>
                       <div>
-                        <Label htmlFor="phone" className="text-text-secondary">Phone Number *</Label>
+                        <Label htmlFor="phone" className="text-gaming-text-secondary">Phone Number *</Label>
                         <Input
                           id="phone"
                           value={formData.phone}
                           onChange={(e) => handleInputChange('phone', e.target.value)}
-                          className="bg-bg-tertiary border-border-subtle text-text-primary"
+                          className="bg-gaming-light border-gaming-border text-gaming-text focus:border-gaming-accent"
                           required
                         />
                       </div>
                     </div>
                     <div>
-                      <Label htmlFor="email" className="text-text-secondary">Email (Optional)</Label>
+                      <Label htmlFor="email" className="text-gaming-text-secondary">Email (Optional)</Label>
                       <Input
                         id="email"
                         type="email"
                         value={formData.email}
                         onChange={(e) => handleInputChange('email', e.target.value)}
-                        className="bg-bg-tertiary border-border-subtle text-text-primary"
+                        className="bg-gaming-light border-gaming-border text-gaming-text focus:border-gaming-accent"
                       />
                     </div>
                   </div>
 
                   {/* Gaming Preferences */}
                   <div className="space-y-4">
-                    <h3 className="text-lg font-semibold text-text-primary">Gaming Preferences</h3>
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                      <div>
-                        <Label className="text-text-secondary">Game Type *</Label>
-                        <Select onValueChange={(value) => handleInputChange('game_type', value)}>
-                          <SelectTrigger className="bg-bg-tertiary border-border-subtle text-text-primary">
-                            <SelectValue placeholder="Select game type" />
-                          </SelectTrigger>
-                          <SelectContent>
-                            {gameTypes?.map((game) => (
-                              <SelectItem key={game.id} value={game.id}>
-                                {getGameTypeDisplay(game)}
-                              </SelectItem>
-                            ))}
-                          </SelectContent>
-                        </Select>
-                      </div>
-                      <div>
-                        <Label className="text-text-secondary">Group Size</Label>
-                        <Select onValueChange={(value) => handleInputChange('group_size', parseInt(value))}>
-                          <SelectTrigger className="bg-bg-tertiary border-border-subtle text-text-primary">
-                            <SelectValue placeholder="1 person" />
-                          </SelectTrigger>
-                          <SelectContent>
-                            {[1, 2, 3, 4, 5, 6, 7, 8].map((num) => (
-                              <SelectItem key={num} value={num.toString()}>
-                                {num} {num === 1 ? 'person' : 'people'}
-                              </SelectItem>
-                            ))}
-                          </SelectContent>
-                        </Select>
-                      </div>
+                    <h3 className="text-lg font-semibold text-gaming-text">Gaming Preferences</h3>
+                    <div>
+                      <Label className="text-gaming-text-secondary">Game Type *</Label>
+                      <Select onValueChange={(value) => handleInputChange('game_type', value)}>
+                        <SelectTrigger className="bg-gaming-light border-gaming-border text-gaming-text">
+                          <SelectValue placeholder="Select game type" />
+                        </SelectTrigger>
+                        <SelectContent>
+                          {gameTypes?.map((game) => (
+                            <SelectItem key={game.id} value={game.id}>
+                              {getGameTypeDisplay(game)}
+                            </SelectItem>
+                          ))}
+                        </SelectContent>
+                      </Select>
                     </div>
                   </div>
 
                   {/* Date and Time */}
                   <div className="space-y-4">
-                    <h3 className="text-lg font-semibold text-text-primary">Date & Time</h3>
-                    <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                    <h3 className="text-lg font-semibold text-gaming-text">Date & Time</h3>
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                       <div>
-                        <Label className="text-text-secondary">Select Date *</Label>
+                        <Label className="text-gaming-text-secondary">Select Date *</Label>
                         <Popover>
                           <PopoverTrigger asChild>
                             <Button
                               variant="outline"
-                              className="w-full justify-start text-left font-normal bg-bg-tertiary border-border-subtle text-text-primary"
+                              className="w-full justify-start text-left font-normal bg-gaming-light border-gaming-border text-gaming-text"
                             >
                               <CalendarIcon className="mr-2 h-4 w-4" />
                               {selectedDate ? format(selectedDate, 'PPP') : 'Pick a date'}
@@ -250,9 +233,9 @@ const BookingPage = () => {
                         </Popover>
                       </div>
                       <div>
-                        <Label className="text-text-secondary">Time Slot *</Label>
+                        <Label className="text-gaming-text-secondary">Time Slot *</Label>
                         <Select onValueChange={(value) => handleInputChange('time_slot', value)}>
-                          <SelectTrigger className="bg-bg-tertiary border-border-subtle text-text-primary">
+                          <SelectTrigger className="bg-gaming-light border-gaming-border text-gaming-text">
                             <SelectValue placeholder="Select time" />
                           </SelectTrigger>
                           <SelectContent>
@@ -268,33 +251,18 @@ const BookingPage = () => {
                           </SelectContent>
                         </Select>
                       </div>
-                      <div>
-                        <Label className="text-text-secondary">Duration (hours)</Label>
-                        <Select onValueChange={(value) => handleInputChange('duration', parseInt(value))}>
-                          <SelectTrigger className="bg-bg-tertiary border-border-subtle text-text-primary">
-                            <SelectValue placeholder="1 hour" />
-                          </SelectTrigger>
-                          <SelectContent>
-                            {[1, 2, 3, 4, 5, 6].map((num) => (
-                              <SelectItem key={num} value={num.toString()}>
-                                {num} {num === 1 ? 'hour' : 'hours'}
-                              </SelectItem>
-                            ))}
-                          </SelectContent>
-                        </Select>
-                      </div>
                     </div>
                   </div>
 
                   {/* Special Requests */}
                   <div>
-                    <Label htmlFor="special_requests" className="text-text-secondary">Special Requests (Optional)</Label>
+                    <Label htmlFor="special_requests" className="text-gaming-text-secondary">Special Requests (Optional)</Label>
                     <textarea
                       id="special_requests"
                       value={formData.special_requests}
                       onChange={(e) => handleInputChange('special_requests', e.target.value)}
                       rows={3}
-                      className="w-full mt-1 px-3 py-2 bg-bg-tertiary border border-border-subtle rounded-md text-text-primary resize-none"
+                      className="w-full mt-1 px-3 py-2 bg-gaming-light border border-gaming-border rounded-md text-gaming-text resize-none focus:border-gaming-accent"
                       placeholder="Any special requirements or requests..."
                     />
                   </div>
@@ -302,7 +270,7 @@ const BookingPage = () => {
                   {/* Submit Button */}
                   <Button
                     type="submit"
-                    className="w-full bg-accent-primary text-bg-primary hover:bg-accent-hover"
+                    className="w-full bg-gaming-accent text-gaming-light hover:bg-gaming-accent-hover shadow-gaming-lg"
                     size="lg"
                     disabled={bookingLoading}
                   >
@@ -313,60 +281,67 @@ const BookingPage = () => {
             </Card>
           </div>
 
-          {/* Booking Summary */}
+          {/* Information Panel */}
           <div className="lg:col-span-1">
-            <Card className="bg-bg-secondary border-border-subtle">
+            <Card className="bg-gaming-card border-gaming-border shadow-gaming-lg">
               <CardHeader>
-                <CardTitle className="text-text-primary">Booking Summary</CardTitle>
+                <CardTitle className="text-gaming-text">Booking Information</CardTitle>
               </CardHeader>
-              <CardContent className="space-y-4">
-                <div className="space-y-2">
-                  <div className="flex justify-between text-text-secondary">
-                    <span>Rate per hour:</span>
-                    <span>₹{settings && formData.group_size >= settings.pricing.group_min_size ? settings.pricing.group : settings?.pricing.individual || 120}</span>
-                  </div>
-                  <div className="flex justify-between text-text-secondary">
-                    <span>Duration:</span>
-                    <span>{formData.duration} hour(s)</span>
-                  </div>
-                  <div className="flex justify-between text-text-secondary">
-                    <span>Group size:</span>
-                    <span>{formData.group_size} person(s)</span>
-                  </div>
-                  {settings && formData.group_size >= settings.pricing.group_min_size && (
-                    <div className="flex justify-between text-accent-primary">
-                      <span>Group discount:</span>
-                      <span>-₹{settings.pricing.individual - settings.pricing.group}/person</span>
+              <CardContent className="space-y-6">
+                {/* Pricing Info */}
+                <div className="space-y-3">
+                  <h4 className="font-semibold text-gaming-text">Pricing</h4>
+                  <div className="bg-gaming-accent-light p-4 rounded-lg">
+                    <div className="text-center">
+                      <div className="text-2xl font-bold text-gaming-accent">₹150+</div>
+                      <div className="text-gaming-text-secondary text-sm">per hour</div>
+                      <div className="text-gaming-text-muted text-xs mt-1">*Varies by game & platform</div>
                     </div>
-                  )}
-                  <div className="border-t border-border-subtle pt-2">
-                    <div className="flex justify-between font-semibold text-text-primary">
-                      <span>Total:</span>
-                      <span>₹{calculateTotal()}</span>
+                  </div>
+                  <p className="text-sm text-gaming-text-secondary">
+                    Final pricing will be shared during booking confirmation based on your selected game and platform.
+                  </p>
+                </div>
+
+                {/* Contact Info */}
+                <div className="space-y-3 pt-4 border-t border-gaming-border">
+                  <h4 className="font-semibold text-gaming-text">Contact & Location</h4>
+                  <div className="space-y-2">
+                    <div className="flex items-center space-x-2 text-gaming-text-secondary">
+                      <Phone className="w-4 h-4" />
+                      <span className="text-sm">+91 77025 28817</span>
+                    </div>
+                    <div className="flex items-center space-x-2 text-gaming-text-secondary">
+                      <Clock className="w-4 h-4" />
+                      <span className="text-sm">10:00 AM - 11:00 PM (Daily)</span>
+                    </div>
+                    <div className="flex items-start space-x-2 text-gaming-text-secondary">
+                      <MapPin className="w-4 h-4 mt-0.5" />
+                      <span className="text-sm">537, BAIRAGIPATTEDA RD, TIRUPATI - 517501</span>
                     </div>
                   </div>
                 </div>
 
-                <div className="space-y-3 pt-4 border-t border-border-subtle">
-                  <div className="flex items-center space-x-2 text-text-secondary">
-                    <Clock className="w-4 h-4" />
-                    <span className="text-sm">{settings?.contact.hours || 'Open: 10:00 AM - 10:00 PM'}</span>
-                  </div>
-                  <div className="flex items-center space-x-2 text-text-secondary">
-                    <Users className="w-4 h-4" />
-                    <span className="text-sm">Group discounts available</span>
-                  </div>
-                  <div className="flex items-center space-x-2 text-text-secondary">
-                    <GamepadIcon className="w-4 h-4" />
-                    <span className="text-sm">All gaming platforms included</span>
+                {/* Gaming Info */}
+                <div className="space-y-3 pt-4 border-t border-gaming-border">
+                  <h4 className="font-semibold text-gaming-text">What's Included</h4>
+                  <div className="space-y-2">
+                    <div className="flex items-center space-x-2 text-gaming-text-secondary">
+                      <GamepadIcon className="w-4 h-4" />
+                      <span className="text-sm">All gaming platforms available</span>
+                    </div>
+                    <div className="flex items-center space-x-2 text-gaming-text-secondary">
+                      <Clock className="w-4 h-4" />
+                      <span className="text-sm">Flexible session duration</span>
+                    </div>
                   </div>
                 </div>
 
-                <div className="pt-4 border-t border-border-subtle">
-                  <p className="text-sm text-text-secondary">
+                <div className="pt-4 border-t border-gaming-border">
+                  <p className="text-sm text-gaming-text-secondary">
                     Need help? Call us at{' '}
-                    <a href={`tel:${settings?.contact.phone || '+919876543210'}`} className="text-accent-primary hover:underline">
-                      {settings?.contact.phone || '+91 98765 43210'}
+                    <a href="tel:+917702528817" className="text-gaming-accent hover:underline">
+                      +91 77025 28817
                     </a>
                   </p>
                 </div>
