@@ -55,18 +55,6 @@ const BookingPage = () => {
     }));
   };
 
-  const calculateTotal = () => {
-    if (!settings) return 0;
-    
-    const duration = parseInt(formData.duration);
-    const groupSize = parseInt(formData.group_size);
-    const pricing = settings.pricing;
-    
-    // Group discount: 3+ people get group rate
-    const rate = groupSize >= pricing.group_min_size ? pricing.group : pricing.individual;
-    return rate * duration * groupSize;
-  };
-
   const handleSubmit = async (e) => {
     e.preventDefault();
     
@@ -82,16 +70,14 @@ const BookingPage = () => {
     try {
       const bookingData = {
         ...formData,
-        date: selectedDate.toISOString(),
-        duration: parseInt(formData.duration),
-        group_size: parseInt(formData.group_size)
+        date: selectedDate.toISOString()
       };
 
       await createBooking(bookingData);
 
       toast({
         title: "Booking Confirmed!",
-        description: `Your gaming session has been booked for ${format(selectedDate, 'PPP')} at ${formData.time_slot}`,
+        description: `Your gaming session has been booked for ${format(selectedDate, 'PPP')} at ${formData.time_slot}. We'll contact you with pricing details.`,
       });
 
       // Reset form
@@ -100,9 +86,7 @@ const BookingPage = () => {
         phone: '',
         email: '',
         game_type: '',
-        duration: 1,
         time_slot: '',
-        group_size: 1,
         special_requests: ''
       });
       setSelectedDate(null);
