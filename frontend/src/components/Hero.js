@@ -133,17 +133,17 @@ const Hero = () => {
 
           {/* Stats */}
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-4xl mx-auto animate-fade-in-up delay-500">
-            <div className="bg-gaming-dark/60 backdrop-blur-md p-8 rounded-3xl border border-gaming-accent/20 hover:border-gaming-accent/50 transition-all duration-300 group">
+            <div className="bg-gaming-dark/80 backdrop-blur-md p-8 rounded-3xl border border-gaming-accent/30 hover:border-gaming-accent/60 transition-all duration-300 group">
               <div className="text-4xl font-black text-gaming-accent mb-3 group-hover:scale-110 transition-transform duration-200 neon-text">5+</div>
-              <div className="text-white/90 font-semibold text-lg">Gaming Platforms</div>
+              <div className="text-white font-semibold text-lg">Gaming Platforms</div>
             </div>
-            <div className="bg-gaming-dark/60 backdrop-blur-md p-8 rounded-3xl border border-gaming-accent/20 hover:border-gaming-accent/50 transition-all duration-300 group">
+            <div className="bg-gaming-dark/80 backdrop-blur-md p-8 rounded-3xl border border-gaming-accent/30 hover:border-gaming-accent/60 transition-all duration-300 group">
               <div className="text-4xl font-black text-gaming-accent mb-3 group-hover:scale-110 transition-transform duration-200 neon-text">₹120</div>
-              <div className="text-white/90 font-semibold text-lg">Per Hour</div>
+              <div className="text-white font-semibold text-lg">Per Hour</div>
             </div>
-            <div className="bg-gaming-dark/60 backdrop-blur-md p-8 rounded-3xl border border-gaming-accent/20 hover:border-gaming-accent/50 transition-all duration-300 group">
+            <div className="bg-gaming-dark/80 backdrop-blur-md p-8 rounded-3xl border border-gaming-accent/30 hover:border-gaming-accent/60 transition-all duration-300 group">
               <div className="text-4xl font-black text-gaming-accent mb-3 group-hover:scale-110 transition-transform duration-200 neon-text">100+</div>
-              <div className="text-white/90 font-semibold text-lg">Happy Gamers</div>
+              <div className="text-white font-semibold text-lg">Happy Gamers</div>
             </div>
           </div>
         </div>
