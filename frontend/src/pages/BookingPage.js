@@ -6,7 +6,7 @@ import { Label } from '../components/ui/label';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '../components/ui/select';
 import { Calendar } from '../components/ui/calendar';
 import { Popover, PopoverContent, PopoverTrigger } from '../components/ui/popover';
-import { ArrowLeft, Calendar as CalendarIcon, Clock, Users, GamepadIcon } from 'lucide-react';
+import { ArrowLeft, Calendar as CalendarIcon, Clock, GamepadIcon, Phone, MapPin } from 'lucide-react';
 import { format } from 'date-fns';
 import { useNavigate } from 'react-router-dom';
 import { useToast } from '../hooks/use-toast';
