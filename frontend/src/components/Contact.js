@@ -1,149 +1,122 @@
 import React from 'react';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from './ui/card';
+import { Card, CardContent, CardHeader, CardTitle } from './ui/card';
 import { Button } from './ui/button';
-import { MapPin, Phone, Clock, Mail, Navigation } from 'lucide-react';
+import { MapPin, Phone, Clock, Mail } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
 
 const Contact = () => {
+  const navigate = useNavigate();
+
   const contactInfo = [
     {
-      icon: <MapPin className="w-6 h-6 text-accent-primary" />,
-      title: "Location",
-      details: "537, BAIRAGIPATTEDA RD, TIRUPATI-517501",
-      description: "Located in Tirupati, Andhra Pradesh"
+      icon: <MapPin className="w-8 h-8" />,
+      title: "Visit Us",
+      info: "537, BAIRAGIPATTEDA RD",
+      subInfo: "TIRUPATI - 517501"
     },
     {
-      icon: <Phone className="w-6 h-6 text-accent-primary" />,
-      title: "Phone",
-      details: "+91 77025 28817",
-      description: "Call us for bookings or any queries"
+      icon: <Phone className="w-8 h-8" />,
+      title: "Call Us",
+      info: "+91 77025 28817",
+      subInfo: "Available 24/7"
     },
     {
-      icon: <Clock className="w-6 h-6 text-accent-primary" />,
-      title: "Hours",
-      details: "10:00 AM - 10:00 PM",
-      description: "Open 7 days a week"
+      icon: <Clock className="w-8 h-8" />,
+      title: "Gaming Hours",
+      info: "10:00 AM - 11:00 PM",
+      subInfo: "7 Days a Week"
     },
     {
-      icon: <Mail className="w-6 h-6 text-accent-primary" />,
-      title: "Email",
-      details: "info@karthikeyagamesgalaxy.com",
-      description: "Send us your questions anytime"
+      icon: <Mail className="w-8 h-8" />,
+      title: "Email Us",
+      info: "info@kgg.com",
+      subInfo: "Quick Response"
     }
   ];
 
-  const handleGetDirections = () => {
-    // Mock functionality - in real implementation, this would open maps
-    window.open('https://maps.google.com', '_blank');
-  };
-
   return (
-    <section id="contact" className="py-20 px-4 bg-bg-secondary">
-      <div className="container mx-auto">
+    <section id="contact" className="py-20 px-4 bg-gaming-light relative overflow-hidden">
+      {/* Background Elements */}
+      <div className="absolute inset-0">
+        <div className="absolute top-20 left-20 w-96 h-96 bg-gaming-accent/2 rounded-full blur-3xl"></div>
+        <div className="absolute bottom-20 right-20 w-72 h-72 bg-gaming-accent/3 rounded-full blur-3xl"></div>
+      </div>
+
+      <div className="container mx-auto relative z-10">
+        {/* Section Header */}
         <div className="text-center mb-16">
-          <h2 className="text-3xl md:text-4xl font-bold text-text-primary mb-4">
-            Visit Us Today
+          <div className="inline-flex items-center space-x-2 bg-gaming-light backdrop-blur-sm px-6 py-3 rounded-full border border-gaming-accent/20 mb-6 shadow-gaming">
+            <Phone className="w-5 h-5 text-gaming-accent" />
+            <span className="text-gaming-accent font-semibold text-sm tracking-wider uppercase">
+              Contact Us
+            </span>
+          </div>
+          
+          <h2 className="text-3xl md:text-5xl font-bold text-gaming-text mb-4 animate-fade-in-up">
+            Ready to
+            <span className="block text-gaming-accent subtle-text">Start Gaming?</span>
           </h2>
-          <p className="text-lg text-text-secondary max-w-2xl mx-auto">
-            Ready to start your gaming adventure? Find us, call us, or simply drop by. We're here to make your gaming experience unforgettable.
+          
+          <p className="text-lg text-gaming-text-secondary max-w-2xl mx-auto animate-fade-in-up delay-200">
+            Get in touch with us to book your gaming session or visit our facility. We're here to provide you with the best gaming experience.
           </p>
         </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
-          {/* Contact Information */}
-          <div className="space-y-6">
-            {contactInfo.map((info, index) => (
-              <Card key={index} className="bg-bg-primary border-border-subtle hover:border-accent-primary transition-all duration-300">
-                <CardHeader className="pb-3">
-                  <div className="flex items-center space-x-3">
-                    {info.icon}
-                    <CardTitle className="text-lg text-text-primary">
-                      {info.title}
-                    </CardTitle>
-                  </div>
-                </CardHeader>
-                <CardContent>
-                  <p className="text-text-primary font-semibold mb-1">{info.details}</p>
-                  <CardDescription className="text-text-secondary">
-                    {info.description}
-                  </CardDescription>
-                </CardContent>
-              </Card>
-            ))}
-          </div>
-
-          {/* Map and Actions */}
-          <div className="space-y-6">
-            {/* Mock Map */}
-            <Card className="bg-bg-primary border-border-subtle">
-              <CardContent className="p-0">
-                <div className="aspect-video bg-gradient-to-br from-bg-tertiary to-bg-secondary rounded-lg flex items-center justify-center">
-                  <div className="text-center">
-                    <MapPin className="w-16 h-16 text-accent-primary mx-auto mb-4" />
-                    <h3 className="text-xl font-semibold text-text-primary mb-2">
-                      Find Us Here
-                    </h3>
-                    <p className="text-text-secondary mb-6">
-                      Located in the heart of Tech City
-                    </p>
-                    <Button 
-                      onClick={handleGetDirections}
-                      className="bg-accent-primary text-bg-primary hover:bg-accent-hover"
-                    >
-                      <Navigation className="w-4 h-4 mr-2" />
-                      Get Directions
-                    </Button>
+        {/* Contact Grid */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mb-12">
+          {contactInfo.map((contact, index) => (
+            <Card 
+              key={index}
+              className="bg-gaming-card border border-gaming-border hover:border-gaming-accent/30 shadow-gaming hover:shadow-gaming-lg group cursor-pointer transition-all duration-300 hover:scale-105 animate-fade-in-up"
+              style={{ animationDelay: `${index * 100}ms` }}
+            >
+              <CardHeader className="text-center pb-4">
+                <div className="flex items-center justify-center mb-4 group-hover:scale-110 transition-transform duration-300">
+                  <div className="p-4 rounded-2xl bg-gaming-accent-light text-gaming-accent group-hover:bg-gaming-accent group-hover:text-gaming-light transition-all duration-300">
+                    {contact.icon}
                   </div>
                 </div>
+                <CardTitle className="text-lg text-gaming-text group-hover:text-gaming-accent transition-colors duration-300">
+                  {contact.title}
+                </CardTitle>
+              </CardHeader>
+              <CardContent className="text-center">
+                <div className="text-gaming-text font-semibold mb-1">{contact.info}</div>
+                <div className="text-gaming-text-secondary text-sm">{contact.subInfo}</div>
               </CardContent>
             </Card>
+          ))}
+        </div>
 
-            {/* Quick Actions */}
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-              <Button 
-                size="lg"
-                className="bg-accent-primary text-bg-primary hover:bg-accent-hover"
-                onClick={() => window.open('tel:+917702528817', '_self')}
-              >
-                <Phone className="w-5 h-5 mr-2" />
-                Call Now
-              </Button>
-              <Button 
-                size="lg"
-                variant="outline"
-                className="border-accent-primary text-accent-primary hover:bg-accent-primary hover:text-bg-primary"
-                onClick={() => window.open('mailto:info@karthikeyagamesgalaxy.com', '_self')}
-              >
-                <Mail className="w-5 h-5 mr-2" />
-                Send Email
-              </Button>
+        {/* CTA Section */}
+        <div className="text-center">
+          <div className="max-w-2xl mx-auto">
+            <div className="bg-gaming-light/80 backdrop-blur-sm rounded-3xl p-8 border border-gaming-border shadow-gaming-lg">
+              <h3 className="text-2xl font-bold text-gaming-text mb-4">
+                Book Your Gaming Session Today
+              </h3>
+              <p className="text-gaming-text-secondary mb-6">
+                Experience premium gaming with our latest consoles and VR equipment. Payment on the day of visit.
+              </p>
+              
+              <div className="flex flex-col sm:flex-row gap-4 justify-center">
+                <Button 
+                  size="lg"
+                  className="bg-gaming-accent hover:bg-gaming-accent-hover text-gaming-light font-bold px-8 py-4 rounded-xl transition-all duration-300 transform hover:scale-105 shadow-gaming-lg"
+                  onClick={() => navigate('/booking')}
+                >
+                  Book Gaming Session
+                </Button>
+                <Button 
+                  variant="outline"
+                  size="lg"
+                  className="border-2 border-gaming-accent text-gaming-accent hover:bg-gaming-accent hover:text-gaming-light px-8 py-4 rounded-xl transition-all duration-300 transform hover:scale-105 shadow-gaming"
+                  onClick={() => window.open('tel:+917702528817')}
+                >
+                  Call Now
+                </Button>
+              </div>
             </div>
-
-            {/* Additional Info */}
-            <Card className="bg-bg-primary border-border-subtle">
-              <CardContent className="p-6">
-                <h3 className="text-lg font-semibold text-text-primary mb-3">
-                  Why Choose Us?
-                </h3>
-                <ul className="space-y-2 text-text-secondary">
-                  <li className="flex items-center">
-                    <div className="w-2 h-2 bg-accent-primary rounded-full mr-3"></div>
-                    Latest gaming consoles and equipment
-                  </li>
-                  <li className="flex items-center">
-                    <div className="w-2 h-2 bg-accent-primary rounded-full mr-3"></div>
-                    Comfortable and clean gaming environment
-                  </li>
-                  <li className="flex items-center">
-                    <div className="w-2 h-2 bg-accent-primary rounded-full mr-3"></div>
-                    Friendly and helpful staff
-                  </li>
-                  <li className="flex items-center">
-                    <div className="w-2 h-2 bg-accent-primary rounded-full mr-3"></div>
-                    Affordable pricing for all
-                  </li>
-                </ul>
-              </CardContent>
-            </Card>
           </div>
         </div>
       </div>
