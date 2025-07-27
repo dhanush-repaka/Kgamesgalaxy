@@ -212,7 +212,7 @@ body {
 }
 
 ::-webkit-scrollbar-track {
-  background: var(--gaming-darker);
+  background: var(--gaming-lighter);
 }
 
 ::-webkit-scrollbar-thumb {
@@ -226,26 +226,22 @@ body {
 
 /* Glass Morphism Effect */
 .glass-morphism {
-  background: rgba(255, 255, 255, 0.05);
-  backdrop-filter: blur(10px);
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  background: rgba(255, 255, 255, 0.8);
+  backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
 }
 
-/* Neumorphism Effect */
-.neumorphism {
+/* Clean Modern Effect */
+.clean-card {
   background: var(--gaming-card);
-  box-shadow: 
-    8px 8px 16px rgba(0, 0, 0, 0.3),
-    -8px -8px 16px rgba(255, 255, 255, 0.05);
+  box-shadow: var(--gaming-shadow-lg);
+  border: 1px solid var(--gaming-border);
 }
 
-/* Neon Text Effect */
-.neon-text {
+/* Subtle Text Effect */
+.subtle-text {
   color: var(--gaming-accent);
-  text-shadow: 
-    0 0 5px var(--gaming-accent),
-    0 0 10px var(--gaming-accent),
-    0 0 15px var(--gaming-accent);
+  font-weight: 600;
 }
 
 /* Responsive Design */
