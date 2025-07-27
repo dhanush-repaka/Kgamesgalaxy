@@ -8,9 +8,7 @@ class BookingCreate(BaseModel):
     phone: str
     email: Optional[str] = None
     game_type: str
-    duration: int
     time_slot: str
-    group_size: int
     date: datetime
     special_requests: Optional[str] = None
 
@@ -20,12 +18,9 @@ class Booking(BaseModel):
     phone: str
     email: Optional[str] = None
     game_type: str
-    duration: int
     time_slot: str
-    group_size: int
     date: datetime
-    total: float
-    status: str = "confirmed"
+    status: str = "pending"
     special_requests: Optional[str] = None
     created_at: datetime = Field(default_factory=datetime.utcnow)
     updated_at: datetime = Field(default_factory=datetime.utcnow)
