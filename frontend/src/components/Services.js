@@ -4,39 +4,43 @@ import { Button } from './ui/button';
 import { useNavigate } from 'react-router-dom';
 import { useApi } from '../hooks/useApi';
 import { gameTypeService } from '../services/api';
+import { Gamepad2, Monitor, Headphones, Dice6, ArrowRight, Star } from 'lucide-react';
 
 const Services = () => {
   const { data: gameTypes, loading } = useApi(gameTypeService.getAll, []);
   const navigate = useNavigate();
 
   const getIcon = (gameType) => {
-    const icons = {
-      'ps5': '🎮',
-      'xbox': '🎮',
-      'switch': '🎮',
-      'vr': '🥽',
-      'board': '🎲'
+    const iconMap = {
+      'ps5': <Gamepad2 className="w-12 h-12" />,
+      'xbox': <Monitor className="w-12 h-12" />,
+      'switch': <Gamepad2 className="w-12 h-12" />,
+      'vr': <Headphones className="w-12 h-12" />,
+      'board': <Dice6 className="w-12 h-12" />
     };
-    return icons[gameType.id] || '🎮';
+    return iconMap[gameType.id] || <Gamepad2 className="w-12 h-12" />;
   };
 
-  const getGradient = (index) => {
-    const gradients = [
-      'from-purple-500/20 to-pink-500/20',
-      'from-blue-500/20 to-cyan-500/20',
-      'from-green-500/20 to-emerald-500/20',
-      'from-red-500/20 to-orange-500/20',
-      'from-indigo-500/20 to-purple-500/20'
-    ];
-    return gradients[index % gradients.length];
+  const getPlatformColor = (gameType) => {
+    const colorMap = {
+      'ps5': 'from-blue-500/20 to-purple-500/20',
+      'xbox': 'from-green-500/20 to-emerald-500/20',
+      'switch': 'from-red-500/20 to-orange-500/20',
+      'vr': 'from-purple-500/20 to-pink-500/20',
+      'board': 'from-orange-500/20 to-yellow-500/20'
+    };
+    return colorMap[gameType.id] || 'from-gaming-accent/20 to-gaming-accent/5';
   };
 
   if (loading) {
     return (
-      <section id="services" className="py-20 px-4 bg-bg-primary">
+      <section id="services" className="py-20 px-4 bg-gaming-dark">
         <div className="container mx-auto">
           <div className="text-center">
-            <div className="text-text-primary animate-pulse">Loading services...</div>
+            <div className="inline-flex items-center space-x-2 animate-pulse">
+              <Gamepad2 className="w-6 h-6 text-gaming-accent" />
+              <span className="text-gaming-text text-lg">Loading gaming services...</span>
+            </div>
           </div>
         </div>
       </section>
@@ -44,71 +48,92 @@ const Services = () => {
   }
 
   return (
-    <section id="services" className="py-20 px-4 bg-bg-primary relative overflow-hidden">
-      {/* Background Animation */}
-      <div className="absolute inset-0 overflow-hidden">
-        <div className="absolute top-40 left-10 w-72 h-72 bg-accent-primary opacity-5 rounded-full blur-3xl animate-pulse"></div>
-        <div className="absolute bottom-40 right-10 w-96 h-96 bg-accent-primary opacity-3 rounded-full blur-3xl animate-pulse delay-1000"></div>
+    <section id="services" className="py-20 px-4 bg-gaming-dark relative overflow-hidden">
+      {/* Background Elements */}
+      <div className="absolute inset-0">
+        <div className="absolute top-40 left-10 w-80 h-80 bg-gaming-accent/5 rounded-full blur-3xl animate-pulse"></div>
+        <div className="absolute bottom-40 right-10 w-96 h-96 bg-gaming-accent/3 rounded-full blur-3xl animate-pulse delay-1000"></div>
       </div>
 
       <div className="container mx-auto relative z-10">
+        {/* Section Header */}
         <div className="text-center mb-16">
-          <h2 className="text-3xl md:text-4xl font-bold text-text-primary mb-4 transform transition-all duration-1000 hover:scale-105">
-            Our Gaming Services
+          <div className="inline-flex items-center space-x-2 bg-gaming-accent/10 backdrop-blur-sm px-4 py-2 rounded-full border border-gaming-accent/20 mb-6">
+            <Star className="w-5 h-5 text-gaming-accent" />
+            <span className="text-gaming-accent font-semibold text-sm tracking-wider uppercase">
+              Gaming Services
+            </span>
+          </div>
+          
+          <h2 className="text-3xl md:text-5xl font-bold text-gaming-text mb-4 animate-fade-in-up">
+            Premium Gaming
+            <span className="block text-gaming-accent neon-text">Platforms</span>
           </h2>
-          <p className="text-lg text-text-secondary max-w-2xl mx-auto">
-            Experience the best gaming platforms and board games all in one place. 
-            Whether you're a casual player or hardcore gamer, we have something for everyone.
+          
+          <p className="text-lg text-gaming-text-secondary max-w-2xl mx-auto animate-fade-in-up delay-200">
+            Experience the best gaming platforms and board games all in one place. From cutting-edge consoles to immersive VR and classic board games.
           </p>
         </div>
 
+        {/* Services Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-12">
           {gameTypes?.map((gameType, index) => (
             <Card 
               key={gameType.id} 
-              className={`bg-bg-secondary border-border-subtle hover:border-accent-primary transition-all duration-500 hover:transform hover:scale-105 hover:shadow-2xl hover:shadow-accent-primary/10 group cursor-pointer relative overflow-hidden bg-gradient-to-br ${getGradient(index)}`}
+              className={`gaming-card group cursor-pointer bg-gradient-to-br ${getPlatformColor(gameType)} animate-fade-in-up`}
+              style={{ animationDelay: `${index * 100}ms` }}
             >
               {/* Hover Effect Overlay */}
-              <div className="absolute inset-0 bg-gradient-to-br from-accent-primary/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+              <div className="absolute inset-0 bg-gradient-to-br from-gaming-accent/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 rounded-2xl"></div>
               
-              {/* Floating Animation */}
-              <div className="absolute top-4 right-4 w-2 h-2 bg-accent-primary rounded-full animate-pulse"></div>
+              {/* Status Indicator */}
+              <div className="absolute top-4 right-4 w-3 h-3 bg-gaming-accent rounded-full animate-pulse shadow-gaming-glow"></div>
 
-              <CardHeader className="relative z-10">
+              <CardHeader className="relative z-10 text-center">
                 <div className="flex items-center justify-center mb-4 group-hover:scale-110 transition-transform duration-300">
-                  <div className="text-8xl group-hover:animate-bounce">
+                  <div className="p-4 rounded-2xl bg-gaming-accent/10 text-gaming-accent group-hover:bg-gaming-accent group-hover:text-gaming-dark transition-all duration-300">
                     {getIcon(gameType)}
                   </div>
                 </div>
-                <CardTitle className="text-xl text-text-primary text-center group-hover:text-accent-primary transition-colors duration-300">
+                
+                <CardTitle className="text-xl text-gaming-text group-hover:text-gaming-accent transition-colors duration-300 mb-2">
                   {gameType.name}
                 </CardTitle>
-                <CardDescription className="text-text-secondary text-center group-hover:text-text-primary transition-colors duration-300">
+                
+                <CardDescription className="text-gaming-text-secondary group-hover:text-gaming-text transition-colors duration-300">
                   {gameType.description}
                 </CardDescription>
               </CardHeader>
               
               <CardContent className="relative z-10">
-                <ul className="space-y-2 mb-4">
-                  {gameType.popular_games?.slice(0, 6).map((game, idx) => (
-                    <li key={idx} className="flex items-center text-text-secondary group-hover:text-text-primary transition-colors duration-300">
-                      <div className="w-2 h-2 bg-accent-primary rounded-full mr-3 group-hover:scale-125 transition-transform duration-300"></div>
-                      <span className="text-sm">{game}</span>
-                    </li>
-                  ))}
-                  {gameType.popular_games?.length > 6 && (
-                    <li className="flex items-center text-accent-primary group-hover:text-accent-primary transition-colors duration-300">
-                      <div className="w-2 h-2 bg-accent-primary rounded-full mr-3"></div>
-                      <span className="text-sm font-medium">+{gameType.popular_games.length - 6} more games</span>
-                    </li>
-                  )}
-                </ul>
+                {/* Popular Games Preview */}
+                <div className="mb-6">
+                  <h4 className="text-sm font-semibold text-gaming-accent mb-3 uppercase tracking-wider">
+                    Popular Games:
+                  </h4>
+                  <div className="space-y-2">
+                    {gameType.popular_games?.slice(0, 4).map((game, idx) => (
+                      <div key={idx} className="flex items-center text-gaming-text-secondary group-hover:text-gaming-text transition-colors duration-300">
+                        <div className="w-2 h-2 bg-gaming-accent rounded-full mr-3 group-hover:scale-125 transition-transform duration-300"></div>
+                        <span className="text-sm">{game}</span>
+                      </div>
+                    ))}
+                    {gameType.popular_games?.length > 4 && (
+                      <div className="flex items-center text-gaming-accent">
+                        <div className="w-2 h-2 bg-gaming-accent rounded-full mr-3"></div>
+                        <span className="text-sm font-medium">+{gameType.popular_games.length - 4} more games</span>
+                      </div>
+                    )}
+                  </div>
+                </div>
                 
+                {/* Action Button */}
                 <Button 
-                  className="w-full bg-transparent border border-accent-primary text-accent-primary hover:bg-accent-primary hover:text-bg-primary transition-all duration-300 group-hover:scale-105 hover-bg-accent-primary"
+                  className="w-full bg-transparent border-2 border-gaming-accent/30 text-gaming-accent hover:bg-gaming-accent hover:text-gaming-dark transition-all duration-300 group-hover:scale-105 group-hover:shadow-gaming-glow"
                   onClick={() => navigate('/booking')}
                 >
-                  Book Now
+                  Book Session
+                  <ArrowRight className="w-4 h-4 ml-2 group-hover:translate-x-1 transition-transform duration-200" />
                 </Button>
               </CardContent>
             </Card>
@@ -116,30 +141,35 @@ const Services = () => {
         </div>
 
         {/* Pricing Section */}
-        <div className="text-center">
-          <div className="max-w-2xl mx-auto">
-            <p className="text-text-secondary mb-6 text-lg">
-              All gaming services available at the same affordable rate
-            </p>
-            <div className="inline-flex items-center space-x-4 bg-bg-secondary/80 backdrop-blur-sm px-8 py-4 rounded-2xl border border-border-subtle hover:border-accent-primary transition-all duration-300 hover:scale-105 hover:shadow-lg hover:shadow-accent-primary/10 group cursor-pointer">
-              <div className="text-4xl font-bold text-accent-primary group-hover:scale-110 transition-transform duration-300">
-                ₹120
+        <div className="text-center animate-fade-in-up delay-500">
+          <div className="max-w-3xl mx-auto">
+            <div className="bg-gaming-card/50 backdrop-blur-sm rounded-3xl p-8 border border-gaming-accent/20 hover:border-gaming-accent/40 transition-all duration-300">
+              <h3 className="text-2xl font-bold text-gaming-text mb-4">
+                One Price, All Platforms
+              </h3>
+              <p className="text-gaming-text-secondary mb-6">
+                Access all gaming services at our flat hourly rate
+              </p>
+              
+              <div className="flex items-center justify-center space-x-4 mb-6">
+                <div className="text-center">
+                  <div className="text-4xl font-bold text-gaming-accent neon-text">₹120</div>
+                  <div className="text-gaming-text-secondary">per hour</div>
+                </div>
+                <div className="w-px h-12 bg-gaming-accent/20"></div>
+                <div className="text-center">
+                  <div className="text-2xl font-bold text-gaming-text">All Platforms</div>
+                  <div className="text-gaming-text-secondary">included</div>
+                </div>
               </div>
-              <div className="text-text-secondary group-hover:text-text-primary transition-colors duration-300">
-                <div className="text-lg font-semibold">per hour</div>
-                <div className="text-sm">All platforms included</div>
-              </div>
-            </div>
-            
-            <div className="mt-8">
+              
               <Button 
                 size="lg"
-                className="bg-accent-primary text-bg-primary hover:bg-accent-hover transform hover:scale-105 transition-all duration-300 hover:shadow-lg hover:shadow-accent-primary/25 group"
+                className="bg-gaming-accent hover:bg-gaming-accent-hover text-gaming-dark font-bold px-12 py-4 rounded-xl transition-all duration-300 transform hover:scale-105 hover:shadow-gaming-glow-strong"
                 onClick={() => navigate('/booking')}
               >
-                <span className="group-hover:scale-110 transition-transform duration-300">
-                  Start Gaming Now
-                </span>
+                <Gamepad2 className="w-5 h-5 mr-2" />
+                Start Gaming Now
               </Button>
             </div>
           </div>
