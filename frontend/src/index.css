@@ -10,14 +10,14 @@
   --gaming-darker: #050505;
   --gaming-card: #111114;
   --gaming-border: #1a1a1f;
-  --gaming-accent: #00ff88;
-  --gaming-accent-hover: #00e577;
-  --gaming-accent-dark: #00cc66;
+  --gaming-accent: #00d4ff;
+  --gaming-accent-hover: #1de0ff;
+  --gaming-accent-dark: #00b8e6;
   --gaming-text: #ffffff;
-  --gaming-text-secondary: #e0e0e4;
-  --gaming-text-muted: #8b8b90;
-  --gaming-glow: 0 0 20px rgba(0, 255, 136, 0.4);
-  --gaming-glow-strong: 0 0 40px rgba(0, 255, 136, 0.6);
+  --gaming-text-secondary: #f0f0f4;
+  --gaming-text-muted: #a0a0a8;
+  --gaming-glow: 0 0 20px rgba(0, 212, 255, 0.4);
+  --gaming-glow-strong: 0 0 40px rgba(0, 212, 255, 0.6);
 }
 
 body {
