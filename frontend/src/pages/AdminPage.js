@@ -1,14 +1,16 @@
 import React, { useState, useEffect } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '../components/ui/card';
 import { Button } from '../components/ui/button';
-import { ArrowLeft, Phone, MapPin, Calendar, Clock, User, Mail, Gamepad2 } from 'lucide-react';
+import { ArrowLeft, Phone, MapPin, Calendar, Clock, User, Mail, Gamepad2, LogOut } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
+import AdminLogin from '../components/AdminLogin';
 
 const AdminPage = () => {
   const navigate = useNavigate();
   const [bookings, setBookings] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
 
   const gameTypeDisplay = {
     'playstation': '🎮 PlayStation',
@@ -20,11 +22,30 @@ const AdminPage = () => {
   };
 
   useEffect(() => {
-    fetchBookings();
-    // Auto-refresh every 30 seconds
-    const interval = setInterval(fetchBookings, 30000);
-    return () => clearInterval(interval);
-  }, []);
+    // Check if user is already logged in
+    const loggedIn = sessionStorage.getItem('kgg_admin_logged_in') === 'true';
+    setIsLoggedIn(loggedIn);
+    
+    if (loggedIn) {
+      fetchBookings();
+      // Auto-refresh every 30 seconds
+      const interval = setInterval(fetchBookings, 30000);
+      return () => clearInterval(interval);
+    }
+  }, [isLoggedIn]);
+
+  const handleLogin = (loginStatus) => {
+    setIsLoggedIn(loginStatus);
+    if (loginStatus) {
+      fetchBookings();
+    }
+  };
+
+  const handleLogout = () => {
+    sessionStorage.removeItem('kgg_admin_logged_in');
+    setIsLoggedIn(false);
+    setBookings([]);
+  };
 
   const fetchBookings = async () => {
     try {
@@ -45,6 +66,11 @@ const AdminPage = () => {
       setLoading(false);
     }
   };
+
+  // Show login page if not authenticated
+  if (!isLoggedIn) {
+    return <AdminLogin onLogin={handleLogin} />;
+  }
 
   const formatDate = (dateString) => {
     return new Date(dateString).toLocaleDateString('en-US', {
