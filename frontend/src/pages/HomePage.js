@@ -1,20 +1,22 @@
 import React from 'react';
 import Header from '../components/Header';
 import Hero from '../components/Hero';
+import FeaturedGames from '../components/FeaturedGames';
 import Services from '../components/Services';
-import Pricing from '../components/Pricing';
 import Gallery from '../components/Gallery';
+import Pricing from '../components/Pricing';
 import Contact from '../components/Contact';
 import Footer from '../components/Footer';
 
 const HomePage = () => {
   return (
-    <div className="min-h-screen bg-primary text-white">
+    <div className="min-h-screen bg-gaming-dark text-white overflow-x-hidden">
       <Header />
       <Hero />
+      <FeaturedGames />
       <Services />
-      <Pricing />
       <Gallery />
+      <Pricing />
       <Contact />
       <Footer />
     </div>

@@ -1,10 +1,42 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Button } from './ui/button';
-import { Play, Calendar, Users, Clock, Star, Zap, Trophy } from 'lucide-react';
+import { Play, Zap, Users, Trophy, ArrowRight, Gamepad2 } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 
 const Hero = () => {
   const navigate = useNavigate();
+  const [currentSlide, setCurrentSlide] = useState(0);
+
+  const heroSlides = [
+    {
+      title: "ULTIMATE GAMING",
+      subtitle: "EXPERIENCE",
+      description: "Immerse yourself in the future of gaming with PS5, Xbox Series X, Nintendo Switch, VR, and premium board games.",
+      image: "https://images.unsplash.com/photo-1614179924047-e1ab49a0a0cf?crop=entropy&cs=srgb&fm=jpg&ixid=M3w3NTY2NzF8MHwxfHNlYXJjaHwxfHxnYW1pbmclMjBzZXR1cHxlbnwwfHx8fDE3NTI4Mjc5ODF8MA&ixlib=rb-4.1.0&q=85",
+      accent: "gaming-accent"
+    },
+    {
+      title: "VR GAMING",
+      subtitle: "REVOLUTION",
+      description: "Step into virtual worlds with cutting-edge VR technology and experience gaming like never before.",
+      image: "https://images.unsplash.com/photo-1622979135225-d2ba269cf1ac?crop=entropy&cs=srgb&fm=jpg&ixid=M3w3NDQ2MzR8MHwxfHNlYXJjaHwxfHxWUiUyMGhlYWRzZXR8ZW58MHx8fHwxNzUyODI5NTY0fDA&ixlib=rb-4.1.0&q=85",
+      accent: "purple-500"
+    },
+    {
+      title: "BOARD GAME",
+      subtitle: "PARADISE",
+      description: "Discover classic and modern board games in our comfortable lounge designed for memorable gaming sessions.",
+      image: "https://images.unsplash.com/photo-1632501641765-e568d28b0015?crop=entropy&cs=srgb&fm=jpg&ixid=M3w3NDk1ODF8MHwxfHNlYXJjaHwzfHxib2FyZCUyMGdhbWVzfGVufDB8fHx8MTc1MjgyODg4NXww&ixlib=rb-4.1.0&q=85",
+      accent: "orange-500"
+    }
+  ];
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setCurrentSlide((prev) => (prev + 1) % heroSlides.length);
+    }, 5000);
+    return () => clearInterval(interval);
+  }, []);
 
   const scrollToSection = (sectionId) => {
     const element = document.getElementById(sectionId);
@@ -13,128 +45,130 @@ const Hero = () => {
     }
   };
 
-  const features = [
-    { icon: <Users className="w-5 h-5" />, text: "All Ages Welcome" },
-    { icon: <Clock className="w-5 h-5" />, text: "Hourly Pricing" },
-    { icon: <Calendar className="w-5 h-5" />, text: "Easy Booking" },
-    { icon: <Star className="w-5 h-5" />, text: "Premium Experience" }
-  ];
-
-  const stats = [
-    { number: "5+", label: "Gaming Platforms", icon: <Zap className="w-8 h-8" /> },
-    { number: "₹120", label: "Per Hour", icon: <Trophy className="w-8 h-8" /> },
-    { number: "100+", label: "Happy Gamers", icon: <Users className="w-8 h-8" /> }
-  ];
-
   return (
-    <section className="relative min-h-screen flex items-center justify-center overflow-hidden bg-gradient-to-br from-bg-primary via-bg-secondary to-bg-primary">
-      {/* Animated Background Elements */}
+    <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
+      {/* Background Slider */}
+      <div className="absolute inset-0">
+        {heroSlides.map((slide, index) => (
+          <div
+            key={index}
+            className={`absolute inset-0 transition-opacity duration-1000 ${
+              index === currentSlide ? 'opacity-100' : 'opacity-0'
+            }`}
+          >
+            <img 
+              src={slide.image}
+              alt={slide.title}
+              className="w-full h-full object-cover"
+            />
+            <div className="absolute inset-0 bg-gradient-to-r from-gaming-dark via-gaming-dark/80 to-gaming-dark/60"></div>
+            <div className="absolute inset-0 bg-gradient-to-t from-gaming-dark via-transparent to-transparent"></div>
+          </div>
+        ))}
+      </div>
+
+      {/* Animated Particles */}
       <div className="absolute inset-0 overflow-hidden">
-        <div className="absolute top-20 left-20 w-64 h-64 bg-accent-primary opacity-5 rounded-full blur-3xl animate-pulse"></div>
-        <div className="absolute bottom-20 right-20 w-96 h-96 bg-accent-primary opacity-3 rounded-full blur-3xl animate-pulse delay-1000"></div>
-        <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-48 h-48 bg-accent-primary opacity-10 rounded-full blur-2xl animate-bounce"></div>
+        {[...Array(20)].map((_, i) => (
+          <div
+            key={i}
+            className="absolute w-2 h-2 bg-gaming-accent/30 rounded-full animate-float"
+            style={{
+              left: `${Math.random() * 100}%`,
+              top: `${Math.random() * 100}%`,
+              animationDelay: `${Math.random() * 5}s`,
+              animationDuration: `${3 + Math.random() * 4}s`
+            }}
+          />
+        ))}
       </div>
 
-      {/* Hero Background Image */}
-      <div className="absolute inset-0 z-0">
-        <img 
-          src="https://images.unsplash.com/photo-1614179924047-e1ab49a0a0cf?crop=entropy&cs=srgb&fm=jpg&ixid=M3w3NTY2NzF8MHwxfHNlYXJjaHwxfHxnYW1pbmclMjBzZXR1cHxlbnwwfHx8fDE3NTI4Mjc5ODF8MA&ixlib=rb-4.1.0&q=85"
-          alt="Modern Gaming Setup"
-          className="w-full h-full object-cover opacity-20"
-        />
-        <div className="absolute inset-0 bg-gradient-to-r from-bg-primary via-bg-primary/80 to-bg-primary/60"></div>
-      </div>
-
+      {/* Content */}
       <div className="container mx-auto px-4 relative z-10">
-        <div className="max-w-6xl mx-auto text-center">
-          {/* Main Heading with Animation */}
-          <div className="mb-8 space-y-4">
-            <h1 className="text-4xl md:text-6xl lg:text-7xl font-bold text-text-primary leading-tight">
-              <span className="block transform transition-all duration-1000 hover:scale-105">
-                Ultimate Gaming Experience
+        <div className="max-w-4xl mx-auto text-center">
+          {/* Main Content */}
+          <div className="mb-8">
+            <div className="inline-flex items-center space-x-2 bg-gaming-accent/10 backdrop-blur-sm px-4 py-2 rounded-full border border-gaming-accent/20 mb-6 animate-fade-in-up">
+              <Gamepad2 className="w-5 h-5 text-gaming-accent" />
+              <span className="text-gaming-accent font-semibold text-sm tracking-wider uppercase">
+                Premium Gaming Experience
               </span>
-              <span className="block text-accent-primary transform transition-all duration-1000 hover:scale-105 delay-300">
-                For All Ages
+            </div>
+
+            <h1 className="text-4xl md:text-6xl lg:text-7xl font-bold mb-6 leading-tight animate-fade-in-up delay-200">
+              <span className="text-gaming-text">
+                {heroSlides[currentSlide].title}
+              </span>
+              <br />
+              <span className="text-gaming-accent bg-gradient-to-r from-gaming-accent to-gaming-accent-hover bg-clip-text text-transparent">
+                {heroSlides[currentSlide].subtitle}
               </span>
             </h1>
             
-            {/* Animated Subheading */}
-            <div className="relative">
-              <p className="text-lg md:text-xl text-text-secondary max-w-3xl mx-auto leading-relaxed transform transition-all duration-1000 hover:text-text-primary">
-                Dive into the world of gaming at Karthikeya Games Galaxy! PlayStation 5, Xbox Series X, Nintendo Switch, VR, and Board Games - all under one roof with premium gaming setups.
-              </p>
-              <div className="absolute -bottom-2 left-1/2 transform -translate-x-1/2 w-24 h-1 bg-accent-primary rounded-full"></div>
-            </div>
+            <p className="text-lg md:text-xl text-gaming-text-secondary max-w-2xl mx-auto leading-relaxed mb-8 animate-fade-in-up delay-300">
+              {heroSlides[currentSlide].description}
+            </p>
           </div>
 
-          {/* Interactive Features */}
-          <div className="flex flex-wrap justify-center gap-4 mb-10">
-            {features.map((feature, index) => (
-              <div 
-                key={index}
-                className="flex items-center space-x-2 bg-bg-secondary/80 backdrop-blur-sm px-4 py-2 rounded-full border border-border-subtle hover:border-accent-primary transition-all duration-300 hover:scale-105 hover:bg-bg-secondary group cursor-pointer"
-              >
-                <div className="text-accent-primary group-hover:scale-110 transition-transform duration-300">
-                  {feature.icon}
-                </div>
-                <span className="text-text-secondary group-hover:text-text-primary transition-colors duration-300">
-                  {feature.text}
-                </span>
-              </div>
-            ))}
-          </div>
-
-          {/* CTA Buttons with Enhanced Styling */}
-          <div className="flex flex-col sm:flex-row gap-4 justify-center mb-16">
+          {/* CTA Buttons */}
+          <div className="flex flex-col sm:flex-row gap-4 justify-center mb-12 animate-fade-in-up delay-400">
             <Button 
               size="lg"
-              className="bg-accent-primary text-bg-primary hover:bg-accent-hover transform hover:scale-105 transition-all duration-300 hover:shadow-lg hover:shadow-accent-primary/25 group relative overflow-hidden bg-accent-primary hover-bg-accent-primary"
+              className="bg-gaming-accent hover:bg-gaming-accent-hover text-gaming-dark font-bold px-8 py-4 rounded-xl transition-all duration-300 transform hover:scale-105 hover:shadow-gaming-glow group"
               onClick={() => navigate('/booking')}
             >
-              <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-1000"></div>
-              <Play className="w-5 h-5 mr-2 group-hover:scale-110 transition-transform duration-300" />
-              <span className="text-bg-primary">Book Your Gaming Session</span>
+              <Play className="w-5 h-5 mr-2 group-hover:scale-110 transition-transform duration-200" />
+              Start Gaming Now
+              <ArrowRight className="w-5 h-5 ml-2 group-hover:translate-x-1 transition-transform duration-200" />
             </Button>
             <Button 
               variant="outline" 
               size="lg"
-              className="border-accent-primary text-accent-primary hover:bg-accent-primary hover:text-bg-primary transform hover:scale-105 transition-all duration-300 hover:shadow-lg hover:shadow-accent-primary/25 group"
-              onClick={() => scrollToSection('services')}
+              className="border-2 border-gaming-accent text-gaming-accent hover:bg-gaming-accent hover:text-gaming-dark px-8 py-4 rounded-xl transition-all duration-300 transform hover:scale-105 backdrop-blur-sm"
+              onClick={() => scrollToSection('games')}
             >
-              <Zap className="w-5 h-5 mr-2 group-hover:scale-110 transition-transform duration-300" />
+              <Zap className="w-5 h-5 mr-2" />
               Explore Games
             </Button>
           </div>
 
-          {/* Enhanced Stats Cards */}
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            {stats.map((stat, index) => (
-              <div 
-                key={index}
-                className="bg-bg-secondary/80 backdrop-blur-sm p-6 rounded-2xl border border-border-subtle hover:border-accent-primary transition-all duration-500 hover:scale-105 hover:shadow-xl hover:shadow-accent-primary/10 group cursor-pointer relative overflow-hidden"
-              >
-                <div className="absolute inset-0 bg-gradient-to-br from-accent-primary/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
-                <div className="relative z-10">
-                  <div className="text-accent-primary mb-3 flex justify-center group-hover:scale-110 transition-transform duration-300">
-                    {stat.icon}
-                  </div>
-                  <div className="text-3xl font-bold text-accent-primary mb-2 group-hover:scale-105 transition-transform duration-300">
-                    {stat.number}
-                  </div>
-                  <div className="text-text-secondary group-hover:text-text-primary transition-colors duration-300">
-                    {stat.label}
-                  </div>
-                </div>
-              </div>
-            ))}
+          {/* Stats */}
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-3xl mx-auto animate-fade-in-up delay-500">
+            <div className="bg-gaming-card/20 backdrop-blur-sm p-6 rounded-2xl border border-gaming-accent/10 hover:border-gaming-accent/30 transition-all duration-300 group">
+              <div className="text-3xl font-bold text-gaming-accent mb-2 group-hover:scale-110 transition-transform duration-200">5+</div>
+              <div className="text-gaming-text-secondary">Gaming Platforms</div>
+            </div>
+            <div className="bg-gaming-card/20 backdrop-blur-sm p-6 rounded-2xl border border-gaming-accent/10 hover:border-gaming-accent/30 transition-all duration-300 group">
+              <div className="text-3xl font-bold text-gaming-accent mb-2 group-hover:scale-110 transition-transform duration-200">₹120</div>
+              <div className="text-gaming-text-secondary">Per Hour</div>
+            </div>
+            <div className="bg-gaming-card/20 backdrop-blur-sm p-6 rounded-2xl border border-gaming-accent/10 hover:border-gaming-accent/30 transition-all duration-300 group">
+              <div className="text-3xl font-bold text-gaming-accent mb-2 group-hover:scale-110 transition-transform duration-200">100+</div>
+              <div className="text-gaming-text-secondary">Happy Gamers</div>
+            </div>
           </div>
         </div>
       </div>
 
-      {/* Floating Animation Elements */}
-      <div className="absolute bottom-10 left-1/2 transform -translate-x-1/2 animate-bounce">
-        <div className="w-6 h-10 border-2 border-accent-primary rounded-full flex justify-center">
-          <div className="w-1 h-3 bg-accent-primary rounded-full mt-2 animate-pulse"></div>
+      {/* Slide Indicators */}
+      <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2 flex space-x-3">
+        {heroSlides.map((_, index) => (
+          <button
+            key={index}
+            onClick={() => setCurrentSlide(index)}
+            className={`w-3 h-3 rounded-full transition-all duration-300 ${
+              index === currentSlide 
+                ? 'bg-gaming-accent w-8' 
+                : 'bg-gaming-text/30 hover:bg-gaming-text/50'
+            }`}
+          />
+        ))}
+      </div>
+
+      {/* Scroll Indicator */}
+      <div className="absolute bottom-8 right-8 animate-bounce">
+        <div className="w-6 h-10 border-2 border-gaming-accent rounded-full flex justify-center">
+          <div className="w-1 h-3 bg-gaming-accent rounded-full mt-2 animate-pulse"></div>
         </div>
       </div>
     </section>

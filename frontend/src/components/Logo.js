@@ -1,37 +1,35 @@
 import React from 'react';
 
-const Logo = ({ className = "w-10 h-10", textClassName = "text-2xl" }) => {
+const Logo = ({ className = "", textClassName = "text-2xl" }) => {
   return (
-    <div className={`flex items-center space-x-2 ${className}`}>
+    <div className={`flex items-center space-x-3 ${className}`}>
       {/* Logo Symbol */}
       <div className="relative">
-        <div className="w-10 h-10 bg-accent-primary rounded-lg flex items-center justify-center relative overflow-hidden">
-          {/* Background Pattern */}
-          <div className="absolute inset-0 bg-gradient-to-br from-accent-primary via-accent-hover to-accent-pressed opacity-80"></div>
-          
-          {/* Gaming Controller Pattern */}
-          <div className="absolute inset-0 flex items-center justify-center">
-            <div className="w-2 h-2 bg-bg-primary rounded-full absolute top-2 left-2"></div>
-            <div className="w-2 h-2 bg-bg-primary rounded-full absolute top-2 right-2"></div>
-            <div className="w-1 h-3 bg-bg-primary rounded absolute bottom-2 left-1/2 transform -translate-x-1/2"></div>
+        <div className="w-12 h-12 bg-gradient-to-br from-gaming-accent via-gaming-accent-hover to-gaming-accent rounded-xl flex items-center justify-center relative overflow-hidden shadow-gaming-glow">
+          {/* Geometric Pattern Background */}
+          <div className="absolute inset-0">
+            <div className="absolute top-2 left-2 w-2 h-2 bg-gaming-dark/30 rounded-full"></div>
+            <div className="absolute top-2 right-2 w-2 h-2 bg-gaming-dark/30 rounded-full"></div>
+            <div className="absolute bottom-3 left-1/2 transform -translate-x-1/2 w-3 h-1 bg-gaming-dark/30 rounded-full"></div>
+            <div className="absolute inset-2 border border-gaming-dark/20 rounded-lg"></div>
           </div>
           
           {/* Main KGG Text */}
           <div className="relative z-10">
-            <span className="font-bold text-bg-primary text-sm tracking-tight">KGG</span>
+            <span className="font-bold text-gaming-dark text-sm tracking-wider">KGG</span>
           </div>
         </div>
         
-        {/* Glow Effect */}
-        <div className="absolute inset-0 bg-accent-primary rounded-lg blur-md opacity-30 -z-10"></div>
+        {/* Animated Glow Ring */}
+        <div className="absolute inset-0 rounded-xl border-2 border-gaming-accent/30 animate-pulse"></div>
       </div>
       
       {/* Text Logo */}
       <div className="flex flex-col leading-tight">
-        <span className={`font-bold text-accent-primary ${textClassName}`}>
+        <span className={`font-bold text-gaming-accent ${textClassName} tracking-tight`}>
           Karthikeya
         </span>
-        <span className="text-text-secondary text-xs font-medium -mt-1">
+        <span className="text-gaming-text-secondary text-xs font-medium -mt-1 tracking-widest uppercase">
           GAMES GALAXY
         </span>
       </div>

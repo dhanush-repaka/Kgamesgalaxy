@@ -1,12 +1,21 @@
-import React, { useState } from 'react';
-import { Menu, X, Phone } from 'lucide-react';
+import React, { useState, useEffect } from 'react';
+import { Menu, X, Phone, Calendar, User, Search } from 'lucide-react';
 import { Button } from './ui/button';
 import { useNavigate } from 'react-router-dom';
 import Logo from './Logo';
 
 const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [isScrolled, setIsScrolled] = useState(false);
   const navigate = useNavigate();
+
+  useEffect(() => {
+    const handleScroll = () => {
+      setIsScrolled(window.scrollY > 50);
+    };
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
 
   const scrollToSection = (sectionId) => {
     const element = document.getElementById(sectionId);
@@ -17,106 +26,141 @@ const Header = () => {
   };
 
   return (
-    <header className="bg-secondary border-b border-border-subtle sticky top-0 z-50 backdrop-blur-sm">
+    <header className={`fixed top-0 w-full z-50 transition-all duration-300 ${
+      isScrolled 
+        ? 'bg-gaming-dark/95 backdrop-blur-lg border-b border-gaming-accent/20' 
+        : 'bg-transparent'
+    }`}>
       <div className="container mx-auto px-4 py-4">
         <div className="flex items-center justify-between">
           {/* Logo */}
-          <div className="cursor-pointer" onClick={() => navigate('/')}>
+          <div className="cursor-pointer transform hover:scale-105 transition-transform duration-200" onClick={() => navigate('/')}>
             <Logo />
           </div>
 
           {/* Desktop Navigation */}
-          <nav className="hidden md:flex items-center space-x-8">
+          <nav className="hidden lg:flex items-center space-x-8">
             <button 
-              onClick={() => scrollToSection('services')}
-              className="text-text-secondary hover:text-accent-primary transition-colors"
+              onClick={() => scrollToSection('games')}
+              className="text-gaming-text hover:text-gaming-accent transition-colors duration-200 font-medium relative group"
             >
-              Services
+              Games
+              <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-gaming-accent transition-all duration-200 group-hover:w-full"></span>
             </button>
             <button 
-              onClick={() => scrollToSection('pricing')}
-              className="text-text-secondary hover:text-accent-primary transition-colors"
+              onClick={() => scrollToSection('services')}
+              className="text-gaming-text hover:text-gaming-accent transition-colors duration-200 font-medium relative group"
             >
-              Pricing
+              Services
+              <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-gaming-accent transition-all duration-200 group-hover:w-full"></span>
             </button>
             <button 
               onClick={() => scrollToSection('gallery')}
-              className="text-text-secondary hover:text-accent-primary transition-colors"
+              className="text-gaming-text hover:text-gaming-accent transition-colors duration-200 font-medium relative group"
             >
               Gallery
+              <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-gaming-accent transition-all duration-200 group-hover:w-full"></span>
+            </button>
+            <button 
+              onClick={() => scrollToSection('pricing')}
+              className="text-gaming-text hover:text-gaming-accent transition-colors duration-200 font-medium relative group"
+            >
+              Pricing
+              <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-gaming-accent transition-all duration-200 group-hover:w-full"></span>
             </button>
             <button 
               onClick={() => scrollToSection('contact')}
-              className="text-text-secondary hover:text-accent-primary transition-colors"
+              className="text-gaming-text hover:text-gaming-accent transition-colors duration-200 font-medium relative group"
             >
               Contact
+              <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-gaming-accent transition-all duration-200 group-hover:w-full"></span>
             </button>
           </nav>
 
-          {/* CTA Buttons */}
-          <div className="hidden md:flex items-center space-x-4">
+          {/* Action Buttons */}
+          <div className="hidden lg:flex items-center space-x-4">
             <Button 
               variant="ghost" 
               size="sm"
-              className="text-text-secondary hover:text-accent-primary"
+              className="text-gaming-text hover:text-gaming-accent hover:bg-gaming-accent/10"
             >
               <Phone className="w-4 h-4 mr-2" />
-              Call Now
+              Call
             </Button>
             <Button 
-              className="bg-accent-primary text-bg-primary hover:bg-accent-hover"
+              className="bg-gaming-accent hover:bg-gaming-accent-hover text-gaming-dark font-semibold px-6 py-2 rounded-lg transition-all duration-200 transform hover:scale-105 hover:shadow-gaming-glow"
               onClick={() => navigate('/booking')}
             >
+              <Calendar className="w-4 h-4 mr-2" />
               Book Now
             </Button>
           </div>
 
           {/* Mobile Menu Button */}
           <button 
-            className="md:hidden"
+            className="lg:hidden p-2 rounded-lg hover:bg-gaming-accent/10 transition-colors duration-200"
             onClick={() => setIsMenuOpen(!isMenuOpen)}
           >
-            {isMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
+            {isMenuOpen ? 
+              <X className="w-6 h-6 text-gaming-accent" /> : 
+              <Menu className="w-6 h-6 text-gaming-text" />
+            }
           </button>
         </div>
 
         {/* Mobile Navigation */}
-        {isMenuOpen && (
-          <nav className="md:hidden mt-4 pb-4 border-t border-border-subtle">
-            <div className="flex flex-col space-y-4 mt-4">
-              <button 
-                onClick={() => scrollToSection('services')}
-                className="text-text-secondary hover:text-accent-primary transition-colors text-left"
-              >
-                Services
-              </button>
-              <button 
-                onClick={() => scrollToSection('pricing')}
-                className="text-text-secondary hover:text-accent-primary transition-colors text-left"
-              >
-                Pricing
-              </button>
-              <button 
-                onClick={() => scrollToSection('gallery')}
-                className="text-text-secondary hover:text-accent-primary transition-colors text-left"
-              >
-                Gallery
-              </button>
-              <button 
-                onClick={() => scrollToSection('contact')}
-                className="text-text-secondary hover:text-accent-primary transition-colors text-left"
-              >
-                Contact
-              </button>
+        <div className={`lg:hidden transition-all duration-300 overflow-hidden ${
+          isMenuOpen ? 'max-h-96 opacity-100' : 'max-h-0 opacity-0'
+        }`}>
+          <nav className="py-4 space-y-4 border-t border-gaming-accent/20 mt-4">
+            <button 
+              onClick={() => scrollToSection('games')}
+              className="block w-full text-left text-gaming-text hover:text-gaming-accent transition-colors duration-200 font-medium py-2"
+            >
+              Games
+            </button>
+            <button 
+              onClick={() => scrollToSection('services')}
+              className="block w-full text-left text-gaming-text hover:text-gaming-accent transition-colors duration-200 font-medium py-2"
+            >
+              Services
+            </button>
+            <button 
+              onClick={() => scrollToSection('gallery')}
+              className="block w-full text-left text-gaming-text hover:text-gaming-accent transition-colors duration-200 font-medium py-2"
+            >
+              Gallery
+            </button>
+            <button 
+              onClick={() => scrollToSection('pricing')}
+              className="block w-full text-left text-gaming-text hover:text-gaming-accent transition-colors duration-200 font-medium py-2"
+            >
+              Pricing
+            </button>
+            <button 
+              onClick={() => scrollToSection('contact')}
+              className="block w-full text-left text-gaming-text hover:text-gaming-accent transition-colors duration-200 font-medium py-2"
+            >
+              Contact
+            </button>
+            <div className="pt-4 space-y-3">
               <Button 
-                className="bg-accent-primary text-bg-primary hover:bg-accent-hover w-full"
+                variant="ghost" 
+                className="w-full justify-center text-gaming-text hover:text-gaming-accent hover:bg-gaming-accent/10"
+              >
+                <Phone className="w-4 h-4 mr-2" />
+                Call Now
+              </Button>
+              <Button 
+                className="w-full bg-gaming-accent hover:bg-gaming-accent-hover text-gaming-dark font-semibold"
                 onClick={() => navigate('/booking')}
               >
+                <Calendar className="w-4 h-4 mr-2" />
                 Book Now
               </Button>
             </div>
           </nav>
-        )}
+        </div>
       </div>
     </header>
   );
