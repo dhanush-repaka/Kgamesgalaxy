@@ -28,7 +28,7 @@ const Header = () => {
   return (
     <header className={`fixed top-0 w-full z-50 transition-all duration-300 ${
       isScrolled 
-        ? 'bg-gaming-dark/95 backdrop-blur-lg border-b border-gaming-accent/20' 
+        ? 'bg-gaming-light/95 backdrop-blur-lg border-b border-gaming-border shadow-gaming-lg' 
         : 'bg-transparent'
     }`}>
       <div className="container mx-auto px-4 py-4">
@@ -55,20 +55,6 @@ const Header = () => {
               <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-gaming-accent transition-all duration-200 group-hover:w-full"></span>
             </button>
             <button 
-              onClick={() => scrollToSection('gallery')}
-              className="text-gaming-text hover:text-gaming-accent transition-colors duration-200 font-medium relative group"
-            >
-              Gallery
-              <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-gaming-accent transition-all duration-200 group-hover:w-full"></span>
-            </button>
-            <button 
-              onClick={() => scrollToSection('pricing')}
-              className="text-gaming-text hover:text-gaming-accent transition-colors duration-200 font-medium relative group"
-            >
-              Pricing
-              <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-gaming-accent transition-all duration-200 group-hover:w-full"></span>
-            </button>
-            <button 
               onClick={() => scrollToSection('contact')}
               className="text-gaming-text hover:text-gaming-accent transition-colors duration-200 font-medium relative group"
             >
@@ -88,7 +74,7 @@ const Header = () => {
               Call
             </Button>
             <Button 
-              className="bg-gaming-accent hover:bg-gaming-accent-hover text-gaming-dark font-semibold px-6 py-2 rounded-lg transition-all duration-200 transform hover:scale-105 hover:shadow-gaming-glow"
+              className="bg-gaming-accent hover:bg-gaming-accent-hover text-gaming-light font-semibold px-6 py-2 rounded-lg transition-all duration-200 transform hover:scale-105 shadow-gaming"
               onClick={() => navigate('/booking')}
             >
               <Calendar className="w-4 h-4 mr-2" />
@@ -112,7 +98,7 @@ const Header = () => {
         <div className={`lg:hidden transition-all duration-300 overflow-hidden ${
           isMenuOpen ? 'max-h-96 opacity-100' : 'max-h-0 opacity-0'
         }`}>
-          <nav className="py-4 space-y-4 border-t border-gaming-accent/20 mt-4">
+          <nav className="py-4 space-y-4 border-t border-gaming-border mt-4">
             <button 
               onClick={() => scrollToSection('games')}
               className="block w-full text-left text-gaming-text hover:text-gaming-accent transition-colors duration-200 font-medium py-2"
@@ -124,18 +110,6 @@ const Header = () => {
               className="block w-full text-left text-gaming-text hover:text-gaming-accent transition-colors duration-200 font-medium py-2"
             >
               Services
-            </button>
-            <button 
-              onClick={() => scrollToSection('gallery')}
-              className="block w-full text-left text-gaming-text hover:text-gaming-accent transition-colors duration-200 font-medium py-2"
-            >
-              Gallery
-            </button>
-            <button 
-              onClick={() => scrollToSection('pricing')}
-              className="block w-full text-left text-gaming-text hover:text-gaming-accent transition-colors duration-200 font-medium py-2"
-            >
-              Pricing
             </button>
             <button 
               onClick={() => scrollToSection('contact')}
@@ -152,7 +126,7 @@ const Header = () => {
                 Call Now
               </Button>
               <Button 
-                className="w-full bg-gaming-accent hover:bg-gaming-accent-hover text-gaming-dark font-semibold"
+                className="w-full bg-gaming-accent hover:bg-gaming-accent-hover text-gaming-light font-semibold shadow-gaming"
                 onClick={() => navigate('/booking')}
               >
                 <Calendar className="w-4 h-4 mr-2" />
