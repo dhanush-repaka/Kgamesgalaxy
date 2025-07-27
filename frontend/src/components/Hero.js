@@ -123,7 +123,7 @@ const Hero = () => {
             <Button 
               variant="outline" 
               size="lg"
-              className="border-2 border-white/80 text-white hover:bg-white hover:text-gaming-dark px-10 py-6 text-lg rounded-xl transition-all duration-300 transform hover:scale-105 backdrop-blur-sm font-bold"
+              className="border-2 border-white text-white hover:bg-white hover:text-gaming-dark px-10 py-6 text-lg rounded-xl transition-all duration-300 transform hover:scale-105 backdrop-blur-sm font-bold shadow-lg"
               onClick={() => scrollToSection('games')}
             >
               <Zap className="w-6 h-6 mr-3" />
