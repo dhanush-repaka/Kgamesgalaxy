@@ -106,17 +106,10 @@ const BookingPage = () => {
   };
 
   const getGameTypeDisplay = (gameType) => {
-    const icons = {
-      'ps5': '🎮',
-      'xbox': '🎮',
-      'switch': '🎮',
-      'vr': '🥽',
-      'board': '🎲'
-    };
-    return `${icons[gameType.id] || '🎮'} ${gameType.name}`;
+    return `${gameType.icon} ${gameType.name}`;
   };
 
-  if (gameTypesLoading || settingsLoading) {
+  if (settingsLoading) {
     return (
       <div className="min-h-screen bg-gaming-lighter flex items-center justify-center">
         <div className="text-gaming-text">Loading...</div>
