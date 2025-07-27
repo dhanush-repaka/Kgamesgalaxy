@@ -10,7 +10,7 @@ import { ArrowLeft, Calendar as CalendarIcon, Clock, GamepadIcon, Phone, MapPin 
 import { format } from 'date-fns';
 import { useNavigate } from 'react-router-dom';
 import { useToast } from '../hooks/use-toast';
-import { bookingService, availabilityService, gameTypeService, settingsService } from '../services/api';
+import { bookingService, availabilityService, settingsService } from '../services/api';
 import { useApi, useApiMutation } from '../hooks/useApi';
 
 const BookingPage = () => {
