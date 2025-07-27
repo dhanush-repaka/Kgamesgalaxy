@@ -364,7 +364,55 @@ class BackendTester:
             self.log_result("Settings API", False, f"Connection error: {str(e)}")
         return False
     
-    def test_seed_endpoint(self):
+    def test_admin_interface(self):
+        """Test Admin Bookings Interface"""
+        print("\n👨‍💼 Testing Admin Bookings Interface...")
+        try:
+            # Test admin bookings page (note: no /api prefix for admin routes)
+            admin_url = f"{BACKEND_URL}/admin/bookings"
+            response = self.session.get(admin_url)
+            
+            if response.status_code == 200:
+                html_content = response.text
+                
+                # Check for key elements in the HTML
+                required_elements = [
+                    "Karthikeya Games Galaxy - Bookings",
+                    "Total Bookings:",
+                    "booking-card",
+                    "booking-header"
+                ]
+                
+                missing_elements = []
+                for element in required_elements:
+                    if element not in html_content:
+                        missing_elements.append(element)
+                
+                if not missing_elements:
+                    self.log_result("Admin Interface - HTML Structure", True)
+                    
+                    # Check if it's showing bookings or no bookings message
+                    if "No bookings found" in html_content:
+                        self.log_result("Admin Interface - No Bookings Display", True)
+                        print("   📋 Admin interface correctly shows 'No bookings found' message")
+                    elif "booking-card" in html_content:
+                        self.log_result("Admin Interface - Bookings Display", True)
+                        print("   📋 Admin interface correctly displays existing bookings")
+                    
+                    # Check for auto-refresh functionality
+                    if "setTimeout(() => location.reload(), 30000)" in html_content:
+                        self.log_result("Admin Interface - Auto Refresh", True)
+                        print("   🔄 Admin interface has auto-refresh functionality")
+                        return True
+                    else:
+                        self.log_result("Admin Interface - Auto Refresh", False, "Auto-refresh script not found")
+                else:
+                    self.log_result("Admin Interface - HTML Structure", False, f"Missing elements: {missing_elements}")
+            else:
+                self.log_result("Admin Interface", False, f"Status code: {response.status_code}")
+        except Exception as e:
+            self.log_result("Admin Interface", False, f"Connection error: {str(e)}")
+        return False
         """Test database seeding endpoint"""
         print("\n🌱 Testing Seed Database Endpoint...")
         try:
