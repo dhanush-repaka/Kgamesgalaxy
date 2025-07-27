@@ -203,7 +203,7 @@ async def seed_database():
 app.include_router(api_router)
 
 # Admin page to view bookings
-@app.get("/admin/bookings")
+@app.get("/admin/bookings", response_class=HTMLResponse)
 async def admin_bookings_page():
     """Simple admin page to view all bookings"""
     try:
