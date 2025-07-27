@@ -23,14 +23,10 @@ class BookingService:
             return individual_rate * duration * group_size
     
     async def create_booking(self, booking_data: dict) -> Booking:
-        """Create a new booking"""
-        # Calculate total price
-        total = self.calculate_total(booking_data['duration'], booking_data['group_size'])
-        
+        """Create a new booking"""        
         booking = Booking(
             **booking_data,
-            total=total,
-            status="confirmed"
+            status="pending"
         )
         
         booking_dict = booking.dict()
