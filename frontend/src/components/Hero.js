@@ -59,9 +59,9 @@ const Hero = () => {
               className="w-full h-full object-cover"
             />
             {/* Strong Dark Overlay for Better Text Contrast */}
-            <div className="absolute inset-0 bg-gaming-dark/85"></div>
-            <div className="absolute inset-0 bg-gradient-to-r from-gaming-dark via-gaming-dark/90 to-gaming-dark/70"></div>
-            <div className="absolute inset-0 bg-gradient-to-t from-gaming-dark/95 via-gaming-dark/50 to-gaming-dark/80"></div>
+            <div className="absolute inset-0 bg-gaming-dark/90"></div>
+            <div className="absolute inset-0 bg-gradient-to-r from-gaming-dark/95 via-gaming-dark/85 to-gaming-dark/90"></div>
+            <div className="absolute inset-0 bg-gradient-to-t from-gaming-dark/98 via-gaming-dark/75 to-gaming-dark/85"></div>
           </div>
         ))}
       </div>
