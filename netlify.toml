@@ -1,0 +1,18 @@
+[build]
+  publish = "frontend/build"
+  command = "cd frontend && yarn install && yarn build"
+
+[build.environment]
+  NODE_VERSION = "18"
+  YARN_VERSION = "1.22.19"
+
+[[redirects]]
+  from = "/api/*"
+  to = "https://e239b078-6e78-47a7-b7f1-cef6da6b3bb4.e1-us-east-1.amy.app/api/:splat"
+  status = 200
+  force = true
+
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200
