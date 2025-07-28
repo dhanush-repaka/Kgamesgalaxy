@@ -122,12 +122,22 @@ const AdminPage = () => {
                 <p className="text-gaming-text-secondary">Karthikeya Games Galaxy</p>
               </div>
             </div>
-            <Button
-              onClick={fetchBookings}
-              className="bg-gaming-accent hover:bg-gaming-accent-hover text-gaming-light"
-            >
-              Refresh
-            </Button>
+            <div className="flex items-center space-x-4">
+              <Button
+                onClick={fetchBookings}
+                className="bg-gaming-accent hover:bg-gaming-accent-hover text-gaming-light"
+              >
+                Refresh
+              </Button>
+              <Button
+                onClick={handleLogout}
+                variant="outline"
+                className="border-red-500 text-red-500 hover:bg-red-500 hover:text-white"
+              >
+                <LogOut className="w-4 h-4 mr-2" />
+                Logout
+              </Button>
+            </div>
           </div>
         </div>
       </div>
