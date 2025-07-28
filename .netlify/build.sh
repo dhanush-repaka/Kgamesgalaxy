@@ -21,7 +21,11 @@ yarn --version
 
 # Install dependencies with yarn
 echo "📦 Installing dependencies..."
-yarn install --network-timeout 100000
+yarn install --network-timeout 100000 || {
+    echo "⚠️  Yarn install failed, trying without cache..."
+    yarn cache clean
+    yarn install --network-timeout 100000
+}
 
 # Verify dependencies are installed
 echo "🔍 Verifying dependencies..."
