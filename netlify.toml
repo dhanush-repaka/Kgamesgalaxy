@@ -1,26 +1,11 @@
 [build]
   publish = "frontend/build"
-  command = "cd frontend && rm -f package-lock.json && yarn install --no-frozen-lockfile && yarn build"
+  command = "./.netlify/build.sh"
 
 [build.environment]
   NODE_VERSION = "18.19.0"
   YARN_VERSION = "1.22.19"
   CI = "true"
-  YARN_CACHE_FOLDER = "/opt/buildhome/.yarn_cache"
-
-[build.processing]
-  skip_processing = false
-
-[build.processing.css]
-  bundle = true
-  minify = true
-
-[build.processing.js]
-  bundle = true
-  minify = true
-
-[build.processing.html]
-  pretty_urls = true
 
 [[redirects]]
   from = "/api/*"
