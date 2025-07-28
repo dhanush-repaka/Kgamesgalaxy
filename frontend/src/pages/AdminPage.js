@@ -127,7 +127,7 @@ const AdminPage = () => {
               </Button>
               <div>
                 <h1 className="text-2xl lg:text-3xl font-bold text-gaming-text">🎮 Bookings Admin</h1>
-                <p className="text-gaming-text-secondary">Karthikeya Games Galaxy</p>
+                <p className="text-gaming-text-secondary">Karthikeya's Games Galaxy</p>
               </div>
             </div>
             <div className="flex items-center space-x-4">
