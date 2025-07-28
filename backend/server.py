@@ -124,6 +124,56 @@ async def delete_booking(booking_id: str):
         logger.error(f"Error deleting booking: {e}")
         raise HTTPException(status_code=500, detail="Failed to delete booking")
 
+@api_router.get("/bookings/reference/{reference_number}", response_model=Booking)
+async def get_booking_by_reference(reference_number: str):
+    """Get booking by reference number"""
+    try:
+        booking = await booking_service.get_booking_by_reference(reference_number)
+        if not booking:
+            raise HTTPException(status_code=404, detail="Booking not found")
+        return booking
+    except HTTPException:
+        raise
+    except Exception as e:
+        logger.error(f"Error fetching booking by reference: {e}")
+        raise HTTPException(status_code=500, detail="Failed to fetch booking")
+
+@api_router.post("/bookings/reference/{reference_number}/cancel")
+async def cancel_booking_by_reference(reference_number: str):
+    """Cancel booking by reference number (user self-cancellation)"""
+    try:
+        booking = await booking_service.get_booking_by_reference(reference_number)
+        if not booking:
+            raise HTTPException(status_code=404, detail="Booking not found")
+        
+        # Check if booking is already cancelled
+        if booking.status == "cancelled":
+            raise HTTPException(status_code=400, detail="Booking is already cancelled")
+        
+        # Check if cancellation is allowed (1 hour before session)
+        from datetime import datetime, timedelta
+        session_datetime = booking.date
+        current_time = datetime.utcnow()
+        cancellation_deadline = session_datetime - timedelta(hours=1)
+        
+        if current_time > cancellation_deadline:
+            raise HTTPException(
+                status_code=400, 
+                detail="Cancellation not allowed. Must cancel at least 1 hour before session time."
+            )
+        
+        # Update booking status to cancelled
+        updated_booking = await booking_service.update_booking(booking.id, {"status": "cancelled"})
+        return {
+            "message": "Booking cancelled successfully",
+            "booking": updated_booking
+        }
+    except HTTPException:
+        raise
+    except Exception as e:
+        logger.error(f"Error cancelling booking: {e}")
+        raise HTTPException(status_code=500, detail="Failed to cancel booking")
+
 # Availability endpoints
 @api_router.get("/availability/{date}", response_model=AvailabilityResponse)
 async def get_availability(date: str):
