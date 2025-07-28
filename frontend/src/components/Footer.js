@@ -144,7 +144,7 @@ const Footer = () => {
         {/* Bottom Section */}
         <div className="border-t border-gaming-border mt-8 pt-8 flex flex-col md:flex-row justify-between items-center">
           <p className="text-gaming-text-secondary text-sm">
-            © 2024 Karthikeya Games Galaxy. All rights reserved.
+            © 2024 Karthikeya's Games Galaxy. All rights reserved.
           </p>
           <div className="flex space-x-6 mt-4 md:mt-0">
             <a href="#" className="text-gaming-text-secondary hover:text-gaming-accent text-sm transition-colors">
