@@ -192,6 +192,12 @@ frontend:
         - working: true
         - agent: "main"
         - comment: "Fixed lockfile issue by removing --frozen-lockfile flag from build commands. Added yarn cache clean as fallback. Local testing confirms build works correctly with 2.8M build directory and all required artifacts."
+        - working: false
+        - agent: "user"
+        - comment: "Netlify build failing with Node.js version incompatibility: react-router-dom@7.5.1 requires Node.js >=20.0.0 but Netlify was using 18.20.8"
+        - working: true
+        - agent: "main"
+        - comment: "Fixed Node.js version compatibility issue by updating netlify.toml, .nvmrc, and package.json to use Node.js 20.x. Local testing with Node.js 20.19.4 confirms build works correctly with 2.8M build directory and all required artifacts."
 
   - task: "Frontend Build Process"
     implemented: true
