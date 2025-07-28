@@ -228,9 +228,7 @@ metadata:
 
 test_plan:
   current_focus:
-    - "All Booking API Endpoints"
-    - "Netlify Build Configuration"
-    - "Frontend Build Process"
+    - "Mobile UI/UX Improvements"
   stuck_tasks: []
   test_all: false
   test_priority: "high_first"
