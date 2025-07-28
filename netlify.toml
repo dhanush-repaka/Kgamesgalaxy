@@ -1,10 +1,10 @@
 [build]
   publish = "frontend/build"
-  command = "cd frontend && npm install && npm run build"
+  command = "cd frontend && yarn install --frozen-lockfile && yarn build"
 
 [build.environment]
   NODE_VERSION = "18"
-  NPM_VERSION = "9"
+  YARN_VERSION = "1.22.19"
 
 [[redirects]]
   from = "/api/*"
