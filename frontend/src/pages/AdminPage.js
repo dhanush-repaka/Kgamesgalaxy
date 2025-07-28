@@ -321,6 +321,13 @@ const AdminPage = () => {
                     </div>
                     
                     <div className="flex items-center text-gaming-text-secondary">
+                      <Shield className="w-4 h-4 mr-2" />
+                      <span className="font-medium text-gaming-accent">
+                        {booking.reference_number || 'N/A'}
+                      </span>
+                    </div>
+                    
+                    <div className="flex items-center text-gaming-text-secondary">
                       <span className="text-xs">ID: {booking.id.substring(0, 8)}...</span>
                     </div>
                   </div>
