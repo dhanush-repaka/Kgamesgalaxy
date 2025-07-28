@@ -1,63 +1,128 @@
-import axios from 'axios';
-
-const API_BASE = process.env.REACT_APP_BACKEND_URL + '/api';
-
-// Create axios instance with default config
-const api = axios.create({
-  baseURL: API_BASE,
-  headers: {
-    'Content-Type': 'application/json',
-  },
-});
-
-// Request interceptor for logging
-api.interceptors.request.use(
-  (config) => {
-    console.log(`Making ${config.method?.toUpperCase()} request to ${config.url}`);
-    return config;
-  },
-  (error) => {
-    console.error('Request error:', error);
-    return Promise.reject(error);
+// Enhanced API service with fallback mechanism
+class ApiService {
+  constructor() {
+    this.primaryUrl = process.env.REACT_APP_BACKEND_URL;
+    this.fallbackUrl = 'http://localhost:8001';
   }
-);
 
-// Response interceptor for error handling
-api.interceptors.response.use(
-  (response) => {
-    return response;
-  },
-  (error) => {
-    console.error('API Error:', error.response?.data || error.message);
-    return Promise.reject(error);
+  async makeRequest(endpoint, options = {}) {
+    const { method = 'GET', body, headers = {}, timeout = 10000 } = options;
+    
+    // Try primary URL first (emergent agent)
+    if (this.primaryUrl) {
+      try {
+        const controller = new AbortController();
+        const timeoutId = setTimeout(() => controller.abort(), timeout);
+        
+        const response = await fetch(`${this.primaryUrl}/api${endpoint}`, {
+          method,
+          headers: {
+            'Content-Type': 'application/json',
+            ...headers,
+          },
+          body: body ? JSON.stringify(body) : undefined,
+          signal: controller.signal
+        });
+        
+        clearTimeout(timeoutId);
+        
+        if (response.ok) {
+          console.log(`API request successful via primary URL: ${this.primaryUrl}`);
+          return await response.json();
+        } else {
+          throw new Error(`Primary URL failed: ${response.status}`);
+        }
+      } catch (primaryError) {
+        console.warn('Primary backend URL failed, trying fallback:', primaryError.message);
+        
+        // Try fallback URL (localhost)
+        try {
+          const controller = new AbortController();
+          const timeoutId = setTimeout(() => controller.abort(), 5000); // Shorter timeout for localhost
+          
+          const response = await fetch(`${this.fallbackUrl}/api${endpoint}`, {
+            method,
+            headers: {
+              'Content-Type': 'application/json',
+              ...headers,
+            },
+            body: body ? JSON.stringify(body) : undefined,
+            signal: controller.signal
+          });
+          
+          clearTimeout(timeoutId);
+          
+          if (response.ok) {
+            console.log(`API request successful via fallback URL: ${this.fallbackUrl}`);
+            return await response.json();
+          } else {
+            throw new Error(`Fallback URL also failed: ${response.status}`);
+          }
+        } catch (fallbackError) {
+          throw new Error(`Both primary and fallback URLs failed. Primary: ${primaryError.message}, Fallback: ${fallbackError.message}`);
+        }
+      }
+    } else {
+      // No primary URL, use fallback directly
+      const response = await fetch(`${this.fallbackUrl}/api${endpoint}`, {
+        method,
+        headers: {
+          'Content-Type': 'application/json',
+          ...headers,
+        },
+        body: body ? JSON.stringify(body) : undefined,
+      });
+      
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+      
+      console.log(`API request successful via fallback URL: ${this.fallbackUrl}`);
+      return await response.json();
+    }
   }
-);
+}
+
+const apiService = new ApiService();
 
 // Booking service
 export const bookingService = {
   create: async (bookingData) => {
-    const response = await api.post('/bookings', bookingData);
-    return response.data;
+    return await apiService.makeRequest('/bookings', {
+      method: 'POST',
+      body: bookingData,
+    });
   },
   
   getAll: async () => {
-    const response = await api.get('/bookings');
-    return response.data;
+    return await apiService.makeRequest('/bookings');
   },
   
   getById: async (id) => {
-    const response = await api.get(`/bookings/${id}`);
-    return response.data;
+    return await apiService.makeRequest(`/bookings/${id}`);
+  },
+  
+  getByReference: async (referenceNumber) => {
+    return await apiService.makeRequest(`/bookings/reference/${referenceNumber}`);
+  },
+  
+  cancelByReference: async (referenceNumber) => {
+    return await apiService.makeRequest(`/bookings/reference/${referenceNumber}/cancel`, {
+      method: 'POST',
+    });
   },
   
   update: async (id, data) => {
-    const response = await api.put(`/bookings/${id}`, data);
-    return response.data;
+    return await apiService.makeRequest(`/bookings/${id}`, {
+      method: 'PUT',
+      body: data,
+    });
   },
   
   delete: async (id) => {
-    const response = await api.delete(`/bookings/${id}`);
-    return response.data;
+    return await apiService.makeRequest(`/bookings/${id}`, {
+      method: 'DELETE',
+    });
   }
 };
 
@@ -65,39 +130,40 @@ export const bookingService = {
 export const availabilityService = {
   getByDate: async (date) => {
     const dateStr = date instanceof Date ? date.toISOString().split('T')[0] : date;
-    const response = await api.get(`/availability/${dateStr}`);
-    return response.data;
+    return await apiService.makeRequest(`/availability/${dateStr}`);
   }
 };
 
 // Game type service
 export const gameTypeService = {
   getAll: async () => {
-    const response = await api.get('/game-types');
-    return response.data;
+    return await apiService.makeRequest('/game-types');
   }
 };
 
 // Gallery service
 export const galleryService = {
   getAll: async () => {
-    const response = await api.get('/gallery');
-    return response.data;
+    return await apiService.makeRequest('/gallery');
   },
   
   create: async (imageData) => {
-    const response = await api.post('/gallery', imageData);
-    return response.data;
+    return await apiService.makeRequest('/gallery', {
+      method: 'POST',
+      body: imageData,
+    });
   }
 };
 
 // Settings service
 export const settingsService = {
   get: async () => {
-    const response = await api.get('/settings');
-    return response.data;
+    return await apiService.makeRequest('/settings');
   }
 };
 
-// Export the main api instance as well
-export default api;
+// Convenience function for creating bookings (backward compatibility)
+export const createBooking = bookingService.create;
+
+// Export the api service instance as well
+export default apiService;
