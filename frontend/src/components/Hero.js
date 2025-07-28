@@ -43,7 +43,7 @@ const Hero = () => {
   };
 
   return (
-    <section className="relative min-h-screen flex items-center justify-center overflow-hidden bg-gradient-to-br from-gaming-lighter via-gaming-light to-gaming-accent-light/20">
+    <section className="relative min-h-screen flex items-center justify-center overflow-hidden bg-gradient-to-br from-gaming-lighter via-gaming-light to-gaming-accent-light/20 pt-20 md:pt-24">
       {/* Background Slider */}
       <div className="absolute inset-0">
         {heroSlides.map((slide, index) => (
@@ -84,10 +84,10 @@ const Hero = () => {
       {/* Content */}
       <div className="container mx-auto px-4 relative z-10">
         <div className="max-w-6xl mx-auto">
-          <div className="grid lg:grid-cols-2 gap-8 lg:gap-12 items-center min-h-[calc(100vh-80px)]">
+          <div className="grid lg:grid-cols-2 gap-8 lg:gap-12 items-center min-h-[calc(100vh-120px)]">
             {/* Left Content */}
             <div className="text-left py-8 lg:py-0">
-              <div className="inline-flex items-center space-x-2 bg-gaming-light/80 backdrop-blur-sm px-4 lg:px-6 py-2 lg:py-3 rounded-full border border-gaming-accent/20 mb-6 lg:mb-8 animate-fade-in-up shadow-gaming">
+              <div className="inline-flex items-center space-x-2 bg-gaming-light/90 backdrop-blur-sm px-4 lg:px-6 py-2 lg:py-3 rounded-full border border-gaming-accent/20 mb-6 lg:mb-8 animate-fade-in-up shadow-gaming">
                 <Gamepad2 className="w-4 h-4 lg:w-5 lg:h-5 text-gaming-accent" />
                 <span className="text-gaming-accent font-semibold text-xs lg:text-sm tracking-wider uppercase">
                   Karthikeya Games Galaxy
@@ -133,38 +133,38 @@ const Hero = () => {
 
             {/* Right Content - Stats */}
             <div className="grid grid-cols-1 gap-4 lg:gap-6 animate-fade-in-up delay-500">
-              <div className="bg-gaming-light/80 backdrop-blur-md p-6 lg:p-8 rounded-2xl lg:rounded-3xl border border-gaming-border shadow-gaming-lg hover:shadow-gaming-glow transition-all duration-300 group">
+              <div className="bg-gaming-light/90 backdrop-blur-md p-4 sm:p-6 lg:p-8 rounded-2xl lg:rounded-3xl border border-gaming-border shadow-gaming-lg hover:shadow-gaming-glow transition-all duration-300 group">
                 <div className="flex items-center space-x-3 lg:space-x-4">
                   <div className="p-2 lg:p-3 rounded-xl lg:rounded-2xl bg-gaming-accent-light text-gaming-accent">
-                    <Gamepad2 className="w-6 h-6 lg:w-8 lg:h-8" />
+                    <Gamepad2 className="w-5 h-5 sm:w-6 sm:h-6 lg:w-8 lg:h-8" />
                   </div>
                   <div>
-                    <div className="text-2xl lg:text-3xl font-bold text-gaming-accent">5+</div>
-                    <div className="text-gaming-text-secondary font-medium text-sm lg:text-base">Gaming Platforms</div>
+                    <div className="text-xl sm:text-2xl lg:text-3xl font-bold text-gaming-accent">5+</div>
+                    <div className="text-gaming-text-secondary font-medium text-xs sm:text-sm lg:text-base">Gaming Platforms</div>
                   </div>
                 </div>
               </div>
               
-              <div className="bg-gaming-light/80 backdrop-blur-md p-6 lg:p-8 rounded-2xl lg:rounded-3xl border border-gaming-border shadow-gaming-lg hover:shadow-gaming-glow transition-all duration-300 group">
+              <div className="bg-gaming-light/90 backdrop-blur-md p-4 sm:p-6 lg:p-8 rounded-2xl lg:rounded-3xl border border-gaming-border shadow-gaming-lg hover:shadow-gaming-glow transition-all duration-300 group">
                 <div className="flex items-center space-x-3 lg:space-x-4">
                   <div className="p-2 lg:p-3 rounded-xl lg:rounded-2xl bg-gaming-accent-light text-gaming-accent">
-                    <Clock className="w-6 h-6 lg:w-8 lg:h-8" />
+                    <Clock className="w-5 h-5 sm:w-6 sm:h-6 lg:w-8 lg:h-8" />
                   </div>
                   <div>
-                    <div className="text-2xl lg:text-3xl font-bold text-gaming-accent">₹150+</div>
-                    <div className="text-gaming-text-secondary font-medium text-sm lg:text-base">Per Hour</div>
+                    <div className="text-xl sm:text-2xl lg:text-3xl font-bold text-gaming-accent">₹150+</div>
+                    <div className="text-gaming-text-secondary font-medium text-xs sm:text-sm lg:text-base">Per Hour</div>
                   </div>
                 </div>
               </div>
               
-              <div className="bg-gaming-light/80 backdrop-blur-md p-6 lg:p-8 rounded-2xl lg:rounded-3xl border border-gaming-border shadow-gaming-lg hover:shadow-gaming-glow transition-all duration-300 group">
+              <div className="bg-gaming-light/90 backdrop-blur-md p-4 sm:p-6 lg:p-8 rounded-2xl lg:rounded-3xl border border-gaming-border shadow-gaming-lg hover:shadow-gaming-glow transition-all duration-300 group">
                 <div className="flex items-center space-x-3 lg:space-x-4">
                   <div className="p-2 lg:p-3 rounded-xl lg:rounded-2xl bg-gaming-accent-light text-gaming-accent">
-                    <Users className="w-6 h-6 lg:w-8 lg:h-8" />
+                    <Users className="w-5 h-5 sm:w-6 sm:h-6 lg:w-8 lg:h-8" />
                   </div>
                   <div>
-                    <div className="text-2xl lg:text-3xl font-bold text-gaming-accent">100+</div>
-                    <div className="text-gaming-text-secondary font-medium text-sm lg:text-base">Happy Gamers</div>
+                    <div className="text-xl sm:text-2xl lg:text-3xl font-bold text-gaming-accent">100+</div>
+                    <div className="text-gaming-text-secondary font-medium text-xs sm:text-sm lg:text-base">Happy Gamers</div>
                   </div>
                 </div>
               </div>
