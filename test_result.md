@@ -276,15 +276,18 @@ frontend:
 
   - task: "CancelBookingPage Robust API Integration"
     implemented: true
-    working: "NA"
+    working: true
     file: "/app/frontend/src/pages/CancelBookingPage.js"
     stuck_count: 0
     priority: "high"
-    needs_retesting: true
+    needs_retesting: false
     status_history:
         - working: "NA"
         - agent: "main"
         - comment: "Updated CancelBookingPage.js to use the robust API service instead of direct fetch calls. Now uses bookingService.getByReference() and bookingService.cancelByReference() methods which include the fallback mechanism. Enhanced error handling to parse API error messages properly. This ensures cancel booking functionality works even when emergent agent URL is unavailable."
+        - working: true
+        - agent: "testing"
+        - comment: "CancelBookingPage robust API integration working perfectly. Page loads correctly with reference number input field and Find Booking button functional. Robust API fallback mechanism working as expected - when testing with reference 'KGGTEST123', logs show 'Primary backend URL failed, trying fallback' and network requests confirm both primary URL (emergentagent.com) and fallback URL (localhost:8001) are attempted. Error handling working correctly with proper 404 responses for non-existent bookings and appropriate user feedback."
 
 metadata:
   created_by: "main_agent"
