@@ -12,6 +12,6 @@
     "test": "cd frontend && yarn test"
   },
   "keywords": ["gaming", "booking", "react", "fastapi"],
-  "author": "Karthikeya Games Galaxy",
+  "author": "Karthikeya's Games Galaxy",
   "license": "MIT"
 }
