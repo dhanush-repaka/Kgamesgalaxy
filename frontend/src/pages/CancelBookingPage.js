@@ -67,22 +67,7 @@ const CancelBookingPage = () => {
   const cancelBooking = async () => {
     setCancelling(true);
     try {
-      const backendUrl = process.env.REACT_APP_BACKEND_URL || 'http://localhost:8001';
-      const response = await fetch(`${backendUrl}/api/bookings/reference/${referenceNumber.trim()}/cancel`, {
-        method: 'POST',
-      });
-      
-      if (!response.ok) {
-        const errorData = await response.json();
-        toast({
-          title: "Cancellation Failed",
-          description: errorData.detail || "Failed to cancel booking. Please try again.",
-          variant: "destructive"
-        });
-        return;
-      }
-      
-      const result = await response.json();
+      const result = await bookingService.cancelByReference(referenceNumber.trim());
       
       toast({
         title: "Booking Cancelled Successfully! ✅",
@@ -95,9 +80,22 @@ const CancelBookingPage = () => {
       
     } catch (error) {
       console.error('Error cancelling booking:', error);
+      
+      // Try to extract error message from the API response
+      let errorMessage = "Failed to cancel booking. Please try again.";
+      if (error.message.includes('detail')) {
+        // Try to parse error details if available
+        try {
+          const errorData = JSON.parse(error.message);
+          errorMessage = errorData.detail || errorMessage;
+        } catch (parseError) {
+          // Use default message if parsing fails
+        }
+      }
+      
       toast({
-        title: "Error",
-        description: "Failed to cancel booking. Please try again.",
+        title: "Cancellation Failed",
+        description: errorMessage,
         variant: "destructive"
       });
     } finally {
