@@ -248,11 +248,56 @@ body {
 @media (max-width: 768px) {
   .gaming-card {
     border-radius: 12px;
+    padding: 1rem;
   }
   
   .gaming-btn {
     padding: 10px 20px;
     font-size: 13px;
+  }
+  
+  /* Mobile Header Improvements */
+  .mobile-menu {
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(12px);
+    border-radius: 12px;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+    border: 1px solid rgba(226, 232, 240, 0.8);
+  }
+  
+  /* Mobile Typography */
+  h1 {
+    font-size: 2rem;
+    line-height: 1.2;
+  }
+  
+  h2 {
+    font-size: 1.75rem;
+    line-height: 1.3;
+  }
+  
+  h3 {
+    font-size: 1.5rem;
+    line-height: 1.4;
+  }
+  
+  /* Mobile Padding and Spacing */
+  .container {
+    padding-left: 1rem;
+    padding-right: 1rem;
+  }
+  
+  /* Mobile Button Sizing */
+  .mobile-btn {
+    padding: 0.75rem 1.5rem;
+    font-size: 0.875rem;
+    border-radius: 8px;
+  }
+  
+  /* Mobile Card Spacing */
+  .mobile-card {
+    padding: 1rem;
+    margin: 0.5rem 0;
   }
 }
 
