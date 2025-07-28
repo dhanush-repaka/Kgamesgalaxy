@@ -7,7 +7,7 @@
     "yarn": "1.22.x"
   },
   "scripts": {
-    "build": "cd frontend && yarn install --frozen-lockfile && yarn build",
+    "build": "cd frontend && yarn install && yarn build",
     "start": "cd frontend && yarn start",
     "test": "cd frontend && yarn test"
   },
