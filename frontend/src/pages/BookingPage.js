@@ -384,6 +384,18 @@ const BookingPage = () => {
           </div>
         </div>
       </div>
+      
+      {/* Reference Number Modal */}
+      <ReferenceNumberModal
+        isOpen={showReferenceModal}
+        onClose={() => setShowReferenceModal(false)}
+        referenceNumber={bookingResponse?.reference_number}
+        bookingDetails={bookingResponse && selectedDate ? {
+          date: selectedDate,
+          time_slot: formData.time_slot,
+          game_type: formData.game_type
+        } : null}
+      />
     </div>
   );
 };
