@@ -188,8 +188,8 @@ const AdminPage = () => {
           </div>
         )}
 
-        {/* Stats */}
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
+        {/* Statistics Cards */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-6 mb-8">
           <Card className="bg-gaming-card border-gaming-border shadow-gaming">
             <CardContent className="p-6">
               <div className="flex items-center">
@@ -205,7 +205,7 @@ const AdminPage = () => {
           <Card className="bg-gaming-card border-gaming-border shadow-gaming">
             <CardContent className="p-6">
               <div className="flex items-center">
-                <Clock className="w-8 h-8 text-green-500 mr-3" />
+                <AlertCircle className="w-8 h-8 text-yellow-500 mr-3" />
                 <div>
                   <div className="text-2xl font-bold text-gaming-text">
                     {bookings.filter(b => b.status === 'pending').length}
@@ -219,12 +219,26 @@ const AdminPage = () => {
           <Card className="bg-gaming-card border-gaming-border shadow-gaming">
             <CardContent className="p-6">
               <div className="flex items-center">
-                <Gamepad2 className="w-8 h-8 text-blue-500 mr-3" />
+                <CheckCircle className="w-8 h-8 text-green-500 mr-3" />
                 <div>
                   <div className="text-2xl font-bold text-gaming-text">
                     {bookings.filter(b => b.status === 'confirmed').length}
                   </div>
                   <div className="text-gaming-text-secondary">Confirmed</div>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+
+          <Card className="bg-gaming-card border-gaming-border shadow-gaming">
+            <CardContent className="p-6">
+              <div className="flex items-center">
+                <XCircle className="w-8 h-8 text-red-500 mr-3" />
+                <div>
+                  <div className="text-2xl font-bold text-gaming-text">
+                    {bookings.filter(b => b.status === 'cancelled').length}
+                  </div>
+                  <div className="text-gaming-text-secondary">Cancelled</div>
                 </div>
               </div>
             </CardContent>
