@@ -102,7 +102,7 @@
 # Testing Data - Main Agent and testing sub agent both should log testing data below this section
 #====================================================================================================
 
-user_problem_statement: "Mobile UI issues after deployment - mobile menu background not solid, hero and header overlapping, overall not user-friendly on mobile"
+user_problem_statement: "Admin page fails to load bookings when emergent agent is inactive. Need to implement robust API calling mechanism with fallback to ensure consistent functionality."
 
 backend:
   - task: "API Integration for Game Types"
@@ -159,7 +159,7 @@ backend:
     file: "/app/backend/server.py"
     stuck_count: 0
     priority: "high"
-    needs_retesting: false
+    needs_retesting: true
     status_history:
         - working: true
         - agent: "testing"
@@ -170,6 +170,9 @@ backend:
         - working: true
         - agent: "testing"
         - comment: "Comprehensive backend testing completed successfully. All booking API endpoints working perfectly: Health check ✅, Seed database ✅, Game types API ✅, Gallery API ✅, Settings API ✅, Availability API ✅, All booking CRUD operations ✅ (GET all bookings, POST create, GET specific, PUT update, DELETE). Success rate: 94.1%. MongoDB connectivity confirmed. Only minor issue: Admin interface routes to frontend due to Kubernetes ingress configuration (not backend code issue)."
+        - working: "NA"
+        - agent: "main"
+        - comment: "Need to re-test backend endpoints after implementing robust API calling mechanism to ensure all endpoints still function correctly with the new fallback logic."
 
 frontend:
   - task: "Netlify Build Configuration"
@@ -178,7 +181,7 @@ frontend:
     file: "/app/netlify.toml, /app/.netlify/build.sh, /app/validate-build.sh"
     stuck_count: 0
     priority: "high"
-    needs_retesting: false
+    needs_retesting: true
     status_history:
         - working: false
         - agent: "user"
@@ -204,6 +207,9 @@ frontend:
         - working: true
         - agent: "main"
         - comment: "Fixed validation script path issue by implementing dynamic path detection for different environments (Netlify: /opt/build/repo/frontend/build, local: /app/frontend/build, relative: frontend/build). Both primary build and fallback commands now work correctly with proper validation."
+        - working: "NA"
+        - agent: "main"
+        - comment: "Need to verify Netlify deployment after implementing robust API calling mechanism to ensure production deployment works correctly."
 
   - task: "Page Title Updates"
     implemented: true
@@ -234,6 +240,42 @@ frontend:
         - working: true
         - agent: "main"
         - comment: "Fixed mobile UI issues: 1) Added solid background to mobile menu with proper styling, 2) Fixed hero/header overlapping by adding proper padding-top to hero section, 3) Improved mobile responsiveness with better spacing and typography, 4) Enhanced mobile menu styling with rounded corners and shadows, 5) Made header background more consistent across mobile devices. Screenshots confirmed improvements working correctly."
+
+  - task: "Robust API Service Implementation"
+    implemented: true
+    working: "NA"
+    file: "/app/frontend/src/services/api.js"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: true
+    status_history:
+        - working: "NA"
+        - agent: "main"
+        - comment: "Implemented robust API service with fallback mechanism. The ApiService class tries primary REACT_APP_BACKEND_URL first (10s timeout), then falls back to localhost:8001 (5s timeout) if primary fails. Includes proper error handling, timeout management, and logging. All service methods (bookings, availability, gameTypes, gallery, settings) now use this robust mechanism."
+
+  - task: "AdminPage Robust API Integration"
+    implemented: true
+    working: "NA"
+    file: "/app/frontend/src/pages/AdminPage.js"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: true
+    status_history:
+        - working: "NA"
+        - agent: "main"
+        - comment: "Updated AdminPage.js to use the robust API service instead of direct fetch calls. Now uses bookingService.getAll() and bookingService.update() methods which include the fallback mechanism. This ensures admin page works even when emergent agent URL is unavailable."
+
+  - task: "CancelBookingPage Robust API Integration"
+    implemented: true
+    working: "NA"
+    file: "/app/frontend/src/pages/CancelBookingPage.js"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: true
+    status_history:
+        - working: "NA"
+        - agent: "main"
+        - comment: "Updated CancelBookingPage.js to use the robust API service instead of direct fetch calls. Now uses bookingService.getByReference() and bookingService.cancelByReference() methods which include the fallback mechanism. Enhanced error handling to parse API error messages properly. This ensures cancel booking functionality works even when emergent agent URL is unavailable."
 
 metadata:
   created_by: "main_agent"
