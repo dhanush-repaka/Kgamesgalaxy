@@ -1,7 +1,8 @@
 // Enhanced API service with fallback mechanism
 class ApiService {
   constructor() {
-    this.primaryUrl = process.env.REACT_APP_BACKEND_URL;
+    // Hardcoded backend URL for preview environment
+    this.primaryUrl = 'https://e239b078-6e78-47a7-b7f1-cef6da6b3bb4.e1-us-east-1.amy.app';
     this.fallbackUrl = 'http://localhost:8001';
   }
 
