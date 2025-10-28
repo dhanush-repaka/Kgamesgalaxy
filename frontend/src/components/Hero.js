@@ -47,7 +47,7 @@ const Hero = () => {
   };
 
   return (
-    <section className="relative min-h-screen flex items-center justify-center overflow-hidden bg-gradient-to-br from-gaming-lighter via-gaming-light to-gaming-accent-light/20 pt-20 md:pt-24">
+    <section className="relative min-h-screen flex items-center justify-center overflow-hidden bg-gradient-to-br from-gaming-lighter via-gaming-light to-gaming-accent-light/20 pt-32 md:pt-36 lg:pt-40">
       <ParticlesCanvas count={70} />
       {/* Background Slider with subtle parallax */}
       <div className="absolute inset-0">
