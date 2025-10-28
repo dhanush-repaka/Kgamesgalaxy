@@ -274,6 +274,39 @@ const BookingPage = () => {
                   {/* Gaming Preferences */}
                   <div className="space-y-4">
                     <h3 className="text-lg font-semibold text-gaming-text">Gaming Preferences</h3>
+                    
+                    {/* Duration Selection */}
+                    <div>
+                      <Label className="text-gaming-text-secondary font-medium">Duration *</Label>
+                      <Select value={duration.toString()} onValueChange={(value) => setDuration(parseInt(value))}>
+                        <SelectTrigger className="mt-1 bg-gaming-light border-gaming-border text-gaming-text h-10 lg:h-11">
+                          <SelectValue placeholder="Select duration" />
+                        </SelectTrigger>
+                        <SelectContent className="bg-white border-gaming-border shadow-2xl max-h-[300px]">
+                          {durationOptions.map((option) => (
+                            <SelectItem key={option.value} value={option.value.toString()} className="focus:bg-gaming-accent-light cursor-pointer">
+                              {option.label}
+                            </SelectItem>
+                          ))}
+                        </SelectContent>
+                      </Select>
+                    </div>
+
+                    {/* Number of People */}
+                    <div>
+                      <Label htmlFor="numPeople" className="text-gaming-text-secondary font-medium">Number of People *</Label>
+                      <Input
+                        id="numPeople"
+                        type="number"
+                        min="1"
+                        max="20"
+                        value={numPeople}
+                        onChange={(e) => setNumPeople(parseInt(e.target.value) || 1)}
+                        className="mt-1 bg-gaming-light border-gaming-border text-gaming-text focus:border-gaming-accent h-10 lg:h-11"
+                        required
+                      />
+                    </div>
+
                     <div>
                       <Label className="text-gaming-text-secondary font-medium">Game Type *</Label>
                       <Select value={formData.game_type} onValueChange={(value) => handleInputChange('game_type', value)}>
