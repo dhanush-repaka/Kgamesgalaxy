@@ -1,8 +1,12 @@
-// Enhanced API service - simplified for preview environment
+// API service for production and preview environments
 class ApiService {
   constructor() {
-    // In preview environment, all API calls go through the same domain
-    this.baseUrl = '';  // Relative URLs - preview automatically proxies /api to backend
+    // Use environment variable in production, relative path in preview
+    const backendUrl = process.env.REACT_APP_BACKEND_URL;
+    
+    // If we have a backend URL (Netlify), use it. Otherwise use relative path (preview)
+    this.baseUrl = backendUrl || '';
+    console.log('API Service initialized with baseUrl:', this.baseUrl || 'relative paths');
   }
 
   async makeRequest(endpoint, options = {}) {
@@ -12,7 +16,10 @@ class ApiService {
       const controller = new AbortController();
       const timeoutId = setTimeout(() => controller.abort(), timeout);
       
-      const response = await fetch(`/api${endpoint}`, {
+      // Construct full URL
+      const url = this.baseUrl ? `${this.baseUrl}/api${endpoint}` : `/api${endpoint}`;
+      
+      const response = await fetch(url, {
         method,
         headers: {
           'Content-Type': 'application/json',
@@ -31,7 +38,7 @@ class ApiService {
       
       return await response.json();
     } catch (error) {
-      console.error(`API request failed: ${method} /api${endpoint}`, error);
+      console.error(`API request failed: ${method} ${endpoint}`, error);
       throw error;
     }
   }
