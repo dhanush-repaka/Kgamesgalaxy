@@ -91,6 +91,36 @@ const BookingPage = () => {
     loadAvailability();
   }, [selectedDate]);
 
+  // Calculate price when game type, duration, or number of people changes
+  useEffect(() => {
+    const calculatePrice = async () => {
+      if (formData.game_type && duration && numPeople) {
+        try {
+          const response = await fetch('/api/bookings/calculate-price', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              game_type: formData.game_type,
+              duration,
+              num_people: numPeople
+            })
+          });
+          
+          if (response.ok) {
+            const priceData = await response.json();
+            setCalculatedPrice(priceData);
+          }
+        } catch (error) {
+          console.error('Error calculating price:', error);
+        }
+      } else {
+        setCalculatedPrice(null);
+      }
+    };
+    
+    calculatePrice();
+  }, [formData.game_type, duration, numPeople]);
+
   const handleInputChange = (name, value) => {
     setFormData(prev => ({
       ...prev,
