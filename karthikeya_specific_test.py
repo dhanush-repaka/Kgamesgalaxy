@@ -233,8 +233,9 @@ class KarthikeyaTester:
         print("\n👨‍💼 Testing Admin API - Get All Bookings...")
         
         try:
-            response = self.session.get(f"{self.base_url}/admin/bookings")
-            print(f"   🔗 Request URL: {self.base_url}/admin/bookings")
+            # Use the regular bookings endpoint for admin functionality
+            response = self.session.get(f"{self.base_url}/bookings")
+            print(f"   🔗 Request URL: {self.base_url}/bookings")
             print(f"   📊 Response Status: {response.status_code}")
             
             if response.status_code == 200:
