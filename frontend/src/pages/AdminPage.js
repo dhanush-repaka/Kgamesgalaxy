@@ -74,7 +74,7 @@ const AdminPage = () => {
 
   const updateBookingStatus = async (bookingId, newStatus) => {
     try {
-      const updatedBooking = await bookingService.updateBooking(bookingId, { status: newStatus });
+      const updatedBooking = await bookingService.update(bookingId, { status: newStatus });
       
       // Update the booking in the local state
       setBookings(prevBookings => 
