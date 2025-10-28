@@ -368,7 +368,7 @@ const BookingPage = () => {
                     <div className="space-y-3">
                       <div className="flex items-center space-x-3 text-gaming-text-secondary">
                         <Phone className="w-4 h-4 flex-shrink-0" />
-                        <span className="text-sm">+91 77025 28817</span>
+                        <span className="text-sm">+91 7702528817</span>
                       </div>
                       <div className="flex items-center space-x-3 text-gaming-text-secondary">
                         <Clock className="w-4 h-4 flex-shrink-0" />
