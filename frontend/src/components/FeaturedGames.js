@@ -12,7 +12,7 @@ const FeaturedGames = () => {
       category: "Action Adventure",
       rating: 4.9,
       players: "1 Player",
-      image: "https://images.unsplash.com/photo-1577054533619-87061b764cb1?crop=entropy&cs=srgb&fm=jpg&ixid=M3w3NTY2NzB8MHwxfHNlYXJjaHwyfHxtb2Rlcm4lMjBnYW1pbmd8ZW58MHx8fHdoaXRlfDE3NTM2NTcxMDh8MA&ixlib=rb-4.1.0&q=85",
+      image: "https://images.unsplash.com/photo-1607853202273-797f1c22a38e?crop=entropy&cs=srgb&fm=jpg&q=85",
       isNew: true,
       isPopular: false
     },
@@ -23,7 +23,7 @@ const FeaturedGames = () => {
       category: "First Person Shooter",
       rating: 4.7,
       players: "1-16 Players",
-      image: "https://images.unsplash.com/photo-1533381309471-b8e57002fc47?crop=entropy&cs=srgb&fm=jpg&ixid=M3w3NDk1NzZ8MHwxfHNlYXJjaHwyfHxnYW1pbmclMjBzZXR1cHxlbnwwfHx8d2hpdGV8MTc1MzY1NzEwMnww&ixlib=rb-4.1.0&q=85",
+      image: "https://images.unsplash.com/photo-1593118247619-e2d6f056869e?crop=entropy&cs=srgb&fm=jpg&q=85",
       isNew: false,
       isPopular: true
     },
@@ -34,7 +34,7 @@ const FeaturedGames = () => {
       category: "Rhythm VR",
       rating: 4.8,
       players: "1 Player",
-      image: "https://images.unsplash.com/photo-1591182136289-67ff16828fd4?crop=entropy&cs=srgb&fm=jpg&ixid=M3w3NTY2NzB8MHwxfHNlYXJjaHw0fHxtb2Rlcm4lMjBnYW1pbmd8ZW58MHx8fHdhaXRlfDE3NTM2NTcxMDh8MA&ixlib=rb-4.1.0&q=85",
+      image: "https://images.unsplash.com/photo-1593508512255-86ab42a8e620?crop=entropy&cs=srgb&fm=jpg&q=85",
       isNew: false,
       isPopular: true
     },
@@ -45,7 +45,7 @@ const FeaturedGames = () => {
       category: "Strategy",
       rating: 4.6,
       players: "3-4 Players",
-      image: "https://images.unsplash.com/photo-1713511129992-a9320f883070?crop=entropy&cs=srgb&fm=jpg&ixid=M3w3NDk1NzZ8MHwxfHNlYXJjaHwzfHxnYW1pbmclMjBzZXR1cHxlbnwwfHx8d2hpdGV8MTc1MzY1NzEwMnww&ixlib=rb-4.1.0&q=85",
+      image: "https://images.pexels.com/photos/3165335/pexels-photo-3165335.jpeg?auto=compress&cs=tinysrgb&w=800",
       isNew: false,
       isPopular: false
     }
