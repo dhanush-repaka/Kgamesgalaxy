@@ -26,13 +26,13 @@ const Header = () => {
   };
 
   return (
-    <header className={`fixed top-4 left-1/2 -translate-x-1/2 z-50 transition-all duration-300 ${
+    <header className={`fixed top-4 left-1/2 -translate-x-1/2 z-50 transition-all duration-300 w-[95%] max-w-7xl ${
       isScrolled 
         ? 'bg-gaming-card/80 backdrop-blur-lg border border-gaming-border shadow-gaming-lg rounded-2xl px-2' 
         : 'bg-gaming-card/60 backdrop-blur-md border border-gaming-border rounded-3xl px-2'
     }`}>
-      <div className="container mx-auto px-4 py-2 md:py-3">
-        <div className="flex items-center justify-between">
+      <div className="mx-auto px-2 py-2 md:py-3">
+        <div className="flex items-center justify-between gap-4">
           {/* Logo */}
           <div className="cursor-pointer transform hover:scale-105 transition-transform duration-200" onClick={() => navigate('/')}>
             <Logo />
