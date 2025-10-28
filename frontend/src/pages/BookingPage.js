@@ -274,21 +274,37 @@ const BookingPage = () => {
                       </div>
                       <div>
                         <Label className="text-gaming-text-secondary font-medium">Time Slot *</Label>
-                        <Select value={formData.time_slot} onValueChange={(value) => handleInputChange('time_slot', value)}>
+                        <Select 
+                          value={formData.time_slot} 
+                          onValueChange={(value) => handleInputChange('time_slot', value)}
+                          disabled={!selectedDate || availableSlots.length === 0}
+                        >
                           <SelectTrigger className="mt-1 bg-gaming-light border-gaming-border text-gaming-text h-10 lg:h-11">
-                            <SelectValue placeholder="Select time" />
+                            <SelectValue placeholder={
+                              !selectedDate 
+                                ? "Select a date first" 
+                                : availableSlots.length === 0 
+                                  ? "Loading slots..." 
+                                  : "Select time"
+                            } />
                           </SelectTrigger>
-                          <SelectContent className="bg-white border-gaming-border shadow-2xl">
-                            {availableSlots.map((slot) => (
-                              <SelectItem 
-                                key={slot.time} 
-                                value={slot.time}
-                                disabled={!slot.available}
-                                className="focus:bg-gaming-accent-light"
-                              >
-                                {slot.time} {!slot.available && '(Booked)'}
-                              </SelectItem>
-                            ))}
+                          <SelectContent className="bg-white border-gaming-border shadow-2xl max-h-[300px]">
+                            {availableSlots.length > 0 ? (
+                              availableSlots.map((slot) => (
+                                <SelectItem 
+                                  key={slot.time} 
+                                  value={slot.time}
+                                  disabled={!slot.available}
+                                  className="focus:bg-gaming-accent-light cursor-pointer"
+                                >
+                                  {slot.time} {!slot.available && '(Booked)'}
+                                </SelectItem>
+                              ))
+                            ) : (
+                              <div className="px-2 py-6 text-center text-sm text-gray-500">
+                                {selectedDate ? 'No available slots for this date' : 'Please select a date first'}
+                              </div>
+                            )}
                           </SelectContent>
                         </Select>
                       </div>
