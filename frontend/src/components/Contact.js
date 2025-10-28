@@ -112,7 +112,7 @@ const Contact = () => {
                   variant="outline"
                   size="lg"
                   className="border-2 border-gaming-accent text-gaming-accent hover:bg-gaming-accent hover:text-gaming-light px-6 lg:px-8 py-3 lg:py-4 rounded-xl transition-all duration-300 transform hover:scale-105 shadow-gaming text-sm lg:text-base"
-                  onClick={() => window.open('tel:+447440070177')}
+                  onClick={() => window.open('tel:+917702528817')}
                 >
                   Call Now
                 </Button>
