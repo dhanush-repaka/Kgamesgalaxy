@@ -167,7 +167,7 @@ class KarthikeyaTester:
         if self.created_booking_reference:
             try:
                 print(f"   🔗 Testing valid reference: {self.created_booking_reference}")
-                response = self.session.post(f"{self.base_url}/bookings/cancel/{self.created_booking_reference}")
+                response = self.session.post(f"{self.base_url}/bookings/reference/{self.created_booking_reference}/cancel")
                 print(f"   📊 Response Status: {response.status_code}")
                 
                 if response.status_code == 200:
