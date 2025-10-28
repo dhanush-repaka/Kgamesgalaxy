@@ -45,14 +45,22 @@ const BookingPage = () => {
     };
   }, []);
 
-  // Hardcoded game types list
+  // Hardcoded game types list with pricing
   const gameTypes = [
-    { id: 'playstation', name: 'PlayStation', icon: '🎮' },
-    { id: 'playstation_steering', name: 'PlayStation + Steering', icon: '🏎️' },
-    { id: 'xbox', name: 'Xbox', icon: '🎮' },
-    { id: 'nintendo_switch', name: 'Nintendo Switch', icon: '🕹️' },
-    { id: 'vr', name: 'VR', icon: '🥽' },
-    { id: 'board_games', name: 'Board Games', icon: '🎲' }
+    { id: 'playstation', name: 'PlayStation', icon: '🎮', price: 120 },
+    { id: 'playstation_steering', name: 'PS5 + Steering', icon: '🏎️', price: 130 },
+    { id: 'xbox', name: 'Xbox', icon: '🎮', price: 120 },
+    { id: 'nintendo', name: 'Nintendo Switch', icon: '🕹️', price: 120 },
+    { id: 'meta_quest_vr', name: 'Meta Quest VR', icon: '🥽', price: 250 },
+    { id: 'board_games', name: 'Board Games', icon: '🎲', price: 50 }
+  ];
+
+  // Duration options
+  const durationOptions = [
+    { value: 30, label: '30 minutes', display: '30 mins' },
+    { value: 60, label: '1 hour', display: '1 hr' },
+    { value: 90, label: '1 hour 30 minutes', display: '1.5 hrs' },
+    { value: 120, label: '2 hours', display: '2 hrs' }
   ];
 
   // API hooks - only keeping settings for contact info
