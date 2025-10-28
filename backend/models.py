@@ -1,5 +1,5 @@
 from pydantic import BaseModel, EmailStr
-from typing import Optional
+from typing import Optional, List
 from datetime import date, datetime
 
 class BookingCreate(BaseModel):
@@ -36,3 +36,49 @@ class Booking(BaseModel):
 
     class Config:
         from_attributes = True
+
+class TimeSlot(BaseModel):
+    time: str
+    available: bool
+    booked: int = 0
+    capacity: int = 1
+
+class AvailabilityResponse(BaseModel):
+    date: date
+    time_slots: List[TimeSlot]
+
+class GameType(BaseModel):
+    id: str
+    name: str
+    icon: Optional[str] = None
+    description: Optional[str] = None
+
+class GalleryImage(BaseModel):
+    id: str
+    url: str
+    caption: Optional[str] = None
+    category: Optional[str] = None
+
+class GalleryImageCreate(BaseModel):
+    url: str
+    caption: Optional[str] = None
+    category: Optional[str] = None
+
+class ContactInfo(BaseModel):
+    phone: str
+    email: str
+    address: str
+    hours: str
+
+class PricingInfo(BaseModel):
+    game_type: str
+    rate_per_hour: float
+    description: Optional[str] = None
+
+class Settings(BaseModel):
+    id: str
+    site_name: str
+    contact_info: ContactInfo
+    pricing: List[PricingInfo]
+    game_types: List[GameType]
+
