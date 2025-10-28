@@ -22,11 +22,7 @@ const HomePage = () => {
     <div className="min-h-screen bg-gaming-lighter text-gaming-text overflow-x-hidden">
       <Header />
       <Hero />
-      <div className="container mx-auto px-4 -mt-12">
-        <ScrollReveal effect="sr-zoom-in">
-          <HeroBot />
-        </ScrollReveal>
-      </div>
+      <HeroBot />
       <ScrollReveal><LatestGames /></ScrollReveal>
       <ScrollReveal><FeaturedGames /></ScrollReveal>
       <ScrollReveal><Announcements /></ScrollReveal>
