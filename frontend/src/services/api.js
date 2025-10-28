@@ -1,9 +1,9 @@
 // Enhanced API service with fallback mechanism
 class ApiService {
   constructor() {
-    // Hardcoded backend URL for preview environment
-    this.primaryUrl = 'https://e239b078-6e78-47a7-b7f1-cef6da6b3bb4.e1-us-east-1.amy.app';
-    this.fallbackUrl = 'http://localhost:8001';
+    // Use relative /api path - preview environment automatically proxies to backend
+    this.primaryUrl = '';  // Empty string means relative URLs
+    this.fallbackUrl = '';  // No fallback needed in preview
   }
 
   async makeRequest(endpoint, options = {}) {
