@@ -59,7 +59,7 @@ const AdminPage = () => {
   const fetchBookings = async () => {
     try {
       setLoading(true);
-      const data = await bookingService.getAllBookings();
+      const data = await bookingService.getAll();
       setBookings(data.sort((a, b) => new Date(b.created_at) - new Date(a.created_at)));
       setError(null);
       console.log('Successfully fetched bookings');
