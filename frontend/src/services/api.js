@@ -35,20 +35,6 @@ class ApiService {
       throw error;
     }
   }
-          'Content-Type': 'application/json',
-          ...headers,
-        },
-        body: body ? JSON.stringify(body) : undefined,
-      });
-      
-      if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`);
-      }
-      
-      console.log(`API request successful via fallback URL: ${this.fallbackUrl}`);
-      return await response.json();
-    }
-  }
 }
 
 const apiService = new ApiService();
