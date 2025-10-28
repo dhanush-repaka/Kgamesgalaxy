@@ -62,10 +62,10 @@ const HeroBot = () => {
       ref={diceRef}
       className="fixed top-0 left-0 pointer-events-none z-[9999]"
       style={{
-        width: '50px',
-        height: '50px',
-        marginLeft: '-25px',
-        marginTop: '-25px',
+        width: '30px',
+        height: '30px',
+        marginLeft: '-15px',
+        marginTop: '-15px',
         perspective: '1000px',
         transformStyle: 'preserve-3d',
       }}
@@ -84,13 +84,13 @@ const HeroBot = () => {
           <div 
             className="absolute inset-0 bg-gradient-to-br from-white to-gray-100 border-2 border-gaming-accent rounded-lg shadow-gaming-glow flex items-center justify-center"
             style={{
-              transform: 'translateZ(25px)',
+              transform: 'translateZ(15px)',
               backfaceVisibility: 'hidden',
             }}
           >
-            <div className="grid grid-cols-3 gap-1 p-2">
+            <div className="grid grid-cols-3 gap-0.5 p-1">
               {[...Array(6)].map((_, i) => (
-                <div key={i} className="w-1.5 h-1.5 bg-gaming-accent rounded-full" />
+                <div key={i} className="w-1 h-1 bg-gaming-accent rounded-full" />
               ))}
             </div>
           </div>
@@ -99,24 +99,24 @@ const HeroBot = () => {
           <div 
             className="absolute inset-0 bg-gradient-to-br from-white to-gray-100 border-2 border-gaming-accent rounded-lg shadow-gaming-glow flex items-center justify-center"
             style={{
-              transform: 'translateZ(-25px) rotateY(180deg)',
+              transform: 'translateZ(-15px) rotateY(180deg)',
               backfaceVisibility: 'hidden',
             }}
           >
-            <div className="w-2 h-2 bg-gaming-accent rounded-full" />
+            <div className="w-1.5 h-1.5 bg-gaming-accent rounded-full" />
           </div>
           
           {/* Right face */}
           <div 
             className="absolute inset-0 bg-gradient-to-br from-white to-gray-100 border-2 border-gaming-accent rounded-lg shadow-gaming-glow flex items-center justify-center"
             style={{
-              transform: 'rotateY(90deg) translateZ(25px)',
+              transform: 'rotateY(90deg) translateZ(15px)',
               backfaceVisibility: 'hidden',
             }}
           >
-            <div className="grid grid-cols-2 gap-2 p-2">
+            <div className="grid grid-cols-2 gap-1 p-1">
               {[...Array(4)].map((_, i) => (
-                <div key={i} className="w-1.5 h-1.5 bg-gaming-accent rounded-full" />
+                <div key={i} className="w-1 h-1 bg-gaming-accent rounded-full" />
               ))}
             </div>
           </div>
@@ -125,13 +125,13 @@ const HeroBot = () => {
           <div 
             className="absolute inset-0 bg-gradient-to-br from-white to-gray-100 border-2 border-gaming-accent rounded-lg shadow-gaming-glow flex items-center justify-center"
             style={{
-              transform: 'rotateY(-90deg) translateZ(25px)',
+              transform: 'rotateY(-90deg) translateZ(15px)',
               backfaceVisibility: 'hidden',
             }}
           >
-            <div className="grid grid-cols-1 gap-3 p-2">
-              <div className="w-2 h-2 bg-gaming-accent rounded-full mx-auto" />
-              <div className="w-2 h-2 bg-gaming-accent rounded-full mx-auto" />
+            <div className="grid grid-cols-1 gap-2 p-1">
+              <div className="w-1.5 h-1.5 bg-gaming-accent rounded-full mx-auto" />
+              <div className="w-1.5 h-1.5 bg-gaming-accent rounded-full mx-auto" />
             </div>
           </div>
           
@@ -139,20 +139,20 @@ const HeroBot = () => {
           <div 
             className="absolute inset-0 bg-gradient-to-br from-white to-gray-100 border-2 border-gaming-accent rounded-lg shadow-gaming-glow flex items-center justify-center"
             style={{
-              transform: 'rotateX(90deg) translateZ(25px)',
+              transform: 'rotateX(90deg) translateZ(15px)',
               backfaceVisibility: 'hidden',
             }}
           >
-            <div className="grid grid-cols-3 gap-1 p-2">
-              <div className="w-1.5 h-1.5 bg-gaming-accent rounded-full" />
-              <div className="w-1.5 h-1.5" />
-              <div className="w-1.5 h-1.5 bg-gaming-accent rounded-full" />
-              <div className="w-1.5 h-1.5" />
-              <div className="w-1.5 h-1.5 bg-gaming-accent rounded-full" />
-              <div className="w-1.5 h-1.5" />
-              <div className="w-1.5 h-1.5 bg-gaming-accent rounded-full" />
-              <div className="w-1.5 h-1.5" />
-              <div className="w-1.5 h-1.5 bg-gaming-accent rounded-full" />
+            <div className="grid grid-cols-3 gap-0.5 p-1">
+              <div className="w-1 h-1 bg-gaming-accent rounded-full" />
+              <div className="w-1 h-1" />
+              <div className="w-1 h-1 bg-gaming-accent rounded-full" />
+              <div className="w-1 h-1" />
+              <div className="w-1 h-1 bg-gaming-accent rounded-full" />
+              <div className="w-1 h-1" />
+              <div className="w-1 h-1 bg-gaming-accent rounded-full" />
+              <div className="w-1 h-1" />
+              <div className="w-1 h-1 bg-gaming-accent rounded-full" />
             </div>
           </div>
           
@@ -160,22 +160,22 @@ const HeroBot = () => {
           <div 
             className="absolute inset-0 bg-gradient-to-br from-white to-gray-100 border-2 border-gaming-accent rounded-lg shadow-gaming-glow flex items-center justify-center"
             style={{
-              transform: 'rotateX(-90deg) translateZ(25px)',
+              transform: 'rotateX(-90deg) translateZ(15px)',
               backfaceVisibility: 'hidden',
             }}
           >
-            <div className="grid grid-cols-2 gap-1 p-2">
-              <div className="w-2 h-2 bg-gaming-accent rounded-full" />
-              <div className="w-2 h-2 bg-gaming-accent rounded-full" />
-              <div className="w-2 h-2 bg-gaming-accent rounded-full" />
+            <div className="grid grid-cols-2 gap-0.5 p-1">
+              <div className="w-1.5 h-1.5 bg-gaming-accent rounded-full" />
+              <div className="w-1.5 h-1.5 bg-gaming-accent rounded-full" />
+              <div className="w-1.5 h-1.5 bg-gaming-accent rounded-full" />
             </div>
           </div>
         </div>
         
         {/* Glow effect */}
         <div 
-          className="absolute inset-0 bg-gaming-accent/20 rounded-lg blur-xl animate-pulse"
-          style={{ transform: 'translateZ(-10px)' }}
+          className="absolute inset-0 bg-gaming-accent/20 rounded-lg blur-lg animate-pulse"
+          style={{ transform: 'translateZ(-5px)' }}
         />
       </div>
     </div>
