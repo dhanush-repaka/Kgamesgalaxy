@@ -222,7 +222,7 @@ const BookingPage = () => {
                     <h3 className="text-lg font-semibold text-gaming-text">Gaming Preferences</h3>
                     <div>
                       <Label className="text-gaming-text-secondary font-medium">Game Type *</Label>
-                      <Select onValueChange={(value) => handleInputChange('game_type', value)}>
+                      <Select value={formData.game_type} onValueChange={(value) => handleInputChange('game_type', value)}>
                         <SelectTrigger className="mt-1 bg-gaming-light border-gaming-border text-gaming-text h-10 lg:h-11">
                           <SelectValue placeholder="Select game type" />
                         </SelectTrigger>
@@ -266,7 +266,7 @@ const BookingPage = () => {
                       </div>
                       <div>
                         <Label className="text-gaming-text-secondary font-medium">Time Slot *</Label>
-                        <Select onValueChange={(value) => handleInputChange('time_slot', value)}>
+                        <Select value={formData.time_slot} onValueChange={(value) => handleInputChange('time_slot', value)}>
                           <SelectTrigger className="mt-1 bg-gaming-light border-gaming-border text-gaming-text h-10 lg:h-11">
                             <SelectValue placeholder="Select time" />
                           </SelectTrigger>

@@ -2,15 +2,14 @@ import React from 'react';
 
 const Logo = () => {
   return (
-    <div className="flex items-center space-x-3">
-      <img 
-        src="https://customer-assets.emergentagent.com/job_karthigames/artifacts/944govrn_31CB2BE4-F711-4502-BCEE-9C59493726CF.png"
-        alt="Karthikeya's Games Galaxy"
-        className="h-12 w-12 lg:h-14 lg:w-14"
-      />
-      <div className="flex flex-col">
-        <span className="text-xl lg:text-2xl font-bold text-gaming-text">KGG</span>
-        <span className="text-xs lg:text-sm text-gaming-text-secondary font-medium">Games Galaxy</span>
+    <div className="flex items-center space-x-3 select-none">
+      <div className="relative h-10 w-10 lg:h-12 lg:w-12 rounded-xl bg-gaming-accent/15 border border-gaming-accent/30 shadow-gaming-glow overflow-hidden">
+        <div className="absolute inset-0 opacity-60" style={{background: 'radial-gradient(60% 60% at 30% 30%, rgba(59,130,246,0.6) 0%, rgba(59,130,246,0.0) 70%)'}} />
+        <div className="absolute inset-0 flex items-center justify-center font-extrabold text-gaming-accent" style={{textShadow:'0 0 18px rgba(59,130,246,0.65)'}}>GG</div>
+      </div>
+      <div className="flex flex-col leading-none">
+        <span className="text-xl lg:text-2xl font-extrabold text-gaming-text tracking-wide">Games Galaxy</span>
+        <span className="text-[10px] lg:text-xs text-gaming-accent font-semibold uppercase tracking-widest">Karthikeya</span>
       </div>
     </div>
   );

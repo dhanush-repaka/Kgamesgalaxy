@@ -4,6 +4,8 @@ import { Play, ArrowRight, Gamepad2, Clock, Users, Award } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { Parallax } from './ui/parallax';
 import { ParticlesCanvas } from './ui/particles-canvas';
+import { MagneticButton } from './ui/magnetic-button';
+import Marquee from './ui/marquee';
 
 const Hero = () => {
   const navigate = useNavigate();
@@ -115,24 +117,29 @@ const Hero = () => {
 
               {/* CTA Buttons */}
               <div className="flex flex-col sm:flex-row gap-4 mb-8 lg:mb-12 animate-fade-in-up delay-400" data-depth="0.6">
-                <Button 
-                  size="lg"
-                  className="bg-gaming-accent hover:bg-gaming-accent-hover text-gaming-light font-semibold px-6 lg:px-8 py-3 lg:py-4 text-base lg:text-lg rounded-xl transition-all duration-300 transform hover:scale-105 shadow-gaming-lg group"
+                <MagneticButton
+                  className="bg-gaming-accent hover:bg-gaming-accent-hover text-gaming-light font-semibold px-6 lg:px-8 py-3 lg:py-4 text-base lg:text-lg rounded-xl transition-all duration-300 shadow-gaming-lg group"
                   onClick={() => navigate('/booking')}
                 >
-                  <Play className="w-4 h-4 lg:w-5 lg:h-5 mr-2 lg:mr-3 group-hover:scale-110 transition-transform duration-200" />
-                  Book Now
-                  <ArrowRight className="w-4 h-4 lg:w-5 lg:h-5 ml-2 lg:ml-3 group-hover:translate-x-1 transition-transform duration-200" />
-                </Button>
-                <Button 
-                  variant="outline" 
-                  size="lg"
-                  className="border-2 border-gaming-accent text-gaming-accent hover:bg-gaming-accent hover:text-gaming-light px-6 lg:px-8 py-3 lg:py-4 text-base lg:text-lg rounded-xl transition-all duration-300 transform hover:scale-105 backdrop-blur-sm font-semibold shadow-gaming"
+                  <span className="inline-flex items-center">
+                    <Play className="w-4 h-4 lg:w-5 lg:h-5 mr-2 lg:mr-3" />
+                    Book Now
+                    <ArrowRight className="w-4 h-4 lg:w-5 lg:h-5 ml-2 lg:ml-3" />
+                  </span>
+                </MagneticButton>
+                <MagneticButton
+                  className="border-2 border-gaming-accent text-gaming-accent hover:bg-gaming-accent hover:text-gaming-light px-6 lg:px-8 py-3 lg:py-4 text-base lg:text-lg rounded-xl transition-all duration-300 backdrop-blur-sm font-semibold shadow-gaming"
                   onClick={() => scrollToSection('games')}
                 >
-                  <Gamepad2 className="w-4 h-4 lg:w-5 lg:h-5 mr-2 lg:mr-3" />
-                  View Games
-                </Button>
+                  <span className="inline-flex items-center">
+                    <Gamepad2 className="w-4 h-4 lg:w-5 lg:h-5 mr-2 lg:mr-3" />
+                    View Games
+                  </span>
+                </MagneticButton>
+              </div>
+
+              <div className="opacity-90">
+                <Marquee items={["PS5", "Xbox Series X", "Nintendo Switch", "Meta Quest VR", "Board Games", "4K Displays", "Pro Controllers"]} />
               </div>
             </Parallax>
 

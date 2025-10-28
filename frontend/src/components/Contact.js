@@ -1,5 +1,6 @@
 import React from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from './ui/card';
+import { Tilt } from './ui/tilt';
 import { Button } from './ui/button';
 import { MapPin, Phone, Clock, Mail } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
@@ -65,10 +66,9 @@ const Contact = () => {
         {/* Contact Grid */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 lg:gap-8 mb-8 lg:mb-12">
           {contactInfo.map((contact, index) => (
+            <Tilt key={index} className="animate-fade-in-up" style={{ animationDelay: `${index * 100}ms` }}>
             <Card 
-              key={index}
-              className="bg-gaming-card border border-gaming-border hover:border-gaming-accent/30 shadow-gaming hover:shadow-gaming-lg group cursor-pointer transition-all duration-300 hover:scale-105 animate-fade-in-up"
-              style={{ animationDelay: `${index * 100}ms` }}
+              className="bg-gaming-card border border-gaming-border hover:border-gaming-accent/30 shadow-gaming hover:shadow-gaming-lg group cursor-pointer transition-all duration-300"
             >
               <CardHeader className="text-center pb-3 lg:pb-4">
                 <div className="flex items-center justify-center mb-3 lg:mb-4 group-hover:scale-110 transition-transform duration-300">
@@ -85,6 +85,7 @@ const Contact = () => {
                 <div className="text-gaming-text-secondary text-xs lg:text-sm">{contact.subInfo}</div>
               </CardContent>
             </Card>
+            </Tilt>
           ))}
         </div>
 

@@ -4,21 +4,21 @@
 
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Orbitron:wght@400;700;900&display=swap');
 
-/* Custom Clean Gaming Theme Variables */
+/* Dark Neon Theme Variables */
 :root {
-  --gaming-light: #ffffff;
-  --gaming-lighter: #f8fafc;
-  --gaming-card: #ffffff;
-  --gaming-border: #e2e8f0;
-  --gaming-accent: #3b82f6;
-  --gaming-accent-hover: #2563eb;
-  --gaming-accent-light: #dbeafe;
-  --gaming-text: #1e293b;
-  --gaming-text-secondary: #475569;
-  --gaming-text-muted: #64748b;
-  --gaming-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
-  --gaming-shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
-  --gaming-glow: 0 0 20px rgba(59, 130, 246, 0.15);
+  --gaming-light: #0b0f16;
+  --gaming-lighter: #070a10;
+  --gaming-card: #0f1420;
+  --gaming-border: #1e293b;
+  --gaming-accent: #60a5fa; /* neon blue */
+  --gaming-accent-hover: #93c5fd;
+  --gaming-accent-light: rgba(96,165,250,0.12);
+  --gaming-text: #e5e7eb;
+  --gaming-text-secondary: #9ca3af;
+  --gaming-text-muted: #6b7280;
+  --gaming-shadow: 0 8px 20px rgba(0,0,0,0.45);
+  --gaming-shadow-lg: 0 18px 40px rgba(0,0,0,0.55);
+  --gaming-glow: 0 0 28px rgba(96,165,250,0.25);
 }
 
 body {
@@ -26,7 +26,7 @@ body {
   font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  background: var(--gaming-lighter);
+  background: radial-gradient(100% 100% at 50% 0%, #0b1120 0%, #070a10 70%);
   color: var(--gaming-text);
   overflow-x: hidden;
 }
