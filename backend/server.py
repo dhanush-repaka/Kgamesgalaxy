@@ -212,11 +212,11 @@ async def cancel_booking_by_reference(reference_number: str):
 
 # Availability endpoints
 @api_router.get("/availability/{date}", response_model=AvailabilityResponse)
-async def get_availability(date: str):
-    """Get availability for a specific date"""
+async def get_availability(date: str, game_type: str = None, duration: int = 60):
+    """Get availability for a specific date, optionally filtered by game type and duration"""
     try:
         date_obj = datetime.strptime(date, "%Y-%m-%d")
-        availability = await availability_service.get_availability_for_date(date_obj)
+        availability = await availability_service.get_availability(date_obj, game_type, duration)
         return availability
     except ValueError:
         raise HTTPException(status_code=400, detail="Invalid date format. Use YYYY-MM-DD")
