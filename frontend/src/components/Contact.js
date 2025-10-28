@@ -18,7 +18,7 @@ const Contact = () => {
     {
       icon: <Phone className="w-8 h-8" />,
       title: "Call Us",
-      info: "+44 7440 070177",
+      info: "+91 7702528817",
       subInfo: "Available 24/7"
     },
     {
