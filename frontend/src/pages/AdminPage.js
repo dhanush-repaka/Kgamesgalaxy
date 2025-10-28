@@ -4,6 +4,7 @@ import { Button } from '../components/ui/button';
 import { ArrowLeft, Phone, MapPin, Calendar, Clock, User, Mail, Gamepad2, LogOut, CheckCircle, XCircle, AlertCircle, Hash } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import AdminLogin from '../components/AdminLogin';
+import { bookingService } from '../services/api';
 
 const AdminPage = () => {
   const navigate = useNavigate();
