@@ -21,18 +21,29 @@ from services import (
 )
 
 ROOT_DIR = Path(__file__).parent
-load_dotenv(ROOT_DIR / '.env')
+# Only load .env file if it exists (for local development)
+dotenv_path = ROOT_DIR / '.env'
+if dotenv_path.exists():
+    load_dotenv(dotenv_path)
 
 # MongoDB connection
-mongo_url = os.environ['MONGO_URL']
-client = AsyncIOMotorClient(mongo_url)
-db = client[os.environ['DB_NAME']]
+try:
+    mongo_url = os.environ['MONGO_URL']
+    client = AsyncIOMotorClient(mongo_url)
+    db = client[os.environ['DB_NAME']]
+except KeyError as e:
+    print(f"Missing environment variable: {e}")
+    raise
+except Exception as e:
+    print(f"Error connecting to MongoDB: {e}")
+    raise
 
 # Initialize services
 booking_service = BookingService(db)
 availability_service = AvailabilityService(booking_service)
 game_type_service = GameTypeService(db)
 gallery_service = GalleryService(db)
+settings_service = SettingsService(db)
 settings_service = SettingsService(db)
 
 # Create the main app
@@ -294,6 +305,54 @@ async def seed_database():
 # Include the router in the main app
 app.include_router(api_router)
 
+# Simple health check endpoint at the app level
+@app.get("/")
+async def health_check():
+    return {"status": "ok", "message": "Karthikeya Games Galaxy backend is running!"}
+
+# Startup event handler
+@app.on_event("startup")
+async def startup_event():
+    logger.info("Application startup event triggered")
+    logger.info(f"MONGO_URL is set: {'YES' if 'MONGO_URL' in os.environ else 'NO'}")
+    logger.info(f"DB_NAME is set: {'YES' if 'DB_NAME' in os.environ else 'NO'}")
+
+# Admin page to view bookings
+@app.get("/admin/bookings", response_class=HTMLResponse)
+    async def admin_bookings_page():
+        """Simple admin page to view all bookings"""
+        try:
+bookings = await booking_service.get_all_bookings()
+
+# Build a simple HTML table for bookings
+rows = []
+for b in bookings:
+if isinstance(b, dict):
+bid = b.get("id", "")
+game_type = b.get("game_type", "")
+start_time = b.get("start_time", "")
+else:
+bid = getattr(b, "id", "")
+game_type = getattr(b, "game_type", "")
+start_time = getattr(b, "start_time", "")
+rows.append(f"<tr><td>{bid}</td><td>{game_type}</td><td>{start_time}</td></tr>")
+
+html = (
+"<html><head><title>Admin Bookings</title></head><body>"
+"<h1>Bookings</h1>"
+"<table border='1'>"
+"<tr><th>ID</th><th>Game Type</th><th>Start Time</th></tr>"
+f"{''.join(rows)}"
+"</table></body></html>"
+)
+
+return HTMLResponse(content=html)
+except Exception as e:
+logger.error(f"Error fetching bookings for admin page: {e}")
+raise HTTPException(status_code=500, detail="Failed to load admin bookings")
+async def health_check():
+    return {"status": "ok", "message": "Karthikeya Games Galaxy backend is running!"}
+
 # Admin page to view bookings
 @app.get("/admin/bookings", response_class=HTMLResponse)
 async def admin_bookings_page():
@@ -407,7 +466,7 @@ async def admin_bookings_page():
         """
         
         return html_content
-        
+
     except Exception as e:
         logger.error(f"Error loading admin page: {e}")
         return f"<html><body><h1>Error loading bookings: {str(e)}</h1></body></html>"
@@ -416,7 +475,54 @@ async def admin_bookings_page():
 async def shutdown_db_client():
     client.close()
 
+
+# Logging and startup diagnostics
+import os
+import logging
+
+# Configure basic logging so startup issues can be diagnosed
+logging.basicConfig(level=logging.INFO)
+logger = logging.getLogger(__name__)
+import os
+
+# Configure basic logging so startup issues can be diagnosed
+logging.basicConfig(level=logging.INFO)
+logger = logging.getLogger(__name__)
+
 if __name__ == "__main__":
     import uvicorn
     port = int(os.environ.get("PORT", 8001))
+    logger.info(f"Starting server on port {port}")
+    uvicorn.run(app, host="0.0.0.0", port=port)
+
+# Logging and startup diagnostics
+import logging
+import os
+
+# Configure basic logging so startup issues can be diagnosed
+logging.basicConfig(level=logging.INFO)
+logger = logging.getLogger(__name__)
+
+# Determine the configured port (falls back to 8001) and log it
+try:
+    port = int(os.environ.get("PORT", 8001))
+except Exception:
+    port = 8001
+logger.info(f"Configured to start server on port {port}")
+
+@app.on_event("startup")
+async def log_startup_event():
+    # This will run when FastAPI triggers the startup event (useful when running under uvicorn)
+    logger.info("Application startup event triggered. FastAPI app is initializing.")
+if __name__ == "__main__":
+    import uvicorn
+    port = int(os.environ.get("PORT", 8001))
+    print(f"Starting server on port {port}")
+
+    # Debug information
+    print("Environment variables:")
+    print(f"  PORT: {os.environ.get('PORT', 'Not set')}")
+    print(f"  MONGO_URL: {'SET' if 'MONGO_URL' in os.environ else 'Not set'}")
+    print(f"  DB_NAME: {'SET' if 'DB_NAME' in os.environ else 'Not set'}")
+
     uvicorn.run(app, host="0.0.0.0", port=port)
