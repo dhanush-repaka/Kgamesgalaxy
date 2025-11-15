@@ -26,32 +26,41 @@ class BookingService:
 
     async def create_booking(self, booking_data: dict) -> Booking:
         """Create a new booking with price calculation"""
-        price = self.calculate_price(
-            booking_data['game_type'],
-            booking_data.get('duration', 60),
-            booking_data.get('num_people', 1)
-        )
+        try:
+            price = self.calculate_price(
+                booking_data['game_type'],
+                booking_data.get('duration', 60),
+                booking_data.get('num_people', 1)
+            )
 
-        booking_id = str(uuid.uuid4())
-        reference_number = f"KGG{datetime.now().strftime('%Y%m%d')}{booking_id[:8].upper()}"
-        current_time = datetime.utcnow()
+            booking_id = str(uuid.uuid4())
+            reference_number = f"KGG{datetime.now().strftime('%Y%m%d')}{booking_id[:8].upper()}"
+            current_time = datetime.utcnow()
 
-        if isinstance(booking_data.get('date'), str):
-            booking_data['date'] = datetime.fromisoformat(booking_data['date'].replace('Z', '+00:00')).date()
+            if isinstance(booking_data.get('date'), str):
+                booking_data['date'] = datetime.fromisoformat(booking_data['date'].replace('Z', '+00:00')).date()
 
-        booking_data['id'] = booking_id
-        booking_data['reference_number'] = reference_number
-        booking_data['price'] = price
-        booking_data['status'] = 'pending'
-        booking_data['created_at'] = current_time
-        booking_data['updated_at'] = current_time
+            booking_data['id'] = booking_id
+            booking_data['reference_number'] = reference_number
+            booking_data['price'] = price
+            booking_data['status'] = 'pending'
+            booking_data['created_at'] = current_time
+            booking_data['updated_at'] = current_time
 
-        booking = Booking(**booking_data)
-        booking_dict = booking.dict()
-        await self.collection.insert_one(booking_dict)
+            booking = Booking(**booking_data)
 
-        logger.info(f"Created booking for {booking.name} on {booking.date} - Price: ₹{price}")
-        return booking
+            try:
+                booking_dict = booking.model_dump()
+            except AttributeError:
+                booking_dict = booking.dict()
+
+            await self.collection.insert_one(booking_dict)
+
+            logger.info(f"Created booking for {booking.name} on {booking.date} - Price: ₹{price}")
+            return booking
+        except Exception as e:
+            logger.error(f"Error in create_booking: {str(e)}", exc_info=True)
+            raise
 
     async def get_all_bookings(self) -> List[Booking]:
         """Get all bookings"""

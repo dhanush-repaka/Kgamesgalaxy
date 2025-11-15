@@ -36,6 +36,10 @@ class Booking(BaseModel):
 
     class Config:
         from_attributes = True
+        json_encoders = {
+            datetime: lambda v: v.isoformat(),
+            date: lambda v: v.isoformat()
+        }
 
 class TimeSlot(BaseModel):
     time: str
