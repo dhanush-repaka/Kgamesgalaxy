@@ -26,19 +26,19 @@ class BookingService:
 
     async def create_booking(self, booking_data: dict) -> Booking:
         """Create a new booking with price calculation"""
-        # Calculate price
         price = self.calculate_price(
             booking_data['game_type'],
             booking_data.get('duration', 60),
             booking_data.get('num_people', 1)
         )
 
-        # Generate unique identifiers and timestamps
         booking_id = str(uuid.uuid4())
         reference_number = f"KGG{datetime.now().strftime('%Y%m%d')}{booking_id[:8].upper()}"
         current_time = datetime.utcnow()
 
-        # Populate booking data with required fields
+        if isinstance(booking_data.get('date'), str):
+            booking_data['date'] = datetime.fromisoformat(booking_data['date'].replace('Z', '+00:00')).date()
+
         booking_data['id'] = booking_id
         booking_data['reference_number'] = reference_number
         booking_data['price'] = price

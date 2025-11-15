@@ -84,9 +84,12 @@ async def create_booking(booking_data: BookingCreate):
     try:
         booking = await booking_service.create_booking(booking_data.dict())
         return booking
+    except ValueError as e:
+        logger.error(f"Validation error creating booking: {e}")
+        raise HTTPException(status_code=400, detail=str(e))
     except Exception as e:
-        logger.error(f"Error creating booking: {e}")
-        raise HTTPException(status_code=500, detail="Failed to create booking")
+        logger.error(f"Error creating booking: {e}", exc_info=True)
+        raise HTTPException(status_code=500, detail=f"Failed to create booking: {str(e)}")
 
 @api_router.post("/bookings/calculate-price")
 async def calculate_price(data: dict):
