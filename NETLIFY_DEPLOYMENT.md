@@ -48,16 +48,24 @@ Node version: 20
 ```
 
 #### C. Environment Variables
-**IMPORTANT:** Add these in Netlify dashboard:
+
+**IMPORTANT:** The API proxy is configured in `netlify.toml` and `_redirects` files, so you **DO NOT need** to set `REACT_APP_BACKEND_URL` in Netlify.
+
+**Optional Environment Variables** (only if you want to override the proxy):
 
 Go to: Site settings → Build & deploy → Environment variables
 
 ```
-REACT_APP_BACKEND_URL = https://e239b078-6e78-47a7-b7f1-cef6da6b3bb4.e1-us-east-1.amy.app
 NODE_VERSION = 20
 YARN_VERSION = 1.22.19
 CI = true
 ```
+
+**Note:** The frontend uses Netlify's proxy feature to forward `/api/*` requests to the backend. This is configured in:
+- `netlify.toml` - Main proxy configuration
+- `frontend/public/_redirects` - Backup proxy configuration
+
+If you need to change the backend URL, update it in both files.
 
 #### D. Deploy
 1. Click "Deploy site"

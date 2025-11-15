@@ -96,28 +96,21 @@ const BookingPage = () => {
     const calculatePrice = async () => {
       if (formData.game_type && duration && numPeople) {
         try {
-          const response = await fetch('/api/bookings/calculate-price', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-              game_type: formData.game_type,
-              duration,
-              num_people: numPeople
-            })
+          const priceData = await bookingService.calculatePrice({
+            game_type: formData.game_type,
+            duration,
+            num_people: numPeople
           });
-          
-          if (response.ok) {
-            const priceData = await response.json();
-            setCalculatedPrice(priceData);
-          }
+          setCalculatedPrice(priceData);
         } catch (error) {
           console.error('Error calculating price:', error);
+          setCalculatedPrice(null);
         }
       } else {
         setCalculatedPrice(null);
       }
     };
-    
+
     calculatePrice();
   }, [formData.game_type, duration, numPeople]);
 
