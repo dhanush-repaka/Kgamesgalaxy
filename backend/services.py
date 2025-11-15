@@ -1,4 +1,4 @@
-from datetime import datetime, timedelta, time
+from datetime import datetime, date, timedelta, time
 from typing import List, Optional, Dict
 from models import Booking, GameType, GalleryImage, Settings, TimeSlot, AvailabilityResponse, PricingInfo, ContactInfo
 from motor.motor_asyncio import AsyncIOMotorDatabase
@@ -12,6 +12,13 @@ class BookingService:
     def __init__(self, db: AsyncIOMotorDatabase):
         self.db = db
         self.collection = db.bookings
+
+    def _prepare_booking_doc(self, booking_doc: dict) -> dict:
+        """Convert datetime to date for the date field when reading from MongoDB"""
+        if booking_doc and 'date' in booking_doc:
+            if isinstance(booking_doc['date'], datetime):
+                booking_doc['date'] = booking_doc['date'].date()
+        return booking_doc
 
     def calculate_price(self, game_type: str, duration: int, num_people: int) -> float:
         """Calculate total price based on game type, duration, and number of people"""
@@ -37,8 +44,16 @@ class BookingService:
             reference_number = f"KGG{datetime.now().strftime('%Y%m%d')}{booking_id[:8].upper()}"
             current_time = datetime.utcnow()
 
-            if isinstance(booking_data.get('date'), str):
-                booking_data['date'] = datetime.fromisoformat(booking_data['date'].replace('Z', '+00:00')).date()
+            # Normalize the incoming date into a datetime object so MongoDB can encode it.
+            incoming_date = booking_data.get('date')
+            if isinstance(incoming_date, str):
+                # Parse ISO strings; preserve timezone if provided, otherwise assume naive UTC
+                parsed = datetime.fromisoformat(incoming_date.replace('Z', '+00:00'))
+                booking_data['date'] = parsed
+            elif isinstance(incoming_date, date) and not isinstance(incoming_date, datetime):
+                # If a date (but not datetime) was provided, convert to datetime at midnight
+                booking_data['date'] = datetime.combine(incoming_date, datetime.min.time())
+            # If it's already a datetime, leave as-is.
 
             booking_data['id'] = booking_id
             booking_data['reference_number'] = reference_number
@@ -54,6 +69,10 @@ class BookingService:
             except AttributeError:
                 booking_dict = booking.dict()
 
+            # Ensure the dict that goes into MongoDB has a datetime for 'date'
+            if 'date' in booking_dict and isinstance(booking_dict['date'], date) and not isinstance(booking_dict['date'], datetime):
+                booking_dict['date'] = datetime.combine(booking_dict['date'], datetime.min.time())
+
             await self.collection.insert_one(booking_dict)
 
             logger.info(f"Created booking for {booking.name} on {booking.date} - Price: ₹{price}")
@@ -67,14 +86,29 @@ class BookingService:
         cursor = self.collection.find()
         bookings = []
         async for booking_doc in cursor:
-            bookings.append(Booking(**booking_doc))
+            prepared = self._prepare_booking_doc(booking_doc)
+            try:
+                bookings.append(Booking(**prepared))
+            except Exception as e:
+                # As a fallback, ensure 'date' is a date() if possible and try again
+                logger.debug(f"Failed to construct Booking directly, error: {e}", exc_info=True)
+                if prepared and 'date' in prepared and isinstance(prepared['date'], datetime):
+                    prepared['date'] = prepared['date'].date()
+                bookings.append(Booking(**prepared))
         return bookings
 
     async def get_booking_by_id(self, booking_id: str) -> Optional[Booking]:
         """Get booking by ID"""
         booking_doc = await self.collection.find_one({"id": booking_id})
         if booking_doc:
-            return Booking(**booking_doc)
+            prepared = self._prepare_booking_doc(booking_doc)
+            try:
+                return Booking(**prepared)
+            except Exception as e:
+                logger.debug(f"Failed to construct Booking for id={booking_id}, error: {e}", exc_info=True)
+                if prepared and 'date' in prepared and isinstance(prepared['date'], datetime):
+                    prepared['date'] = prepared['date'].date()
+                return Booking(**prepared)
         return None
 
     async def update_booking(self, booking_id: str, update_data: dict) -> Optional[Booking]:
@@ -98,6 +132,7 @@ class BookingService:
         """Get booking by reference number"""
         booking_doc = await self.collection.find_one({"reference_number": reference_number})
         if booking_doc:
+            booking_doc = self._prepare_booking_doc(booking_doc)
             return Booking(**booking_doc)
         return None
 
@@ -115,6 +150,7 @@ class BookingService:
 
         bookings = []
         async for booking_doc in cursor:
+            booking_doc = self._prepare_booking_doc(booking_doc)
             bookings.append(Booking(**booking_doc))
         return bookings
 
@@ -133,6 +169,7 @@ class BookingService:
 
         bookings = []
         async for booking_doc in cursor:
+            booking_doc = self._prepare_booking_doc(booking_doc)
             bookings.append(Booking(**booking_doc))
         return bookings
 
