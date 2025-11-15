@@ -1,5 +1,6 @@
 from fastapi import FastAPI, APIRouter, HTTPException, Depends
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.middleware.trustedhost import TrustedHostMiddleware
 from fastapi.responses import HTMLResponse
 from dotenv import load_dotenv
 from motor.motor_asyncio import AsyncIOMotorClient
@@ -11,11 +12,11 @@ from typing import List, Optional
 
 # Import models and services
 from models import (
-    Booking, BookingCreate, BookingUpdate, GameType, GalleryImage, 
+    Booking, BookingCreate, BookingUpdate, GameType, GalleryImage,
     GalleryImageCreate, Settings, AvailabilityResponse
 )
 from services import (
-    BookingService, AvailabilityService, GameTypeService, 
+    BookingService, AvailabilityService, GameTypeService,
     GalleryService, SettingsService
 )
 
@@ -36,6 +37,11 @@ settings_service = SettingsService(db)
 
 # Create the main app
 app = FastAPI(title="Karthikeya Games Galaxy API", version="1.0.0")
+
+# Add TrustedHostMiddleware to allow Railway domains
+app.add_middleware(
+    TrustedHostMiddleware, allowed_hosts=["kgamesgalaxy-production.up.railway.app", "*.up.railway.app", "localhost", "127.0.0.1"]
+)
 
 # Create router with /api prefix
 api_router = APIRouter(prefix="/api")
