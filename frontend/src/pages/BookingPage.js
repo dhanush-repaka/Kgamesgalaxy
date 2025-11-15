@@ -14,7 +14,7 @@ import { bookingService, availabilityService, settingsService } from '../service
 import { createBooking } from '../services/api';
 import ReferenceNumberModal from '../components/ReferenceNumberModal';
 import { useApi, useApiMutation } from '../hooks/useApi';
-import HeroBot from '../components/HeroBot';
+import SplashCursor from '../components/SplashCursor';
 
 const BookingPage = () => {
   const navigate = useNavigate();
@@ -214,7 +214,7 @@ const BookingPage = () => {
 
   return (
     <div className="min-h-screen bg-gaming-lighter">
-      <HeroBot />
+      <SplashCursor />
       {/* Header */}
       <div className="bg-gaming-light border-b border-gaming-border shadow-gaming">
         <div className="container mx-auto px-4 py-4">

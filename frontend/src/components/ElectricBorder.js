@@ -5,7 +5,7 @@ const ElectricBorder = ({
   color = '#7df9ff',
   speed = 1,
   chaos = 0.5,
-  thickness = 3,
+  thickness = 4,
   style = {},
   className = ''
 }) => {
@@ -34,7 +34,7 @@ const ElectricBorder = ({
         cancelAnimationFrame(animationRef.current);
       }
     };
-  }, [speed, chaos]);
+  }, [speed]);
 
   const borderRadius = style.borderRadius || 16;
 
@@ -43,10 +43,10 @@ const ElectricBorder = ({
       className={`electric-border-container ${className}`}
       style={{
         position: 'relative',
-        padding: `${thickness}px`,
         borderRadius: `${borderRadius}px`,
-        background: `linear-gradient(135deg, ${color}60, transparent, ${color}60)`,
-        boxShadow: `0 0 30px ${color}40`,
+        padding: `${thickness}px`,
+        background: color,
+        boxShadow: `0 0 40px ${color}, 0 0 80px ${color}80`,
         ...style
       }}
     >
@@ -64,7 +64,7 @@ const ElectricBorder = ({
             <feDisplacementMap
               in="SourceGraphic"
               in2="turbulence"
-              scale={chaos * 10}
+              scale={chaos * 15}
               xChannelSelector="R"
               yChannelSelector="G"
             />
@@ -77,11 +77,9 @@ const ElectricBorder = ({
         style={{
           position: 'relative',
           borderRadius: `${borderRadius - thickness}px`,
-          border: `${thickness}px solid ${color}`,
-          filter: `url(#${filterId}) drop-shadow(0 0 10px ${color})`,
-          boxShadow: `0 0 20px ${color}80, inset 0 0 20px ${color}30`,
           overflow: 'hidden',
-          background: 'transparent'
+          background: '#1a1a2e',
+          filter: `url(#${filterId})`
         }}
       >
         {children}
