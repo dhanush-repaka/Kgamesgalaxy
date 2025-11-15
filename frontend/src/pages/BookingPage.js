@@ -74,22 +74,43 @@ const BookingPage = () => {
         setAvailableSlots([]);
         return;
       }
-      
+
       try {
-        console.log('Loading availability for date:', selectedDate);
+        console.log('📅 Loading availability for date:', selectedDate);
         const availability = await availabilityService.getByDate(selectedDate);
-        console.log('Availability response:', availability);
+        console.log('✅ Availability response:', availability);
+
+        if (!availability) {
+          console.warn('⚠️ No availability data returned');
+          setAvailableSlots([]);
+          return;
+        }
+
         const slots = Array.isArray(availability?.time_slots) ? availability.time_slots : [];
-        console.log('Setting available slots:', slots);
+        console.log('🕐 Available slots count:', slots.length);
+        console.log('🕐 Slots data:', slots);
+
+        if (slots.length === 0) {
+          console.warn('⚠️ No time slots available for this date');
+        }
+
         setAvailableSlots(slots);
       } catch (error) {
-        console.error('Error loading availability:', error);
+        console.error('❌ Error loading availability:', error);
+        console.error('❌ Error details:', error?.message ?? error);
         setAvailableSlots([]);
+
+        // Show user-friendly error
+        toast({
+          title: "Failed to load time slots",
+          description: "Please try selecting the date again or check your connection.",
+          variant: "destructive"
+        });
       }
     };
-    
+
     loadAvailability();
-  }, [selectedDate]);
+  }, [selectedDate, toast]);
 
   // Calculate price when game type, duration, or number of people changes
   useEffect(() => {
