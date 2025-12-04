@@ -1,43 +1,57 @@
 import React, { useState, useEffect } from 'react';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '../components/ui/card';
+import {
+  Card, CardContent, CardDescription, CardHeader, CardTitle
+} from '../components/ui/card';
 import { Button } from '../components/ui/button';
 import { Input } from '../components/ui/input';
 import { Label } from '../components/ui/label';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '../components/ui/select';
+import {
+  Select, SelectContent, SelectItem, SelectTrigger, SelectValue
+} from '../components/ui/select';
 import { Calendar } from '../components/ui/calendar';
 import { Popover, PopoverContent, PopoverTrigger } from '../components/ui/popover';
-import { ArrowLeft, Calendar as CalendarIcon, Clock, GamepadIcon, Phone, MapPin } from 'lucide-react';
+import {
+  ArrowLeft, Calendar as CalendarIcon, Clock, GamepadIcon, Phone, MapPin
+} from 'lucide-react';
+
 import { format } from 'date-fns';
 import { useNavigate } from 'react-router-dom';
 import { useToast } from '../hooks/use-toast';
-import { bookingService, availabilityService, settingsService } from '../services/api';
-import { createBooking } from '../services/api';
+
+import {
+  bookingService,
+  availabilityService,
+  settingsService
+} from '../services/api';
+
 import ReferenceNumberModal from '../components/ReferenceNumberModal';
 import { useApi, useApiMutation } from '../hooks/useApi';
 import SplashCursor from '../components/SplashCursor';
 
+
 const BookingPage = () => {
   const navigate = useNavigate();
   const { toast } = useToast();
+
+
   const [selectedDate, setSelectedDate] = useState(null);
   const [availableSlots, setAvailableSlots] = useState([]);
-  const [duration, setDuration] = useState(60); // Duration in minutes
-  const [numPeople, setNumPeople] = useState(1); // Number of people
-  const [calculatedPrice, setCalculatedPrice] = useState(null); // Calculated price
+  const [duration, setDuration] = useState(60);
+  const [numPeople, setNumPeople] = useState(1);
+  const [calculatedPrice, setCalculatedPrice] = useState(null);
+
   const [formData, setFormData] = useState({
     name: '',
     phone: '',
     email: '',
     game_type: '',
     time_slot: '',
-    special_requests: ''
+    special_requests: '',
   });
-  
-  // Modal state for reference number
+
   const [showReferenceModal, setShowReferenceModal] = useState(false);
   const [bookingResponse, setBookingResponse] = useState(null);
 
-  // Set page title
   useEffect(() => {
     document.title = "Book Your Gaming Session - Karthikeya's Games Galaxy";
     return () => {
@@ -45,29 +59,25 @@ const BookingPage = () => {
     };
   }, []);
 
-  // Hardcoded game types list with pricing
   const gameTypes = [
     { id: 'playstation', name: 'PlayStation', icon: '🎮', price: 120 },
     { id: 'playstation_steering', name: 'PS5 + Steering', icon: '🏎️', price: 130 },
     { id: 'xbox', name: 'Xbox', icon: '🎮', price: 120 },
     { id: 'nintendo', name: 'Nintendo Switch', icon: '🕹️', price: 120 },
     { id: 'meta_quest_vr', name: 'Meta Quest VR', icon: '🥽', price: 250 },
-    { id: 'board_games', name: 'Board Games', icon: '🎲', price: 50 }
+    { id: 'board_games', name: 'Board Games', icon: '🎲', price: 50 },
   ];
 
-  // Duration options
   const durationOptions = [
-    { value: 30, label: '30 minutes', display: '30 mins' },
-    { value: 60, label: '1 hour', display: '1 hr' },
-    { value: 90, label: '1 hour 30 minutes', display: '1.5 hrs' },
-    { value: 120, label: '2 hours', display: '2 hrs' }
+    { value: 30, label: '30 minutes' },
+    { value: 60, label: '1 hour' },
+    { value: 90, label: '1 hour 30 minutes' },
+    { value: 120, label: '2 hours' },
   ];
 
-  // API hooks - only keeping settings for contact info
   const { data: settings, loading: settingsLoading } = useApi(settingsService.get, []);
   const { mutate: createBooking, loading: bookingLoading } = useApiMutation(bookingService.create);
 
-  // Load availability when date changes
   useEffect(() => {
     const loadAvailability = async () => {
       if (!selectedDate) {
@@ -76,35 +86,32 @@ const BookingPage = () => {
       }
 
       try {
-        console.log('📅 Loading availability for date:', selectedDate);
-        const availability = await availabilityService.getByDate(selectedDate);
-        console.log('✅ Availability response:', availability);
+        const formattedDate = format(selectedDate, "yyyy-MM-dd");
+        console.log("📅 Fetching availability for:", formattedDate);
 
-        if (!availability) {
-          console.warn('⚠️ No availability data returned');
-          setAvailableSlots([]);
-          return;
-        }
+        const availability = await availabilityService.getByDate(formattedDate);
+        console.log("🔍 Raw availability:", availability);
 
-        const slots = Array.isArray(availability?.time_slots) ? availability.time_slots : [];
-        console.log('🕐 Available slots count:', slots.length);
-        console.log('🕐 Slots data:', slots);
+        
+        const slots =
+          (Array.isArray(availability?.time_slots) && availability.time_slots) ||
+          (Array.isArray(availability?.slots) && availability.slots) ||
+          [];
 
         if (slots.length === 0) {
-          console.warn('⚠️ No time slots available for this date');
+          console.warn("⚠️ No available slots for selected date.");
         }
 
         setAvailableSlots(slots);
       } catch (error) {
-        console.error('❌ Error loading availability:', error);
-        console.error('❌ Error details:', error?.message ?? error);
+        console.error("❌ Error loading availability:", error);
+
         setAvailableSlots([]);
 
-        // Show user-friendly error
         toast({
           title: "Failed to load time slots",
-          description: "Please try selecting the date again or check your connection.",
-          variant: "destructive"
+          description: "There was an issue fetching availability. Try again.",
+          variant: "destructive",
         });
       }
     };
@@ -112,97 +119,90 @@ const BookingPage = () => {
     loadAvailability();
   }, [selectedDate, toast]);
 
-  // Calculate price when game type, duration, or number of people changes
   useEffect(() => {
     const calculatePrice = async () => {
       if (formData.game_type && duration && numPeople) {
         try {
-          const priceData = await bookingService.calculatePrice({
+          const result = await bookingService.calculatePrice({
             game_type: formData.game_type,
             duration,
-            num_people: numPeople
+            num_people: numPeople,
           });
-          setCalculatedPrice(priceData);
+
+          setCalculatedPrice(result);
         } catch (error) {
-          console.error('Error calculating price:', error);
+          console.error("Price calculation error:", error);
           setCalculatedPrice(null);
         }
-      } else {
-        setCalculatedPrice(null);
       }
     };
 
     calculatePrice();
   }, [formData.game_type, duration, numPeople]);
 
-  const handleInputChange = (name, value) => {
-    setFormData(prev => ({
-      ...prev,
-      [name]: value
-    }));
+  
+  const handleInputChange = (field, value) => {
+    setFormData(prev => ({ ...prev, [field]: value }));
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    
+
     if (!selectedDate || !formData.name || !formData.phone || !formData.game_type || !formData.time_slot) {
       toast({
         title: "Missing Information",
-        description: "Please fill in all required fields",
-        variant: "destructive"
+        description: "Please fill all required fields.",
+        variant: "destructive",
       });
       return;
     }
 
     try {
+      const formattedDate = format(selectedDate, "yyyy-MM-dd");
+
       const bookingData = {
         ...formData,
-        date: selectedDate.toISOString(),
+        date: formattedDate,
         duration,
         num_people: numPeople,
-        price: calculatedPrice?.total_price || 0
+        price: calculatedPrice?.total_price || 0,
       };
 
       const response = await createBooking(bookingData);
-      
-      // Store booking response for modal
+
       setBookingResponse(response);
-      
-      // Show reference number modal
       setShowReferenceModal(true);
-      
-      // Show success toast
+
       toast({
-        title: "Booking Confirmed! 🎮",
-        description: `Your reference number is ${response.reference_number}`,
-        duration: 5000,
+        title: "Booking Confirmed!",
+        description: `Reference Number: ${response.reference_number}`,
       });
 
-      // Reset form
+    
       setFormData({
         name: '',
         phone: '',
         email: '',
         game_type: '',
         time_slot: '',
-        special_requests: ''
+        special_requests: '',
       });
       setSelectedDate(null);
       setAvailableSlots([]);
 
     } catch (error) {
-      console.error('Booking error:', error);
+      console.error("Booking failed:", error);
+
       toast({
         title: "Booking Failed",
-        description: "There was an error processing your booking. Please try again.",
-        variant: "destructive"
+        description: "Error processing your booking. Try again.",
+        variant: "destructive",
       });
     }
   };
 
-  const getGameTypeDisplay = (gameType) => {
-    return `${gameType.icon} ${gameType.name}`;
-  };
+  const getGameTypeDisplay = (game) => `${game.icon} ${game.name}`;
+
 
   if (settingsLoading) {
     return (
@@ -215,331 +215,311 @@ const BookingPage = () => {
   return (
     <div className="min-h-screen bg-gaming-lighter">
       <SplashCursor />
-      {/* Header */}
+
+     
       <div className="bg-gaming-light border-b border-gaming-border shadow-gaming">
-        <div className="container mx-auto px-4 py-4">
-          <div className="flex items-center space-x-4">
-            <Button
-              variant="ghost"
-              onClick={() => navigate('/')}
-              className="text-gaming-text-secondary hover:text-gaming-accent"
-            >
-              <ArrowLeft className="w-4 h-4 mr-2" />
-              Back to Home
-            </Button>
-            <h1 className="text-2xl font-bold text-gaming-text">Book Your Gaming Session</h1>
-          </div>
+        <div className="container mx-auto px-4 py-4 flex items-center space-x-4">
+          <Button variant="ghost" onClick={() => navigate('/')} className="text-gaming-text-secondary">
+            <ArrowLeft className="w-4 h-4 mr-2" />
+            Back to Home
+          </Button>
+          <h1 className="text-2xl font-bold text-gaming-text">Book Your Gaming Session</h1>
         </div>
       </div>
 
-      <div className="container mx-auto px-4 py-8">
-        <div className="grid grid-cols-1 xl:grid-cols-3 gap-6 lg:gap-8">
-          {/* Booking Form */}
-          <div className="xl:col-span-2">
-            <Card className="bg-gaming-card border-gaming-border shadow-gaming-lg">
-              <CardHeader className="pb-4">
-                <CardTitle className="text-gaming-text text-xl lg:text-2xl">Booking Details</CardTitle>
-                <CardDescription className="text-gaming-text-secondary text-sm lg:text-base">
-                  Fill in your details to reserve your gaming session. Pricing will be shared during confirmation.
-                </CardDescription>
-              </CardHeader>
-              <CardContent className="pt-0">
-                <form onSubmit={handleSubmit} className="space-y-6">
-                  {/* Personal Information */}
-                  <div className="space-y-4">
-                    <h3 className="text-lg font-semibold text-gaming-text">Personal Information</h3>
-                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                      <div>
-                        <Label htmlFor="name" className="text-gaming-text-secondary font-medium">Full Name *</Label>
-                        <Input
-                          id="name"
-                          value={formData.name}
-                          onChange={(e) => handleInputChange('name', e.target.value)}
-                          className="mt-1 bg-gaming-light border-gaming-border text-gaming-text focus:border-gaming-accent h-10 lg:h-11"
-                          placeholder="Enter your full name"
-                          required
-                        />
-                      </div>
-                      <div>
-                        <Label htmlFor="phone" className="text-gaming-text-secondary font-medium">Phone Number *</Label>
-                        <Input
-                          id="phone"
-                          value={formData.phone}
-                          onChange={(e) => handleInputChange('phone', e.target.value)}
-                          className="mt-1 bg-gaming-light border-gaming-border text-gaming-text focus:border-gaming-accent h-10 lg:h-11"
-                          placeholder="+91 XXXXX XXXXX"
-                          required
-                        />
-                      </div>
-                    </div>
-                    <div>
-                      <Label htmlFor="email" className="text-gaming-text-secondary font-medium">Email (Optional)</Label>
-                      <Input
-                        id="email"
-                        type="email"
-                        value={formData.email}
-                        onChange={(e) => handleInputChange('email', e.target.value)}
-                        className="mt-1 bg-gaming-light border-gaming-border text-gaming-text focus:border-gaming-accent h-10 lg:h-11"
-                        placeholder="your.email@example.com"
-                      />
-                    </div>
-                  </div>
+      <div className="container mx-auto px-4 py-8 grid grid-cols-1 xl:grid-cols-3 gap-8">
 
-                  {/* Gaming Preferences */}
-                  <div className="space-y-4">
-                    <h3 className="text-lg font-semibold text-gaming-text">Gaming Preferences</h3>
-                    
-                    {/* Duration Selection */}
-                    <div>
-                      <Label className="text-gaming-text-secondary font-medium">Duration *</Label>
-                      <Select value={duration.toString()} onValueChange={(value) => setDuration(parseInt(value))}>
-                        <SelectTrigger className="mt-1 bg-gaming-light border-gaming-border text-gaming-text h-10 lg:h-11">
-                          <SelectValue placeholder="Select duration" />
-                        </SelectTrigger>
-                        <SelectContent className="bg-white border-gaming-border shadow-2xl max-h-[300px]">
-                          {durationOptions.map((option) => (
-                            <SelectItem key={option.value} value={option.value.toString()} className="focus:bg-gaming-accent-light cursor-pointer">
-                              {option.label}
-                            </SelectItem>
-                          ))}
-                        </SelectContent>
-                      </Select>
-                    </div>
+        
+        <div className="xl:col-span-2">
+          <Card className="bg-gaming-card border-gaming-border shadow-gaming-lg">
+            <CardHeader>
+              <CardTitle className="text-gaming-text">Booking Details</CardTitle>
+              <CardDescription className="text-gaming-text-secondary">
+                Fill in your details to reserve your gaming session.
+              </CardDescription>
+            </CardHeader>
 
-                    {/* Number of People */}
+            <CardContent>
+              <form onSubmit={handleSubmit} className="space-y-6">
+
+                
+                <div className="space-y-4">
+                  <h3 className="text-lg font-semibold text-gaming-text">Personal Information</h3>
+
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     <div>
-                      <Label htmlFor="numPeople" className="text-gaming-text-secondary font-medium">Number of People *</Label>
+                      <Label>Full Name *</Label>
                       <Input
-                        id="numPeople"
-                        type="number"
-                        min="1"
-                        max="20"
-                        value={numPeople}
-                        onChange={(e) => setNumPeople(parseInt(e.target.value) || 1)}
-                        className="mt-1 bg-gaming-light border-gaming-border text-gaming-text focus:border-gaming-accent h-10 lg:h-11"
+                        value={formData.name}
+                        onChange={(e) => handleInputChange('name', e.target.value)}
+                        placeholder="Enter your full name"
                         required
                       />
                     </div>
 
                     <div>
-                      <Label className="text-gaming-text-secondary font-medium">Game Type *</Label>
-                      <Select value={formData.game_type} onValueChange={(value) => handleInputChange('game_type', value)}>
-                        <SelectTrigger className="mt-1 bg-gaming-light border-gaming-border text-gaming-text h-10 lg:h-11">
-                          <SelectValue placeholder="Select game type" />
-                        </SelectTrigger>
-                        <SelectContent className="bg-white border-gaming-border shadow-2xl">
-                          {gameTypes.map((game) => (
-                            <SelectItem key={game.id} value={game.id} className="focus:bg-gaming-accent-light">
-                              {getGameTypeDisplay(game)}
-                            </SelectItem>
-                          ))}
-                        </SelectContent>
-                      </Select>
-                    </div>
-
-                    {/* Pricing Summary */}
-                    {calculatedPrice && (
-                      <div className="mt-4 p-4 bg-gaming-accent/10 border border-gaming-accent/30 rounded-lg">
-                        <h4 className="text-sm font-semibold text-gaming-text mb-2">📊 Booking Summary</h4>
-                        <div className="space-y-1 text-sm text-gaming-text-secondary">
-                          <div className="flex justify-between">
-                            <span>Rate:</span>
-                            <span className="font-medium">{calculatedPrice.breakdown.rate}</span>
-                          </div>
-                          <div className="flex justify-between">
-                            <span>Duration:</span>
-                            <span className="font-medium">{duration} minutes</span>
-                          </div>
-                          <div className="flex justify-between">
-                            <span>People:</span>
-                            <span className="font-medium">{numPeople}</span>
-                          </div>
-                          <div className="border-t border-gaming-accent/30 pt-2 mt-2">
-                            <div className="flex justify-between items-center">
-                              <span className="font-semibold text-gaming-text">Total Price:</span>
-                              <span className="text-lg font-bold text-gaming-accent">₹{calculatedPrice.total_price}</span>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                    )}
-                  </div>
-
-                  {/* Date and Time */}
-                  <div className="space-y-4">
-                    <h3 className="text-lg font-semibold text-gaming-text">Date & Time</h3>
-                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                      <div>
-                        <Label className="text-gaming-text-secondary font-medium">Select Date *</Label>
-                        <Popover>
-                          <PopoverTrigger asChild>
-                            <Button
-                              variant="outline"
-                              className="w-full justify-start text-left font-normal bg-gaming-light border-gaming-border text-gaming-text hover:bg-gaming-accent-light mt-1 h-10 lg:h-11"
-                            >
-                              <CalendarIcon className="mr-2 h-4 w-4" />
-                              {selectedDate ? format(selectedDate, 'PPP') : 'Pick a date'}
-                            </Button>
-                          </PopoverTrigger>
-                          <PopoverContent className="w-auto p-0 bg-white border-gaming-border shadow-2xl">
-                            <Calendar
-                              mode="single"
-                              selected={selectedDate}
-                              onSelect={setSelectedDate}
-                              disabled={(date) => date < new Date() || date < new Date('1900-01-01')}
-                              initialFocus
-                            />
-                          </PopoverContent>
-                        </Popover>
-                      </div>
-                      <div>
-                        <Label className="text-gaming-text-secondary font-medium">Time Slot *</Label>
-                        <Select 
-                          value={formData.time_slot} 
-                          onValueChange={(value) => handleInputChange('time_slot', value)}
-                          disabled={!selectedDate || availableSlots.length === 0}
-                        >
-                          <SelectTrigger className="mt-1 bg-gaming-light border-gaming-border text-gaming-text h-10 lg:h-11">
-                            <SelectValue placeholder={
-                              !selectedDate 
-                                ? "Select a date first" 
-                                : availableSlots.length === 0 
-                                  ? "Loading slots..." 
-                                  : "Select time"
-                            } />
-                          </SelectTrigger>
-                          <SelectContent className="bg-white border-gaming-border shadow-2xl max-h-[300px]">
-                            {availableSlots.length > 0 ? (
-                              availableSlots.map((slot) => (
-                                <SelectItem 
-                                  key={slot.time} 
-                                  value={slot.time}
-                                  disabled={!slot.available}
-                                  className="focus:bg-gaming-accent-light cursor-pointer"
-                                >
-                                  {slot.time} {!slot.available && '(Booked)'}
-                                </SelectItem>
-                              ))
-                            ) : (
-                              <div className="px-2 py-6 text-center text-sm text-gray-500">
-                                {selectedDate ? 'No available slots for this date' : 'Please select a date first'}
-                              </div>
-                            )}
-                          </SelectContent>
-                        </Select>
-                      </div>
+                      <Label>Phone *</Label>
+                      <Input
+                        value={formData.phone}
+                        onChange={(e) => handleInputChange('phone', e.target.value)}
+                        placeholder="+91 XXXXX XXXXX"
+                        required
+                      />
                     </div>
                   </div>
 
-                  {/* Special Requests */}
                   <div>
-                    <Label htmlFor="special_requests" className="text-gaming-text-secondary font-medium">Special Requests (Optional)</Label>
-                    <textarea
-                      id="special_requests"
-                      value={formData.special_requests}
-                      onChange={(e) => handleInputChange('special_requests', e.target.value)}
-                      rows={3}
-                      className="w-full mt-1 px-3 py-2 bg-gaming-light border border-gaming-border rounded-md text-gaming-text resize-none focus:border-gaming-accent focus:outline-none focus:ring-2 focus:ring-gaming-accent/20"
-                      placeholder="Any special requirements or requests..."
+                    <Label>Email *</Label>
+                    <Input
+                      type="email"
+                      value={formData.email}
+                      onChange={(e) => handleInputChange('email', e.target.value)}
+                      placeholder="your.email@example.com"
+                      required
+                    />
+                  </div>
+                </div>
+
+                
+                <div className="space-y-4">
+                  <h3 className="text-lg font-semibold text-gaming-text">Gaming Preferences</h3>
+
+                
+                  <div>
+                    <Label>Duration *</Label>
+                    <Select value={duration.toString()} onValueChange={(v) => setDuration(parseInt(v))}>
+                      <SelectTrigger>
+                        <SelectValue placeholder="Select duration" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        {durationOptions.map(d => (
+                          <SelectItem value={d.value.toString()} key={d.value}>
+                            {d.label}
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+                  </div>
+
+                  
+                  <div>
+                    <Label>Number of People *</Label>
+                    <Input
+                      type="number"
+                      min="1"
+                      value={numPeople}
+                      onChange={(e) => setNumPeople(parseInt(e.target.value) || 1)}
+                      required
                     />
                   </div>
 
-                  {/* Submit Button */}
-                  <Button
-                    type="submit"
-                    className="w-full bg-gaming-accent text-gaming-light hover:bg-gaming-accent-hover shadow-gaming-lg h-11 lg:h-12 text-base font-semibold"
-                    disabled={bookingLoading}
-                  >
-                    {bookingLoading ? 'Booking...' : 'Confirm Booking'}
-                  </Button>
-                </form>
-              </CardContent>
-            </Card>
-          </div>
+                  
+                  <div>
+                    <Label>Game Type *</Label>
+                    <Select
+                      value={formData.game_type}
+                      onValueChange={(v) => handleInputChange('game_type', v)}
+                    >
+                      <SelectTrigger>
+                        <SelectValue placeholder="Select game type" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        {gameTypes.map(g => (
+                          <SelectItem key={g.id} value={g.id}>
+                            {getGameTypeDisplay(g)}
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+                  </div>
 
-          {/* Information Panel */}
-          <div className="xl:col-span-1">
-            <div className="sticky top-8">
-              <Card className="bg-gaming-card border-gaming-border shadow-gaming-lg">
-                <CardHeader className="pb-4">
-                  <CardTitle className="text-gaming-text text-xl">Booking Information</CardTitle>
-                </CardHeader>
-                <CardContent className="space-y-6 pt-0">
-                  {/* Pricing Info */}
-                  <div className="space-y-3">
-                    <h4 className="font-semibold text-gaming-text">Pricing</h4>
-                    <div className="bg-gaming-accent-light p-4 rounded-lg">
-                      <div className="text-center">
-                        <div className="text-2xl lg:text-3xl font-bold text-gaming-accent">₹150+</div>
-                        <div className="text-gaming-text-secondary text-sm">per hour</div>
-                        <div className="text-gaming-text-muted text-xs mt-1">*Varies by game & platform</div>
+                  
+                  {calculatedPrice && (
+                    <div className="p-4 bg-gaming-accent/10 border border-gaming-accent/30 rounded-lg">
+                      <h4 className="font-semibold mb-2">📊 Booking Summary</h4>
+
+                      <div className="flex justify-between">
+                        <span>Rate:</span>
+                        <span>{calculatedPrice.breakdown.rate}</span>
+                      </div>
+
+                      <div className="flex justify-between">
+                        <span>Duration:</span>
+                        <span>{duration} minutes</span>
+                      </div>
+
+                      <div className="flex justify-between">
+                        <span>People:</span>
+                        <span>{numPeople}</span>
+                      </div>
+
+                      <div className="border-t pt-2 mt-2 flex justify-between font-bold">
+                        <span>Total Price:</span>
+                        <span className="text-gaming-accent">₹{calculatedPrice.total_price}</span>
                       </div>
                     </div>
-                    <p className="text-sm text-gaming-text-secondary">
-                      Final pricing will be shared during booking confirmation based on your selected game and platform.
-                    </p>
-                  </div>
+                  )}
+                </div>
 
-                  {/* Contact Info */}
-                  <div className="space-y-3 pt-4 border-t border-gaming-border">
-                    <h4 className="font-semibold text-gaming-text">Contact & Location</h4>
-                    <div className="space-y-3">
-                      <div className="flex items-center space-x-3 text-gaming-text-secondary">
-                        <Phone className="w-4 h-4 flex-shrink-0" />
-                        <span className="text-sm">+91 7702528817</span>
-                      </div>
-                      <div className="flex items-center space-x-3 text-gaming-text-secondary">
-                        <Clock className="w-4 h-4 flex-shrink-0" />
-                        <span className="text-sm">10:00 AM - 11:00 PM (Daily)</span>
-                      </div>
-                      <div className="flex items-start space-x-3 text-gaming-text-secondary">
-                        <MapPin className="w-4 h-4 mt-0.5 flex-shrink-0" />
-                        <span className="text-sm">537, BAIRAGIPATTEDA RD, TIRUPATI - 517501</span>
-                      </div>
+                
+                <div className="space-y-4">
+                  <h3 className="text-lg font-semibold text-gaming-text">Date & Time</h3>
+
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <div>
+                      <Label>Select Date *</Label>
+                      <Popover>
+                        <PopoverTrigger asChild>
+                          <Button variant="outline" className="w-full">
+                            <CalendarIcon className="mr-2" />
+                            {selectedDate ? format(selectedDate, "PPP") : "Pick a date"}
+                          </Button>
+                        </PopoverTrigger>
+
+                        <PopoverContent className="bg-white border p-0">
+                          <Calendar
+                            mode="single"
+                            selected={selectedDate}
+                            onSelect={setSelectedDate}
+                            disabled={d => d < new Date()}
+                          />
+                        </PopoverContent>
+                      </Popover>
+                    </div>
+
+                    <div>
+                      <Label>Time Slot *</Label>
+
+                      <Select
+                        value={formData.time_slot}
+                        onValueChange={(v) => handleInputChange('time_slot', v)}
+                        disabled={!selectedDate || availableSlots.length === 0}
+                      >
+                        <SelectTrigger>
+                          <SelectValue placeholder={
+                            !selectedDate
+                              ? "Select a date first"
+                              : availableSlots.length === 0
+                                ? "No slots available"
+                                : "Select time"
+                          } />
+                        </SelectTrigger>
+
+                        <SelectContent className="max-h-[300px]">
+                          {availableSlots.length > 0 ? (
+                            availableSlots.map((slot, i) => {
+                              const timeValue =
+                                slot.time ||
+                                slot.slot ||
+                                `slot-${i}`;
+
+                              return (
+                                <SelectItem
+                                  key={timeValue}
+                                  value={timeValue}
+                                  disabled={!slot.available}
+                                >
+                                  {timeValue} {!slot.available && "(Booked)"}
+                                </SelectItem>
+                              );
+                            })
+                          ) : (
+                            <div className="px-2 py-6 text-center text-sm">
+                              {selectedDate
+                                ? "No time slots available"
+                                : "Pick a date first"}
+                            </div>
+                          )}
+                        </SelectContent>
+                      </Select>
                     </div>
                   </div>
+                </div>
 
-                  {/* Gaming Info */}
-                  <div className="space-y-3 pt-4 border-t border-gaming-border">
-                    <h4 className="font-semibold text-gaming-text">What's Included</h4>
-                    <div className="space-y-2">
-                      <div className="flex items-center space-x-3 text-gaming-text-secondary">
-                        <GamepadIcon className="w-4 h-4 flex-shrink-0" />
-                        <span className="text-sm">All gaming platforms available</span>
-                      </div>
-                      <div className="flex items-center space-x-3 text-gaming-text-secondary">
-                        <Clock className="w-4 h-4 flex-shrink-0" />
-                        <span className="text-sm">Flexible session duration</span>
-                      </div>
-                    </div>
-                  </div>
+                
+                <div>
+                  <Label>Special Requests</Label>
+                  <textarea
+                    className="w-full p-2 rounded border"
+                    rows={3}
+                    value={formData.special_requests}
+                    onChange={(e) => handleInputChange('special_requests', e.target.value)}
+                    placeholder="Any special requirements or requests..."
+                  />
+                </div>
 
-                  <div className="pt-4 border-t border-gaming-border">
-                    <p className="text-sm text-gaming-text-secondary">
-                      Need help? Call us at{' '}
-                      <a href="tel:+917702528817" className="text-gaming-accent hover:underline font-medium">
-                        +91 7702528817
-                      </a>
-                    </p>
-                  </div>
-                </CardContent>
-              </Card>
-            </div>
-          </div>
+                
+                <Button type="submit" 
+                className="w-full bg-gaming-accent text-gaming-light hover:bg-gaming-accent-hover shadow-gaming-lg h-11 lg:h-12 text-base font-semibold" 
+                disabled={bookingLoading}>
+                  {bookingLoading ? "Booking..." : "Confirm Booking"}
+                </Button>
+
+              </form>
+            </CardContent>
+          </Card>
         </div>
+
+       
+        <div className="xl:col-span-1">
+
+          <Card className="bg-gaming-card border-gaming-border shadow-gaming-lg sticky top-8">
+            <CardHeader>
+              <CardTitle>Booking Information</CardTitle>
+            </CardHeader>
+
+            <CardContent className="space-y-6">
+
+              
+              <div className="bg-gaming-accent-light p-4 rounded text-center">
+                <div className="text-3xl font-bold text-gaming-accent">₹150+</div>
+                <div className="text-sm">per hour</div>
+                <div className="text-xs mt-1">*Varies by platform</div>
+              </div>
+
+              
+              <div className="border-t pt-4 space-y-3">
+                <h4 className="font-semibold">Contact & Location</h4>
+
+                <div className="flex items-center space-x-3">
+                  <Phone className="w-4" />
+                  <span>+91 7702528817</span>
+                </div>
+
+                <div className="flex items-center space-x-3">
+                  <Clock className="w-4" />
+                  <span>10 AM - 11 PM (Daily)</span>
+                </div>
+
+                <div className="flex items-start space-x-3">
+                  <MapPin className="w-4" />
+                  <span>537, BAIRAGIPATTEDA RD, TIRUPATI - 517501</span>
+                </div>
+              </div>
+
+            </CardContent>
+          </Card>
+
+        </div>
+
       </div>
-      
-      {/* Reference Number Modal */}
+
+     
       <ReferenceNumberModal
         isOpen={showReferenceModal}
         onClose={() => setShowReferenceModal(false)}
         referenceNumber={bookingResponse?.reference_number}
-        bookingDetails={bookingResponse && selectedDate ? {
-          date: selectedDate,
-          time_slot: formData.time_slot,
-          game_type: formData.game_type
-        } : null}
+        bookingDetails={
+          bookingResponse && selectedDate
+            ? {
+                date: selectedDate,
+                time_slot: formData.time_slot,
+                game_type: formData.game_type,
+              }
+            : null
+        }
       />
+
     </div>
   );
 };
